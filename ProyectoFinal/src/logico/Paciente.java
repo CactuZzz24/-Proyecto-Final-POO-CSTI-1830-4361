@@ -21,6 +21,7 @@ public class Paciente extends Persona {
 	 */
 	private String tipoSangre;
 	private Date fechaNacim;
+	private String cedula;
 	public Paciente(String cedula, String nombre, int edad, String telefono, char genero, String direccion) {
 		super(cedula, nombre, edad, telefono, genero, direccion);
 		// TODO Auto-generated constructor stub
