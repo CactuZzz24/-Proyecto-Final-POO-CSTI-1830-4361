@@ -14,6 +14,7 @@ package logico;
  */
 public class Medico extends Persona {
 	private String especialidad;
+	private String id;
 	private boolean cogeSeguro;
 	/**
 	 * @param cedula
@@ -26,9 +27,10 @@ public class Medico extends Persona {
 	 * @param cogeSeguro
 	 */
 	public Medico(String cedula, String nombre, int edad, String telefono, char genero, String direccion,
-			String especialidad, boolean cogeSeguro) {
+			String especialidad, boolean cogeSeguro, String id) {
 		super(cedula, nombre, edad, telefono, genero, direccion);
 		this.especialidad = especialidad;
+		this.id = id;
 		this.cogeSeguro = cogeSeguro;
 	}
 	/**
@@ -42,6 +44,18 @@ public class Medico extends Persona {
 	 */
 	public void setEspecialidad(String especialidad) {
 		this.especialidad = especialidad;
+	}
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	/**
 	 * @return the cogeSeguro

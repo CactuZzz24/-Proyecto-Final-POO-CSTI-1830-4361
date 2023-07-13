@@ -3,6 +3,7 @@
  */
 package logico;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -24,7 +25,7 @@ public class Paciente extends Persona {
 	 */
 	private Date fechaNacim;
 	private String tipoSangre;
-	// Seguro seguro;
+	private ArrayList<Seguro> misSeguros;
 	boolean status;
 	//ArrayList<Consulta> misConsultas;
 	//ArrayList<Enfermedad> misEnfermedades;
@@ -39,7 +40,9 @@ public class Paciente extends Persona {
 		super(cedula, nombre, edad, telefono, genero, direccion);
 		this.tipoSangre = tipoSangre;
 		this.fechaNacim = fechaNacim;
+		misSeguros = new ArrayList<>();
 	}
+
 	/**
 	 * @return the tipoSangre
 	 */
@@ -65,7 +68,28 @@ public class Paciente extends Persona {
 		this.fechaNacim = fechaNacim;
 	}
 	
+	/**
+	 * @return the status
+	 */
+	public boolean isStatus() {
+		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	/**
+	 * @return the misSeguros
+	 */
+	public ArrayList<Seguro> getMisSeguros() {
+		return misSeguros;
+	}
 	
+	public void addSeguro(Seguro miSeguro) {
+		misSeguros.add(miSeguro);
+	}
 		
 	
 
