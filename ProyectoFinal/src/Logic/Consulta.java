@@ -1,4 +1,4 @@
-package logico;
+package Logic;
 
 public class Consulta {
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package logico;
+package Logic;
 
 /**
  * @author edwin

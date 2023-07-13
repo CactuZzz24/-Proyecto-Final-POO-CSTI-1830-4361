@@ -1,4 +1,4 @@
-package logico;
+package Logic;
 
 import java.util.ArrayList;
 import java.util.Date;
