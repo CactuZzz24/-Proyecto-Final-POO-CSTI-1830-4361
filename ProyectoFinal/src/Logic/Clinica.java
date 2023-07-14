@@ -67,5 +67,10 @@ public class Clinica {
 		}
 		return null;
 	}
+	
+	public void insertarConsulta(Consulta consulta){
+		misConsultas.add(consulta);
+		
+	}
 
 }
