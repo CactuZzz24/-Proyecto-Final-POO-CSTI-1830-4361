@@ -7,6 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+
+import Logic.Clinica;
+import Logic.Enfermedad;
+
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -98,6 +102,9 @@ public class RegEnfermedad extends JFrame {
 				String nombre = textNombre.getText();
 				String desc = textAreaDetalles.getText();
 				String gravedad = (String) comboGravedad.getSelectedItem();
+				
+				Enfermedad enfermedad = new Enfermedad(codigo, nombre, desc, gravedad);
+				Clinica.getInstance().agregarEnfermedad(enfermedad);
 			}
 		});
 		btnRegistrar.setBounds(460, 371, 115, 29);
