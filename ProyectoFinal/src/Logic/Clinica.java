@@ -15,13 +15,18 @@ public class Clinica {
 	private static int codEfermedad;
 	
 	
-	public Clinica(ArrayList<Enfermedad> misEnfermedades, ArrayList<Vacuna> misVacunas,
-			ArrayList<Consulta> misConsultas, ArrayList<Persona> misPersonas, ArrayList<Usuario> misUsuarios) {
+	public Clinica() {
 		this.misEnfermedades = new ArrayList<Enfermedad>();
 		this.misVacunas = new ArrayList<Vacuna>();
 		this.misConsultas = new ArrayList<Consulta>();
 		this.misPersonas = new ArrayList<Persona>();
 		this.misUsuarios = new ArrayList<Usuario>();
+	}
+	
+	public static Clinica getInstance() {
+		if(clinica == null)
+			clinica = new Clinica();
+		return clinica;
 	}
 	
 	public ArrayList<Enfermedad> getMisEnfermedades() {
@@ -55,6 +60,12 @@ public class Clinica {
 		this.misUsuarios = misUsuarios;
 	}
 
-	
+	public Usuario buscarUsiarioByCedula(String cedula) {
+		for(Usuario usuario : misUsuarios) {
+			if(usuario.getCedula().equalsIgnoreCase(cedula))
+				return usuario;
+		}
+		return null;
+	}
 
 }
