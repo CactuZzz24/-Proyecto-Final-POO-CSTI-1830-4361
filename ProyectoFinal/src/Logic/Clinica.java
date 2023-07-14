@@ -73,4 +73,12 @@ public class Clinica {
 		
 	}
 
+	public void agregarEnfermedad(Enfermedad enfermedad) {
+		// TODO Auto-generated method stub
+		misEnfermedades.add(enfermedad);
+		
+	}
+	
+	
+
 }
