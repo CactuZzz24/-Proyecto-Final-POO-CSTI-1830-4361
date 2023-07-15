@@ -78,6 +78,28 @@ public class Clinica {
 		misEnfermedades.add(enfermedad);
 		
 	}
+
+	public void modificarEnfermedad(Enfermedad miEnfermedad) {
+
+		int index = bucarIndexEnfermedadByCode(miEnfermedad.getCodigo());
+		misEnfermedades.set(index, miEnfermedad);
+		
+	}
+
+	private int bucarIndexEnfermedadByCode(String codigo) {
+		int aux = -1;
+		boolean encontrado = false;
+		int i =0;
+		while (i < misEnfermedades.size() && !encontrado) {
+			if(misEnfermedades.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				encontrado = true;
+				aux = i;
+			}
+			i++;
+			
+		}
+		return aux;
+	}
 	
 	
 

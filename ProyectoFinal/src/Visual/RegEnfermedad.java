@@ -1,25 +1,23 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import Logic.Clinica;
 import Logic.Enfermedad;
-
-import java.awt.Color;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 public class RegEnfermedad extends JFrame {
 
@@ -27,28 +25,23 @@ public class RegEnfermedad extends JFrame {
 	private JButton btnRegistrar;
 	private JTextField textCodigo;
 	private JTextField textNombre;
+	private JTextArea textAreaDetalles;
+	private JComboBox comboGravedad;
+	private Enfermedad miEnfermedad = null;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegEnfermedad frame = new RegEnfermedad();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public RegEnfermedad() {
-		setTitle("Registrar Enfermedad");
+	public RegEnfermedad(Enfermedad miEnfermedad) {
+		setResizable(false);
+		if(miEnfermedad == null) {
+			setTitle("Registrar Enfermedad");
+		}
+		else {
+			setTitle("Editar Enfermedad");
+
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 639, 472);
 		contentPane = new JPanel();
@@ -85,11 +78,11 @@ public class RegEnfermedad extends JFrame {
 		lblNewLabel_2.setBounds(15, 172, 428, 26);
 		panel.add(lblNewLabel_2);
 		
-		JTextArea textAreaDetalles = new JTextArea();
+		textAreaDetalles = new JTextArea();
 		textAreaDetalles.setBounds(15, 208, 500, 98);
 		panel.add(textAreaDetalles);
 		
-		JComboBox comboGravedad = new JComboBox();
+		comboGravedad = new JComboBox();
 		comboGravedad.setModel(new DefaultComboBoxModel(new String[] {"<Gravedad de la Enfermedad>", "Leve", "Moderada", "Alta"}));
 		comboGravedad.setBounds(264, 97, 251, 26);
 		
@@ -98,6 +91,9 @@ public class RegEnfermedad extends JFrame {
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(miEnfermedad == null) {
+					
+				
 				String codigo = textCodigo.getText();
 				String nombre = textNombre.getText();
 				String desc = textAreaDetalles.getText();
@@ -106,12 +102,51 @@ public class RegEnfermedad extends JFrame {
 				Enfermedad enfermedad = new Enfermedad(codigo, nombre, desc, gravedad);
 				Clinica.getInstance().agregarEnfermedad(enfermedad);
 			}
+				else {
+	
+					miEnfermedad.setCodigo(textCodigo.getText());
+					miEnfermedad.setNombre(textNombre.getText());
+					miEnfermedad.setGravedad((String)comboGravedad.getSelectedItem());
+					miEnfermedad.setDescripcion(textAreaDetalles.getText());
+					Clinica.getInstance().modificarEnfermedad(miEnfermedad);
+					dispose();
+					//ListarEnfermedades.loadEnfermedades();
+					
+					
+				}
+			    JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
+                        JOptionPane.INFORMATION_MESSAGE);
+                clear();
+			}
+
+		
+			
 		});
 		btnRegistrar.setBounds(460, 371, 115, 29);
 		contentPane.add(btnRegistrar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnCancelar.setBounds(55, 370, 115, 29);
 		contentPane.add(btnCancelar);
+		loadEnf();
+	}
+	private void loadEnf() {
+		if(miEnfermedad != null) {
+			textCodigo.setText(miEnfermedad.getCodigo());
+			textNombre.setText(miEnfermedad.getNombre());
+			textAreaDetalles.setText(miEnfermedad.getDescripcion());
+			comboGravedad.setSelectedItem((String) miEnfermedad.getGravedad());
+		}
+	}
+	private void clear() {
+		textCodigo.setText("");
+		textNombre.setText("");
+		textAreaDetalles.setText("");
+		comboGravedad.setSelectedIndex(0);
 	}
 }
