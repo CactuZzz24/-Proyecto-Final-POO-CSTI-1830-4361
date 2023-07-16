@@ -9,13 +9,18 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import Logic.Clinica;
+import Logic.Doctor;
+import Logic.Paciente;
 import Logic.Usuario;
 
 import java.awt.FlowLayout;
+
+import javax.print.attribute.standard.Media;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -86,16 +91,32 @@ public class IniciarSesion extends JFrame {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Usuario user = Clinica.getInstance().buscarUsiarioByCedula(txtCedula.getText());
-				if(user!=null) {
+				if(user!=null || user.getClave().equalsIgnoreCase(txtContra.getText())) {
 					if(user.isAdmin()) {
-						//
+						PrincipalAdmin menu = new PrincipalAdmin();
+						menu.setVisible(true);
+						dispose();
 					}else if(user.isPaciente()) {
-						//
+						Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(user.getCedula());
+						if(paciente!=null) {
+							PrincipalPaciente menu = new PrincipalPaciente(paciente);
+							menu.setVisible(true);
+							dispose();
+						}
+
 					}else if(!user.isPaciente()){
-						//				
+						Doctor doc = Clinica.getInstance().buscarMedicoByCedula(user.getCedula());
+						if(doc!=null) {
+							PrincipalMedico menu = new PrincipalMedico(doc);
+							menu.setVisible(true);
+							dispose();
+						}
 					}
 				}else {
-					//mensaje de error
+					if(!user.getClave().equalsIgnoreCase(txtContra.getText()))
+						JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta", "Error", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "La cedula ingresada no esta registrada", "Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
