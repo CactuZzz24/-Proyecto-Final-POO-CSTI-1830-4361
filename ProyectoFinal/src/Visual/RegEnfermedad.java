@@ -134,23 +134,7 @@ public class RegEnfermedad extends JFrame {
 		btnCancelar.setBounds(55, 370, 115, 29);
 		contentPane.add(btnCancelar);
 		loadEnf();
-<<<<<<< HEAD
-=======
-	}
-	private void loadEnf() {
-		if(miEnfermedad != null) {
-			textCodigo.setText(miEnfermedad.getCodigo());
-			textNombre.setText(miEnfermedad.getNombre());
-			textAreaDetalles.setText(miEnfermedad.getDescripcion());
-			comboGravedad.setSelectedItem((String) miEnfermedad.getGravedad());
-		}
-	}
-	private void clear() {
-		textCodigo.setText("");
-		textNombre.setText("");
-		textAreaDetalles.setText("");
-		comboGravedad.setSelectedIndex(0);
->>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361.git
+
 	}
 	private void loadEnf() {
 		if(miEnfermedad != null) {
@@ -166,4 +150,5 @@ public class RegEnfermedad extends JFrame {
 		textAreaDetalles.setText("");
 		comboGravedad.setSelectedIndex(0);
 	}
+
 }
