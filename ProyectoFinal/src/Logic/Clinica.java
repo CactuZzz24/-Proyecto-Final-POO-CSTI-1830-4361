@@ -10,9 +10,9 @@ public class Clinica {
 	private ArrayList<Persona> misPersonas;
 	private ArrayList<Usuario> misUsuarios;
 	private static Clinica clinica;
-	private static int codConsulta;
-	private static int codVacuna;
-	private static int codEfermedad;
+	private static int codConsulta = 0;
+	private static int codVacuna = 0;
+	private static int codEfermedad = 0;
 	
 	
 	public Clinica() {
@@ -100,7 +100,6 @@ public class Clinica {
 		}
 		return aux;
 	}
-
 	public Paciente buscarPacienteByCedula(String cedula) {
 		for(Persona persona : misPersonas) {
 			if(persona instanceof Paciente && persona.getCedula().equalsIgnoreCase(cedula))
