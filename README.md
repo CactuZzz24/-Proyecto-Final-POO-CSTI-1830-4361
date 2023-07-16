@@ -18,6 +18,7 @@ Este proyecto tiene como objetivo desarrollar un sistema que permita gestionar l
 
 El sistema se desarrollará utilizando las siguientes tecnologías:
 
-- Lenguaje de programación: Java
-- IDE: Eclipse
-- Librerías para la interfaz gráfica: Windows Builder (SWT Designer and Swing Designer)
+- Lenguaje de programación: [Java](https://www.java.com/es/)
+- IDE: [Eclipse](https://eclipseide.org/)
+- Librerías para la interfaz gráfica: [Windows Builder (SWT Designer and Swing Designer)](https://github.com/eclipse-windowbuilder/windowbuilder/releases/tag/V1.10.0)
+- Librerías de terceros: [JDatePicker](https://github.com/JDatePicker/JDatePicker), [libphonenumber](https://github.com/google/libphonenumber)
