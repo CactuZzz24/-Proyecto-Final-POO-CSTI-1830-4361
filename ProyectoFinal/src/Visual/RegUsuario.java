@@ -8,21 +8,32 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+
+import Logic.Clinica;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class RegUsuario extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField txtCedula;
+	private JTextField txtNombre;
+	private JTextField txtDireccion;
+	private JTextField txtClave;
+	private JTextField txtConfirmarClave;
+	private JRadioButton btnMasculino;
+	private JRadioButton btnFemenino;
+	private String clave;
+	private String confirmarClave;
+	private int edad;
 
 	/**
 	 * Launch the application.
@@ -41,7 +52,8 @@ public class RegUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegUsuario() {
-		setBounds(100, 100, 450, 374);
+		setTitle("Registrar Usuario Paciente Nuevo");
+		setBounds(100, 100, 450, 383);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setForeground(Color.GRAY);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -50,7 +62,7 @@ public class RegUsuario extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBounds(12, 82, 408, 197);
+		panel.setBounds(12, 92, 408, 197);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
@@ -74,47 +86,59 @@ public class RegUsuario extends JDialog {
 		lblNewLabel_5.setBounds(12, 98, 90, 16);
 		panel.add(lblNewLabel_5);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(69, 20, 116, 22);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		txtNombre = new JTextField();
+		txtNombre.setBounds(69, 20, 116, 22);
+		panel.add(txtNombre);
+		txtNombre.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(276, 20, 116, 22);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		btnMasculino = new JRadioButton("M");
+		btnMasculino.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnMasculino.isSelected())
+					btnFemenino.setSelected(false);
+				else
+					btnFemenino.setSelected(true);
+			}
+		});
+		btnMasculino.setBounds(319, 64, 41, 25);
+		panel.add(btnMasculino);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("M");
-		rdbtnNewRadioButton.setBounds(319, 64, 41, 25);
-		panel.add(rdbtnNewRadioButton);
+		btnFemenino = new JRadioButton("F");
+		btnFemenino.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnFemenino.isSelected())
+					btnMasculino.setSelected(false);
+				else
+					btnMasculino.setSelected(true);
+			}
+		});
+		btnFemenino.setBounds(359, 65, 41, 25);
+		panel.add(btnFemenino);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("F");
-		rdbtnNewRadioButton_1.setBounds(359, 65, 41, 25);
-		panel.add(rdbtnNewRadioButton_1);
-		
-		textField_3 = new JTextField();
-		textField_3.setBounds(12, 115, 381, 56);
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(12, 115, 381, 56);
+		panel.add(txtDireccion);
+		txtDireccion.setColumns(10);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.setBounds(12, 13, 408, 66);
 		contentPanel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(15, 31, 116, 22);
-		panel_1.add(textField);
-		textField.setColumns(10);
+		txtCedula = new JTextField();
+		txtCedula.setBounds(15, 31, 116, 22);
+		panel_1.add(txtCedula);
+		txtCedula.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Cedula:");
 		lblNewLabel.setBounds(15, 13, 56, 16);
 		panel_1.add(lblNewLabel);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(146, 31, 116, 22);
-		panel_1.add(textField_4);
+		txtClave = new JTextField();
+		txtClave.setColumns(10);
+		txtClave.setBounds(146, 31, 116, 22);
+		panel_1.add(txtClave);
 		
 		JLabel lblClave = new JLabel("Clave:");
 		lblClave.setBounds(146, 13, 56, 16);
@@ -124,24 +148,45 @@ public class RegUsuario extends JDialog {
 		lblConfirmarClave.setBounds(277, 13, 101, 16);
 		panel_1.add(lblConfirmarClave);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(277, 31, 116, 22);
-		panel_1.add(textField_5);
+		txtConfirmarClave = new JTextField();
+		txtConfirmarClave.setColumns(10);
+		txtConfirmarClave.setBounds(277, 31, 116, 22);
+		panel_1.add(txtConfirmarClave);
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Registrar");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(!clave.equals(confirmarClave)){
+							JOptionPane.showMessageDialog(null, "Las claves no coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
+						}else if(edad < 16 && txtCedula.equals("")) {
+							JOptionPane.showMessageDialog(null, "Porfavor ingrese la cedula de un padre o tutor", "Error", JOptionPane.INFORMATION_MESSAGE);
+						}else if(!txtCedula.equals("") && !txtNombre.equals("") && !txtClave.equals("") && !txtConfirmarClave.equals("") && !txtDireccion.equals("") 
+								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())|| edad < 16)) {
+							
+						}else {
+							JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+						}
+						
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				JButton btnCacncelar = new JButton("Cancelar");
+				btnCacncelar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});	
+				btnCacncelar.setActionCommand("Cancel");
+				buttonPane.add(btnCacncelar);
 			}
 		}
 	}
