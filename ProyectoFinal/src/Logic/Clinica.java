@@ -116,4 +116,12 @@ public class Clinica {
 		return null;
 	}
 
+	public boolean seRepiteCedula(String cedula) {
+		if(Usuario usuario : misUsuarios) {
+			if(usuario.getCedula().equalsIgnoreCase(cedula))
+				return true;
+		}
+		return false;
+	}
+
 }
