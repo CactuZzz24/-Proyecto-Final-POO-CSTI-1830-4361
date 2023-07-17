@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -25,10 +27,12 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import Logic.Cita;
+import Logic.Persona;
 
 import javax.swing.JLayeredPane;
 import java.awt.BorderLayout;
 import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
 
 
 
@@ -37,7 +41,6 @@ public class RegCita_Consulta extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textCodigo;
-	private JTextField textFecha;
 	private JTextField textSecretaria;
 	private JTextField textCedula;
 	private JTextField textNombre;
@@ -48,6 +51,7 @@ public class RegCita_Consulta extends JFrame {
 	private JButton btnNewButton;
 	private JButton btnRegistrar;
 	private JButton btnAtras;
+	private JDatePickerImpl datePickerCita;
 	
 
 	/**
@@ -102,11 +106,9 @@ public class RegCita_Consulta extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Fecha");
 		lblNewLabel_1.setBounds(533, 16, 40, 20);
 		primera_pagina.add(lblNewLabel_1);
-		
-		textFecha = new JTextField();
-		textFecha.setBounds(427, 39, 146, 26);
-		primera_pagina.add(textFecha);
-		textFecha.setColumns(10);
+		datePickerCita = createDatePickerCita();
+		datePickerCita.setBounds(427, 39, 146, 26);
+		primera_pagina.add(datePickerCita);
 		
 		JLabel lblNewLabel_2 = new JLabel("Secretaria");
 		lblNewLabel_2.setBounds(270, 16, 69, 20);
@@ -166,6 +168,18 @@ public class RegCita_Consulta extends JFrame {
 		    datePicker.setBounds(397, 130, 146, 26);
 		    panel_1.add(datePicker);
 		    
+		    JLabel lblNewLabel_11 = new JLabel("G\u00E9nero");
+		    lblNewLabel_11.setBounds(252, 16, 69, 20);
+		    panel_1.add(lblNewLabel_11);
+		    
+		    JRadioButton rdbHombre = new JRadioButton("Hombre");
+		    rdbHombre.setBounds(212, 51, 155, 29);
+		    panel_1.add(rdbHombre);
+		    
+		    JRadioButton rdbMujer = new JRadioButton("Mujer");
+		    rdbMujer.setBounds(212, 129, 155, 29);
+		    panel_1.add(rdbMujer);
+		    
 		    JPanel segunda_pagina = new JPanel();
 		    segunda_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		    segunda_pagina.setBounds(0, 0, 588, 391);
@@ -202,6 +216,7 @@ public class RegCita_Consulta extends JFrame {
 		    textFechaConsulta.setBounds(427, 46, 146, 26);
 		    segunda_pagina.add(textFechaConsulta);
 		    textFechaConsulta.setColumns(10);
+		    textFechaConsulta.setVisible(false);
 		
 		btnNewButton = new JButton("Siguiente");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -210,7 +225,7 @@ public class RegCita_Consulta extends JFrame {
                 primera_pagina.setVisible(false);
                 segunda_pagina.setVisible(true);
                 btnNewButton.setVisible(false); // Hide the "Siguiente" button
-                
+                textFechaConsulta.setVisible(true);
                 btnAtras.setVisible(true); // Show the "Atras" button
                 btnRegistrar.setVisible(true); // Show the "Registrar" button
         		btnCancelar.setBounds(55, 426, 105, 21);
@@ -230,9 +245,14 @@ public class RegCita_Consulta extends JFrame {
         btnRegistrar = new JButton("Registrar");
         btnRegistrar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		 // Creacion de Cita y Consulta
+        		
+        		//Persona persona new = Persona(textCedula.getText(), textNombre.getText(), fchNacim, textTel.getText(), textDir.getText(), )
+        		
         		String codigoCitaString = textCodigo.getText();
         		String secretaria = textSecretaria.getText();
+        		Date fechaCita;
+        		
+        		
         		
         		
         		//Cita cita = new Cita(secretaria, codigo, fecha, miPersona, miDoctor)
@@ -253,12 +273,18 @@ public class RegCita_Consulta extends JFrame {
                 btnAtras.setVisible(false); 
                 btnRegistrar.setVisible(false); 
         		btnCancelar.setBounds(404, 426, 105, 21);
+                textFechaConsulta.setVisible(false);
+
 
             }
         });
         btnAtras.setBounds(419, 426, 107, 21);
         contentPane.add(btnAtras);
         btnAtras.setVisible(false); 
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(rdbHombre);
+        buttonGroup.add(rdbMujer);
+
 
       
 		
@@ -294,4 +320,24 @@ public class RegCita_Consulta extends JFrame {
 	        }
 	        return formatter;
 	    }
+	 private JDatePickerImpl createDatePickerCita() {
+		    UtilDateModel model = new UtilDateModel();
+		    Properties properties = new Properties();
+		    properties.put("text.today", "Today");
+		    properties.put("text.month", "Month");
+		    properties.put("text.year", "Year");
+		    JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
+
+		    datePanel.addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            java.util.Date selectedDate = (java.util.Date) model.getValue();
+		            datePickerCita.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(selectedDate));
+		            textFechaConsulta.setText(new SimpleDateFormat("yyyy-MM-dd").format(selectedDate));
+
+		        }
+		    });
+
+		    return new JDatePickerImpl(datePanel, null);
+		}
 }
