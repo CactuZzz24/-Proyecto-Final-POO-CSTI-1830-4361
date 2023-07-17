@@ -23,8 +23,12 @@ import javax.swing.text.MaskFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+
+import Logic.Cita;
+
 import javax.swing.JLayeredPane;
 import java.awt.BorderLayout;
+import javax.swing.JComboBox;
 
 
 
@@ -39,6 +43,11 @@ public class RegCita_Consulta extends JFrame {
 	private JTextField textNombre;
 	private JTextField textTel;
 	private JDatePickerImpl datePicker;
+	private JTextField textFechaConsulta;
+	private JButton btnCancelar;
+	private JButton btnNewButton;
+	private JButton btnRegistrar;
+	private JButton btnAtras;
 	
 
 	/**
@@ -158,25 +167,100 @@ public class RegCita_Consulta extends JFrame {
 		    panel_1.add(datePicker);
 		    
 		    JPanel segunda_pagina = new JPanel();
-		    segunda_pagina.setBounds(0, 0, 10, 10);
+		    segunda_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		    segunda_pagina.setBounds(0, 0, 588, 391);
 		    layeredPane.add(segunda_pagina);
+		    segunda_pagina.setLayout(null);
+		    
+		    JPanel panel = new JPanel();
+		    panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		    panel.setBounds(19, 165, 543, 204);
+		    segunda_pagina.add(panel);
+		    panel.setLayout(null);
+		    
+		    JLabel lblNewLabel_8 = new JLabel("Motivo de la Consulta");
+		    lblNewLabel_8.setBounds(23, 6, 169, 20);
+		    panel.add(lblNewLabel_8);
+		    
+		    JTextArea textmotivoConsulta = new JTextArea();
+		    textmotivoConsulta.setBounds(14, 37, 506, 150);
+		    panel.add(textmotivoConsulta);
+		    
+		    JLabel lblNewLabel_9 = new JLabel("Doctor a cargo:");
+		    lblNewLabel_9.setBounds(19, 16, 132, 20);
+		    segunda_pagina.add(lblNewLabel_9);
+		    
+		    JComboBox comboBox = new JComboBox();
+		    comboBox.setBounds(19, 46, 208, 26);
+		    segunda_pagina.add(comboBox);
+		    
+		    JLabel lblNewLabel_10 = new JLabel("Fecha");
+		    lblNewLabel_10.setBounds(533, 16, 40, 20);
+		    segunda_pagina.add(lblNewLabel_10);
+		    
+		    textFechaConsulta = new JTextField();
+		    textFechaConsulta.setBounds(427, 46, 146, 26);
+		    segunda_pagina.add(textFechaConsulta);
+		    textFechaConsulta.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Siguiente");
+		btnNewButton = new JButton("Siguiente");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				 // When the button is pressed, switch the visibility of the panels and buttons
+                primera_pagina.setVisible(false);
+                segunda_pagina.setVisible(true);
+                btnNewButton.setVisible(false); // Hide the "Siguiente" button
+                
+                btnAtras.setVisible(true); // Show the "Atras" button
+                btnRegistrar.setVisible(true); // Show the "Registrar" button
+        		btnCancelar.setBounds(55, 426, 105, 21);
+
 			}
 		});
 		btnNewButton.setBounds(526, 426, 107, 21);
 		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Cancelar");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(404, 426, 105, 21);
+		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnNewButton_1.setBounds(404, 426, 107, 21);
-		contentPane.add(btnNewButton_1);
+        btnRegistrar = new JButton("Registrar");
+        btnRegistrar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		 // Creacion de Cita y Consulta
+        		String codigoCitaString = textCodigo.getText();
+        		String secretaria = textSecretaria.getText();
+        		
+        		
+        		//Cita cita = new Cita(secretaria, codigo, fecha, miPersona, miDoctor)
+        		
+        	}
+        });
+        btnRegistrar.setBounds(526, 426, 107, 21);
+        contentPane.add(btnRegistrar);
+        btnRegistrar.setVisible(false); 
+		btnCancelar.setBounds(404, 426, 107, 21);
+		contentPane.add(btnCancelar);
+        btnAtras = new JButton("Atras");
+        btnAtras.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                primera_pagina.setVisible(true);
+                segunda_pagina.setVisible(false);
+                btnNewButton.setVisible(true); 
+                btnAtras.setVisible(false); 
+                btnRegistrar.setVisible(false); 
+        		btnCancelar.setBounds(404, 426, 105, 21);
+
+            }
+        });
+        btnAtras.setBounds(419, 426, 107, 21);
+        contentPane.add(btnAtras);
+        btnAtras.setVisible(false); 
+
+      
 		
 		
 		
@@ -210,7 +294,4 @@ public class RegCita_Consulta extends JFrame {
 	        }
 	        return formatter;
 	    }
-	
-
-
 }
