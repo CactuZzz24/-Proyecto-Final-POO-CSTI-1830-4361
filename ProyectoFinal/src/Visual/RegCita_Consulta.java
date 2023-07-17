@@ -4,16 +4,19 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
@@ -27,12 +30,10 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import Logic.Cita;
+import Logic.Clinica;
+import Logic.Consulta;
+import Logic.Doctor;
 import Logic.Persona;
-
-import javax.swing.JLayeredPane;
-import java.awt.BorderLayout;
-import javax.swing.JComboBox;
-import javax.swing.JRadioButton;
 
 
 
@@ -52,6 +53,8 @@ public class RegCita_Consulta extends JFrame {
 	private JButton btnRegistrar;
 	private JButton btnAtras;
 	private JDatePickerImpl datePickerCita;
+	private JTextArea textDir;
+	private JTextArea textmotivoConsulta;
 	
 
 	/**
@@ -147,7 +150,7 @@ public class RegCita_Consulta extends JFrame {
 		lblNewLabel_5.setBounds(15, 172, 69, 20);
 		panel_1.add(lblNewLabel_5);
 		
-		JTextArea textDir = new JTextArea();
+		textDir = new JTextArea();
 		textDir.setBounds(15, 208, 528, 70);
 		panel_1.add(textDir);
 		
@@ -196,7 +199,7 @@ public class RegCita_Consulta extends JFrame {
 		    lblNewLabel_8.setBounds(23, 6, 169, 20);
 		    panel.add(lblNewLabel_8);
 		    
-		    JTextArea textmotivoConsulta = new JTextArea();
+		    textmotivoConsulta = new JTextArea();
 		    textmotivoConsulta.setBounds(14, 37, 506, 150);
 		    panel.add(textmotivoConsulta);
 		    
@@ -221,13 +224,12 @@ public class RegCita_Consulta extends JFrame {
 		btnNewButton = new JButton("Siguiente");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 // When the button is pressed, switch the visibility of the panels and buttons
                 primera_pagina.setVisible(false);
                 segunda_pagina.setVisible(true);
-                btnNewButton.setVisible(false); // Hide the "Siguiente" button
+                btnNewButton.setVisible(false); 
                 textFechaConsulta.setVisible(true);
-                btnAtras.setVisible(true); // Show the "Atras" button
-                btnRegistrar.setVisible(true); // Show the "Registrar" button
+                btnAtras.setVisible(true); 
+                btnRegistrar.setVisible(true); 
         		btnCancelar.setBounds(55, 426, 105, 21);
 
 			}
@@ -246,18 +248,47 @@ public class RegCita_Consulta extends JFrame {
         btnRegistrar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		//Persona persona new = Persona(textCedula.getText(), textNombre.getText(), fchNacim, textTel.getText(), textDir.getText(), )
+        		String cedula = textCedula.getText();
+        		String nombre = textNombre.getText();
+        		java.util.Date fchNacim = (java.util.Date) datePicker.getModel().getValue();
+
+        		String telefono = textTel.getText();
+        		String direccion = textDir.getText();
+        		char genero = ' ';
+        		if(rdbHombre.isSelected()) {
+        			genero = 'H';
+        			
+        		}
+        		else if (rdbMujer.isSelected()) {
+        			genero = 'M';
+					
+				}
+        		
+        		Persona persona = new Persona(cedula, nombre, fchNacim, telefono, direccion, genero);
+        		
         		
         		String codigoCitaString = textCodigo.getText();
         		String secretaria = textSecretaria.getText();
-        		Date fechaCita;
+        		java.util.Date fechaCita = (java.util.Date) datePickerCita.getModel().getValue();
+
+        		/*
+        		 * Implementar metodo para seleccionar el Doctor
+        		 */
+        		Doctor doctor = null;
+   
         		
+        		Cita cita = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
+        		Consulta consulta = new Consulta(fechaCita, persona, doctor, " ");
         		
+        		Clinica.getInstance().insertarConsulta(consulta);
+        		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
+                         JOptionPane.INFORMATION_MESSAGE);
         		
-        		
-        		//Cita cita = new Cita(secretaria, codigo, fecha, miPersona, miDoctor)
+        		clear();
         		
         	}
+
+
         });
         btnRegistrar.setBounds(526, 426, 107, 21);
         contentPane.add(btnRegistrar);
@@ -340,4 +371,18 @@ public class RegCita_Consulta extends JFrame {
 
 		    return new JDatePickerImpl(datePanel, null);
 		}
+	 private void clear() {
+	        textCodigo.setText("");
+	        textSecretaria.setText("");
+	        textCedula.setText("");
+	        textNombre.setText("");
+	        textDir.setText("");
+	        textTel.setText("");
+	        datePicker.getModel().setValue(null);
+	        datePickerCita.getModel().setValue(null);
+	        textFechaConsulta.setText("");
+	        btnRegistrar.setVisible(false);
+	        textmotivoConsulta.setText("");
+	        
+	    }
 }
