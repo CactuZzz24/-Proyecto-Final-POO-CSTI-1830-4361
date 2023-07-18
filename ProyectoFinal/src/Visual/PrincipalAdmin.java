@@ -12,6 +12,8 @@ import Logic.Persona;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PrincipalAdmin extends JFrame {
 
@@ -51,28 +53,93 @@ public class PrincipalAdmin extends JFrame {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem btnRegistrarConsulta = new JMenuItem("Registrar");
+		btnRegistrarConsulta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegConsulta reg = new RegConsulta();
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
 		mnNewMenu.add(btnRegistrarConsulta);
 		
 		JMenuItem btnListarConsulta = new JMenuItem("Listar");
+		btnListarConsulta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarConsulta listar = new ListarConsulta();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnNewMenu.add(btnListarConsulta);
 		
 		JMenu mnNewMenu_1 = new JMenu("Medicos");
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem btnRegistrarMedico = new JMenuItem("Registrar");
+		btnRegistrarMedico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegMedico reg = new RegMedico();
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
 		mnNewMenu_1.add(btnRegistrarMedico);
 		
 		JMenuItem btnListarMedico = new JMenuItem("Listar");
+		btnListarMedico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarMedico listar = new ListarMedico();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnNewMenu_1.add(btnListarMedico);
 		
 		JMenu mnNewMenu_2 = new JMenu("Pacientes");
 		menuBar.add(mnNewMenu_2);
 		
 		JMenuItem btnRegistrarPaciente = new JMenuItem("Registrar");
+		btnRegistrarPaciente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegPaciente reg = new RegPaciente();
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
 		mnNewMenu_2.add(btnRegistrarPaciente);
 		
 		JMenuItem btnListarPaciente = new JMenuItem("Listar");
+		btnListarPaciente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LIstarPaciente listar = new ListarPAciente();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnNewMenu_2.add(btnListarPaciente);
+		
+		JMenu mnNewMenu_3 = new JMenu("Administrador");
+		menuBar.add(mnNewMenu_3);
+		
+		JMenuItem btnRegistrarAdmin = new JMenuItem("Registrar");
+		btnRegistrarAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegAdministrador reg = new RegAdministrador();
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
+		mnNewMenu_3.add(btnRegistrarAdmin);
+		
+		JMenuItem btnListarAdmin = new JMenuItem("Listar");
+		btnListarAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarAdministrador listar = new ListarAdministrador();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
+		mnNewMenu_3.add(btnListarAdmin);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

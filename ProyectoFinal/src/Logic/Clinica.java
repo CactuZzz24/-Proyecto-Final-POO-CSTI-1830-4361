@@ -118,7 +118,7 @@ public class Clinica {
 	}
 
 	public boolean seRepiteCedula(String cedula) {
-		if(Usuario usuario : misUsuarios) {
+		for(Usuario usuario : misUsuarios) {
 			if(usuario.getCedula().equalsIgnoreCase(cedula))
 				return true;
 		}
