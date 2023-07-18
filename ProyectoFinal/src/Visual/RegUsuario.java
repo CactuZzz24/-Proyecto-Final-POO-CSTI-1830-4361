@@ -18,7 +18,10 @@ import javax.swing.border.TitledBorder;
 import Logic.Clinica;
 
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class RegUsuario extends JDialog {
@@ -33,7 +36,6 @@ public class RegUsuario extends JDialog {
 	private JRadioButton btnFemenino;
 	private String clave;
 	private String confirmarClave;
-	private int edad;
 
 	/**
 	 * Launch the application.
@@ -75,15 +77,15 @@ public class RegUsuario extends JDialog {
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("fch nacimineto:");
-		lblNewLabel_3.setBounds(12, 69, 100, 16);
+		lblNewLabel_3.setBounds(12, 68, 100, 16);
 		panel.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Genero:");
-		lblNewLabel_4.setBounds(265, 69, 56, 16);
+		lblNewLabel_4.setBounds(265, 68, 56, 16);
 		panel.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("Direccion:");
-		lblNewLabel_5.setBounds(12, 98, 90, 16);
+		lblNewLabel_5.setBounds(12, 111, 90, 16);
 		panel.add(lblNewLabel_5);
 		
 		txtNombre = new JTextField();
@@ -100,7 +102,7 @@ public class RegUsuario extends JDialog {
 					btnFemenino.setSelected(true);
 			}
 		});
-		btnMasculino.setBounds(319, 64, 41, 25);
+		btnMasculino.setBounds(319, 63, 41, 25);
 		panel.add(btnMasculino);
 		
 		btnFemenino = new JRadioButton("F");
@@ -112,11 +114,11 @@ public class RegUsuario extends JDialog {
 					btnMasculino.setSelected(true);
 			}
 		});
-		btnFemenino.setBounds(359, 65, 41, 25);
+		btnFemenino.setBounds(359, 64, 41, 25);
 		panel.add(btnFemenino);
 		
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(12, 115, 381, 56);
+		txtDireccion.setBounds(12, 128, 381, 56);
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
@@ -136,6 +138,25 @@ public class RegUsuario extends JDialog {
 		panel_1.add(lblNewLabel);
 		
 		txtClave = new JTextField();
+		txtClave.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				
+				String especiales = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+				if(!Character.isLetter(key) && !Character.isDigit(key) && especiales.indexOf(key) == -1) {
+					e.consume();
+				}else {
+					if(clave == null) 
+						clave = e.toString();
+					else 
+						clave+=key;
+					
+					txtClave.setText(txtClave.getText() + '*');
+					e.consume();
+				}
+			}
+		});
 		txtClave.setColumns(10);
 		txtClave.setBounds(146, 31, 116, 22);
 		panel_1.add(txtClave);
@@ -149,6 +170,25 @@ public class RegUsuario extends JDialog {
 		panel_1.add(lblConfirmarClave);
 		
 		txtConfirmarClave = new JTextField();
+		txtConfirmarClave.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				
+				String especiales = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+				if(!Character.isLetter(key) && !Character.isDigit(key) && especiales.indexOf(key) == -1) {
+					e.consume();
+				}else {
+					if(confirmarClave  == null) 
+						confirmarClave = e.toString();
+					else 
+						confirmarClave += key;
+					
+					txtConfirmarClave.setText(txtConfirmarClave.getText() + '*');
+					e.consume();
+				}
+			}
+		});
 		txtConfirmarClave.setColumns(10);
 		txtConfirmarClave.setBounds(277, 31, 116, 22);
 		panel_1.add(txtConfirmarClave);
@@ -162,15 +202,19 @@ public class RegUsuario extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(!clave.equals(confirmarClave)){
-							JOptionPane.showMessageDialog(null, "Las claves no coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
-						}else if(edad < 16 && txtCedula.equals("")) {
-							JOptionPane.showMessageDialog(null, "Porfavor ingrese la cedula de un padre o tutor", "Error", JOptionPane.INFORMATION_MESSAGE);
-						}else if(!txtCedula.equals("") && !txtNombre.equals("") && !txtClave.equals("") && !txtConfirmarClave.equals("") && !txtDireccion.equals("") 
-								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())|| edad < 16)) {
-							
+							JOptionPane.showMessageDialog(null, "No // clave 1 = "+ clave + " calve 2 = " + confirmarClave, "Error", JOptionPane.INFORMATION_MESSAGE);
 						}else {
-							JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Las claves coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}
+						
+//						else if(calcEdad(/*fchNacim*/) < 16 && txtCedula.equals("")) {
+//							JOptionPane.showMessageDialog(null, "Porfavor ingrese la cedula de un padre o tutor", "Error", JOptionPane.INFORMATION_MESSAGE);
+//						}else if(!txtCedula.equals("") && !txtNombre.equals("") && !txtClave.equals("") && !txtConfirmarClave.equals("") && !txtDireccion.equals("") 
+//								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())|| calcEdad(/*fchNacim*/) < 16)) {
+//							
+//						}else {
+//							JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+//						}
 						
 					}
 				});
@@ -189,5 +233,14 @@ public class RegUsuario extends JDialog {
 				buttonPane.add(btnCacncelar);
 			}
 		}
+	}
+	
+	private int calcEdad(Date fchNacim) {
+		Date curr = new Date();
+		int edad = curr.getYear() - fchNacim.getYear();
+		if(curr.getMonth() < fchNacim.getMonth() || (curr.getMonth() == fchNacim.getMonth() && curr.getDay() < fchNacim.getDay()))
+			edad--;
+
+        return edad;
 	}
 }
