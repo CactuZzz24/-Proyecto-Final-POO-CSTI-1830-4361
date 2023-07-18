@@ -55,6 +55,9 @@ public class RegCita_Consulta extends JFrame {
 	private JDatePickerImpl datePickerCita;
 	private JTextArea textDir;
 	private JTextArea textmotivoConsulta;
+	private JButton btnBuscar;
+	private JTextField txtFechaNacim;
+
 	
 
 	/**
@@ -96,6 +99,8 @@ public class RegCita_Consulta extends JFrame {
 		primera_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		layeredPane.add(primera_pagina);
 		primera_pagina.setLayout(null);
+		
+		
 		
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
 		lblNewLabel.setBounds(15, 16, 69, 20);
@@ -142,6 +147,7 @@ public class RegCita_Consulta extends JFrame {
 		panel_1.add(lblNewLabel_4);
 		
 		textNombre = new JTextField();
+		textNombre.setEditable(false);
 		textNombre.setBounds(15, 130, 146, 26);
 		panel_1.add(textNombre);
 		textNombre.setColumns(10);
@@ -151,6 +157,7 @@ public class RegCita_Consulta extends JFrame {
 		panel_1.add(lblNewLabel_5);
 		
 		textDir = new JTextArea();
+		textDir.setEditable(false);
 		textDir.setBounds(15, 208, 528, 70);
 		panel_1.add(textDir);
 		
@@ -159,6 +166,7 @@ public class RegCita_Consulta extends JFrame {
 		panel_1.add(lblNewLabel_6);
 		
 		  textTel = new JFormattedTextField(createPhoneFormatter());
+		  textTel.setEditable(false);
 	        textTel.setBounds(397, 52, 146, 26);
 	        panel_1.add(textTel);
 	        textTel.setColumns(10);
@@ -170,6 +178,13 @@ public class RegCita_Consulta extends JFrame {
 		 datePicker = createDatePicker();
 		    datePicker.setBounds(397, 130, 146, 26);
 		    panel_1.add(datePicker);
+		    
+		    txtFechaNacim = new JTextField();
+		    txtFechaNacim.setBounds(397, 130, 146, 26);
+		    txtFechaNacim.setEditable(false);
+		    txtFechaNacim.setVisible(false);
+		    panel_1.add(txtFechaNacim);
+		    txtFechaNacim.setColumns(10);
 		    
 		    JLabel lblNewLabel_11 = new JLabel("G\u00E9nero");
 		    lblNewLabel_11.setBounds(252, 16, 69, 20);
@@ -265,6 +280,7 @@ public class RegCita_Consulta extends JFrame {
 				}
         		
         		Persona persona = new Persona(cedula, nombre, fchNacim, telefono, direccion, genero);
+        		Clinica.getInstance().insertarPersona(persona);
         		
         		
         		String codigoCitaString = textCodigo.getText();
@@ -315,6 +331,34 @@ public class RegCita_Consulta extends JFrame {
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(rdbHombre);
         buttonGroup.add(rdbMujer);
+        
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		Persona personaEncontrada = Clinica.getInstance().buscarPersonaByCedula(textCedula.getText());
+        		
+        		if (personaEncontrada != null) {
+                    textNombre.setText(personaEncontrada.getNombre());
+                    textTel.setText(personaEncontrada.getTelefono());
+                    textDir.setText(personaEncontrada.getDireccion());
+
+                    txtFechaNacim.setText(new SimpleDateFormat("yyyy-MM-dd").format(personaEncontrada.getFchNacim()));
+                    datePicker.setVisible(false);
+                    txtFechaNacim.setVisible(true);
+                } else {
+                    textNombre.setEditable(true);
+                    textTel.setEditable(true);
+                    textDir.setEditable(true);
+
+                    txtFechaNacim.setText("");
+                    datePicker.setVisible(true);
+                    datePicker.getModel().setValue(null);
+                    txtFechaNacim.setVisible(false);
+                }
+        	}
+        });
+        btnBuscar.setBounds(73, 14, 88, 25);
+        panel_1.add(btnBuscar);
 
 
       

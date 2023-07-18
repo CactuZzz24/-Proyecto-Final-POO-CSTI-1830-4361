@@ -1,6 +1,7 @@
 package Logic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Clinica {
 
@@ -122,6 +123,25 @@ public class Clinica {
 				return true;
 		}
 		return false;
+	}
+
+	public Persona buscarPersonaByCedula(String cedula) {
+		// TODO Auto-generated method stub
+		
+		for (Persona persona : misPersonas) {
+			if(persona.getCedula().equals(cedula))
+			{
+				return persona;
+			}
+			
+		}
+		return null;
+	}
+
+	public void insertarPersona(Persona persona) {
+		// TODO Auto-generated method stub
+		misPersonas.add(persona);
+		
 	}
 
 }
