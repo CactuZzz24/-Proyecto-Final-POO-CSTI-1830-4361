@@ -14,6 +14,7 @@ public class Clinica {
 	private static int codConsulta = 0;
 	private static int codVacuna = 0;
 	private static int codEfermedad = 0;
+	private int contador = 0;
 	
 	
 	public Clinica() {
@@ -149,4 +150,97 @@ public class Clinica {
 		return false;
 	}
 
+	public void uptadePersona(Persona miPersona) {
+		int index = buscarIndexUsuarioByCedula(miPersona.getCedula());
+		if(index != -1) {
+			misPersonas.set(index, miPersona);
+		}
+		
+	}
+
+	private int buscarIndexUsuarioByCedula(String cedula) {
+		int aux = -1;
+		boolean encontrado = false;
+		int i = 0;
+		while(i < misPersonas.size() && !encontrado) {
+			if(misPersonas.get(i).getCedula().equalsIgnoreCase(cedula)) {
+				encontrado = true;
+				aux = i;
+			}
+			i++;
+		}
+		return aux;
+	}
+
+	public void eliminarPersona(Doctor selectedDoctor) {
+		misPersonas.remove(selectedDoctor);
+		
+	}
+
+	public Enfermedad buscarEnfermedadByCode(String codigo) {
+		
+		for (Enfermedad enfermedad : misEnfermedades) {
+			if(enfermedad.getCodigo().equals(codigo))
+			{
+				return enfermedad;
+			}
+			
+		}
+		return null;
+	}
+
+	public void eliminarEnfermedad(Enfermedad selectedEnfermedad) {
+		misEnfermedades.remove(selectedEnfermedad);
+		
+	}
+
+	public Consulta buscarConsultaByCode(String codigo) {
+		
+
+		for (Consulta consulta : misConsultas) {
+			if(consulta.getCodigo().equals(codigo))
+			{
+				return consulta;
+			}
+			
+		}
+		return 	null;
+				}
+
+	public void eliminarConsulta(Consulta selectedConsulta) {
+		misConsultas.remove(selectedConsulta);
+		
+	}
+	
+
+	private int cantidadPaciententesGenero(char genero) {
+		contador = 0;
+		for (Persona persona : misPersonas) {
+			
+			if(persona instanceof Paciente && persona.getGenero() == genero) {
+				contador++;
+				
+			}
+			
+			
+		}
+		return contador;
+		
+
+	}
+	
+	private int cantidadPacientesAtendidos(){
+		contador = 0;
+		for (Persona persona : misPersonas) {
+			
+			if(persona instanceof Paciente && ((Paciente) persona).isStatus() == false) {
+				contador++;
+				
+			}
+			
+			
+		}
+		return contador;
+	}
 }
+
