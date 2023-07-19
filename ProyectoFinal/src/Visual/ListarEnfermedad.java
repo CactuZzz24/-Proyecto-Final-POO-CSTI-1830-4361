@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Logic.Clinica;
 import Logic.Doctor;
+import Logic.Enfermedad;
 import Logic.Persona;
 
 import javax.swing.JScrollPane;
@@ -22,12 +23,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ListarDoctor extends JDialog {
+public class ListarEnfermedad extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static JTable table;
 	private static Object[] row;
-	private Doctor selectedDoctor = null;
+	private Enfermedad selectedEnfermedad = null;
 	private static DefaultTableModel modelo;
 	private JButton btnEliminar;
 	private JButton btnActualizar;
@@ -36,7 +37,7 @@ public class ListarDoctor extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			ListarDoctor dialog = new ListarDoctor();
+			ListarEnfermedad dialog = new ListarEnfermedad();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -47,7 +48,7 @@ public class ListarDoctor extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ListarDoctor() {
+	public ListarEnfermedad() {
 		setBounds(100, 100, 679, 469);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,7 +71,7 @@ public class ListarDoctor extends JDialog {
 							if(index >= 0) {
 								btnActualizar.setEnabled(true);
 								btnEliminar.setEnabled(true);
-								selectedDoctor = Clinica.getInstance().buscarMedicoByCedula(table.getValueAt(index, 0)
+								selectedEnfermedad = Clinica.getInstance().buscarEnfermedadByCode(table.getValueAt(index, 0)
 										.toString());
 							}
 							
@@ -78,12 +79,12 @@ public class ListarDoctor extends JDialog {
 					});
 					
 					modelo = new DefaultTableModel();
-					String[] headers = {"Cédula", "Nombre Completo", "Especialidad"};
+					String[] headers = {"Código", "Nombre", "Gravedad"};
 					scrollPane.setViewportView(table);
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					loadDoctores();				}
+					loadEnfermedades();				}
 			}
 		}
 		{
@@ -103,8 +104,8 @@ public class ListarDoctor extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						RegDoctor uptadeDoctor = new RegDoctor(selectedDoctor);
-						uptadeDoctor.setVisible(true);
+						RegEnfermedad uptadeEnfermedad = new RegEnfermedad(selectedEnfermedad);
+						uptadeEnfermedad.setVisible(true);
 					}
 				});
 				btnActualizar.setEnabled(false);
@@ -116,14 +117,14 @@ public class ListarDoctor extends JDialog {
 				btnEliminar = new JButton("Eliminar");
 				btnEliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (selectedDoctor != null) {
+						if (selectedEnfermedad != null) {
 							int option = JOptionPane.showConfirmDialog(null,
 									"Esta seguro que desea eliminar el Doctor con cedula: "
-											+ selectedDoctor.getCedula(),
+											+ selectedEnfermedad.getCodigo(),
 									"Confirmacion", JOptionPane.OK_CANCEL_OPTION);
 							if (option == JOptionPane.OK_OPTION) {
-								Clinica.getInstance().eliminarPersona(selectedDoctor);
-								loadDoctores();
+								Clinica.getInstance().eliminarEnfermedad(selectedEnfermedad);
+								loadEnfermedades();
 							}
 						}
 					}
@@ -137,19 +138,19 @@ public class ListarDoctor extends JDialog {
 		}
 	}
 
-	public static void loadDoctores() {
+	public static void loadEnfermedades() {
 		// TODO Auto-generated method stub
 		modelo.setRowCount(0);
 row = new Object[table.getColumnCount()];
 		
-		for (Persona persona : Clinica.getInstance().getMisPersonas()) {
-			if(persona instanceof Doctor) {
-				row[0] = persona.getCedula();
-				row[1] = persona.getNombre();
-				row[2] = ((Doctor) persona).getEspecialidad();
+		for (Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
+			
+				row[0] = enfermedad.getCodigo();
+				row[1] = enfermedad.getNombre();
+				row[2] = enfermedad.getGravedad();
 				modelo.addRow(row);
 				
-			}
+			
 		}
 			
 		

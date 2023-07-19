@@ -29,6 +29,7 @@ import javax.swing.text.MaskFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 import Logic.Cita;
 import Logic.Clinica;
@@ -52,29 +53,24 @@ public class RegDoctor extends JFrame {
 	private JTextArea textDir;
 	private JTextField txtFechaNacim;
 	private JTextField textEspecialidad;
+	private Doctor miDoctor = null;
+	private JRadioButton rdbHombre;
+	private JRadioButton rdbMujer;
+	private char genero = ' ';
 
 	
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegDoctor frame = new RegDoctor();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public RegDoctor() {
+	public RegDoctor(Doctor miDoctor) {
+		this.miDoctor = miDoctor;
+		loadDoctor();
 		setTitle("Registrar Doctor");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,8 +131,7 @@ public class RegDoctor extends JFrame {
 		panel_1.add(lblNewLabel_5);
 		
 		textDir = new JTextArea();
-		textDir.setEnabled(false);
-		textDir.setEditable(false);
+		textDir.setEnabled(true);
 		textDir.setBounds(15, 208, 528, 70);
 		panel_1.add(textDir);
 		
@@ -168,11 +163,11 @@ public class RegDoctor extends JFrame {
 		    lblNewLabel_11.setBounds(252, 16, 69, 20);
 		    panel_1.add(lblNewLabel_11);
 		    
-		    JRadioButton rdbHombre = new JRadioButton("Hombre");
+		    rdbHombre = new JRadioButton("Hombre");
 		    rdbHombre.setBounds(212, 51, 155, 29);
 		    panel_1.add(rdbHombre);
 		    
-		    JRadioButton rdbMujer = new JRadioButton("Mujer");
+		    rdbMujer = new JRadioButton("Mujer");
 		    rdbMujer.setBounds(212, 129, 155, 29);
 		    panel_1.add(rdbMujer);
 		
@@ -186,32 +181,41 @@ public class RegDoctor extends JFrame {
         btnRegistrar = new JButton("Registrar");
         btnRegistrar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		
-        		String cedula = textCedula.getText();
-        		String nombre = textNombre.getText();
-        		java.util.Date fchNacim = (java.util.Date) datePicker.getModel().getValue();
-        		String especialidad = textEspecialidad.getText();
+        		if(miDoctor == null ) {
 
-        		String telefono = textTel.getText();
-        		String direccion = textDir.getText();
-        		char genero = ' ';
-        		if(rdbHombre.isSelected()) {
-        			genero = 'H';
-        			
+            		String cedula = textCedula.getText();
+            		String nombre = textNombre.getText();
+            		java.util.Date fchNacim = (java.util.Date) datePicker.getModel().getValue();
+            		String especialidad = textEspecialidad.getText();
+
+            		String telefono = textTel.getText();
+            		String direccion = textDir.getText();
+            		determinarGenero();
+            		
+            		Doctor doctor = new Doctor(cedula, nombre, fchNacim, telefono, direccion, genero, especialidad);
+            		Clinica.getInstance().insertarPersona(doctor);
+            		
+            		
+            		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
+                             JOptionPane.INFORMATION_MESSAGE);
+            		
+            		clear();
         		}
-        		else if (rdbMujer.isSelected()) {
-        			genero = 'M';
-					
+        		
+        		else if(miDoctor != null && miDoctor instanceof Doctor){
+					miDoctor.setCedula(textCedula.getText());
+					miDoctor.setDireccion(textDir.getText());
+					determinarGenero();
+					miDoctor.setGenero(genero);
+					((Doctor) miDoctor).setEspecialidad(textEspecialidad.getText());
+					miDoctor.setFchNacim((java.util.Date) datePicker.getModel().getValue());
+					miDoctor.setNombre(textNombre.getText());
+					miDoctor.setTelefono(textTel.getText());
+					Clinica.getInstance().uptadePersona(miDoctor);
+					dispose();
+					ListarDoctor.loadDoctores();
 				}
         		
-        		Doctor doctor = new Doctor(cedula, nombre, fchNacim, telefono, direccion, genero, especialidad);
-        		Clinica.getInstance().insertarPersona(doctor);
-        		
-        		
-        		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
-                         JOptionPane.INFORMATION_MESSAGE);
-        		
-        		clear();
         		
         	}
 
@@ -233,6 +237,7 @@ public class RegDoctor extends JFrame {
         textEspecialidad.setBounds(427, 39, 146, 26);
         primera_pagina.add(textEspecialidad);
         textEspecialidad.setColumns(10);
+        loadDoctor();
 
 
      
@@ -279,4 +284,18 @@ public class RegDoctor extends JFrame {
 
 	        
 	    }
+	 private void determinarGenero (){
+		 if(rdbHombre.isSelected()) {
+ 			genero = 'H';
+ 			
+ 		}
+ 		else if (rdbMujer.isSelected()) {
+ 			genero = 'M';
+				
+			}
+	 }
+	 
+	 private void loadDoctor() {
+		   
+	 }
 }

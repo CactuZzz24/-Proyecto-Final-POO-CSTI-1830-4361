@@ -126,7 +126,6 @@ public class Clinica {
 	}
 
 	public Persona buscarPersonaByCedula(String cedula) {
-		// TODO Auto-generated method stub
 		
 		for (Persona persona : misPersonas) {
 			if(persona.getCedula().equals(cedula))
@@ -139,9 +138,58 @@ public class Clinica {
 	}
 
 	public void insertarPersona(Persona persona) {
-		// TODO Auto-generated method stub
 		misPersonas.add(persona);
 		
 	}
 
+	public void uptadePersona(Persona miPersona) {
+		int index = buscarIndexUsuarioByCedula(miPersona.getCedula());
+		if(index != -1) {
+			misPersonas.set(index, miPersona);
+		}
+		
+	}
+
+	private int buscarIndexUsuarioByCedula(String cedula) {
+		int aux = -1;
+		boolean encontrado = false;
+		int i = 0;
+		while(i < misPersonas.size() && !encontrado) {
+			if(misPersonas.get(i).getCedula().equalsIgnoreCase(cedula)) {
+				encontrado = true;
+				aux = i;
+			}
+			i++;
+		}
+		return aux;
+	}
+
+	public void eliminarPersona(Doctor selectedDoctor) {
+		misPersonas.remove(selectedDoctor);
+		
+	}
+
+	public Enfermedad buscarEnfermedadByCode(String codigo) {
+		
+		for (Enfermedad enfermedad : misEnfermedades) {
+			if(enfermedad.getCodigo().equals(codigo))
+			{
+				return enfermedad;
+			}
+			
+		}
+		return null;
+	}
+
+	public void eliminarEnfermedad(Enfermedad selectedEnfermedad) {
+		misEnfermedades.remove(selectedEnfermedad);
+		
+	}
+	
+		
+	
+
+	
+
 }
+
