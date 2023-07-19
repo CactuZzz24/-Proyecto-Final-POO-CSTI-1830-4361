@@ -7,15 +7,15 @@ public class Paciente extends Persona {
 	private ResumenClinico resumenClinico;
 	private ArrayList<Consulta> misConsultas;
 	private String TipoSangre;
-	private boolean status;
+	private boolean vigilancia;
 	
 	public Paciente(String cedula, String nombre, Date fchNacim, String telefono, String direccion, char genero,
-			ResumenClinico resumenClinico, ArrayList<Consulta> misConsultas, String tipoSangre, boolean status) {
+			ResumenClinico resumenClinico, ArrayList<Consulta> misConsultas, String tipoSangre, boolean vigilancia) {
 		super(cedula, nombre, fchNacim, telefono, direccion, genero);
 		this.resumenClinico = resumenClinico;
 		this.misConsultas = misConsultas;
 		TipoSangre = tipoSangre;
-		this.status = status;
+		this.vigilancia = vigilancia;
 	}
 	
 	public ResumenClinico getResumenClinico() {
@@ -37,10 +37,10 @@ public class Paciente extends Persona {
 		TipoSangre = tipoSangre;
 	}
 	public boolean isStatus() {
-		return status;
+		return vigilancia;
 	}
 	public void setStatus(boolean status) {
-		this.status = status;
+		this.vigilancia = status;
 	}
 	
 	
