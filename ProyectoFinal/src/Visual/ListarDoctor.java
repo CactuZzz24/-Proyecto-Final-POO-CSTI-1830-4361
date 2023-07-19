@@ -103,8 +103,7 @@ public class ListarDoctor extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						RegDoctor uptadeDoctor = new RegDoctor(selectedDoctor);
-						uptadeDoctor.setVisible(true);
+						
 					}
 				});
 				btnActualizar.setEnabled(false);

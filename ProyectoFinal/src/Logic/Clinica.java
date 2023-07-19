@@ -14,6 +14,7 @@ public class Clinica {
 	private static int codConsulta = 0;
 	private static int codVacuna = 0;
 	private static int codEfermedad = 0;
+	private int contador = 0;
 	
 	
 	public Clinica() {
@@ -203,6 +204,41 @@ public class Clinica {
 		misConsultas.remove(selectedConsulta);
 		
 	}
+	
+
+	private int cantidadPaciententesGenero(char genero) {
+		contador = 0;
+		for (Persona persona : misPersonas) {
+			
+			if(persona instanceof Paciente && persona.getGenero() == genero) {
+				contador++;
+				
+			}
+			
+			
+		}
+		return contador;
+		
+
+	}
+	
+	private int cantidadPacientesAtendidos(){
+		contador = 0;
+		for (Persona persona : misPersonas) {
+			
+			if(persona instanceof Paciente && ((Paciente) persona).isStatus() == false) {
+				contador++;
+				
+			}
+			
+			
+		}
+		return contador;
+	}
+	
+	
+	
+	
 	
 		
 	
