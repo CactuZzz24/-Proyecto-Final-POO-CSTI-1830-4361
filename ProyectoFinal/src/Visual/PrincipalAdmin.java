@@ -78,7 +78,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegistrarMedico = new JMenuItem("Registrar");
 		btnRegistrarMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegMedico reg = new RegMedico();
+				RegUsuario reg = new RegUsuario(false, false);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}
@@ -101,7 +101,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegistrarPaciente = new JMenuItem("Registrar");
 		btnRegistrarPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegPaciente reg = new RegPaciente();
+				RegUsuario reg = new RegUsuario(true, false);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}
@@ -111,7 +111,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarPaciente = new JMenuItem("Listar");
 		btnListarPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LIstarPaciente listar = new ListarPAciente();
+				ListarPaciente listar = new ListarPAciente();
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
@@ -124,7 +124,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegistrarAdmin = new JMenuItem("Registrar");
 		btnRegistrarAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegAdministrador reg = new RegAdministrador();
+				RegUsuario reg = new RegUsuario(false, true);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}

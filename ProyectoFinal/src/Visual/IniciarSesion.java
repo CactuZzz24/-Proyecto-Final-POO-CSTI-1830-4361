@@ -14,8 +14,10 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import Logic.Clinica;
+import Logic.Consulta;
 import Logic.Doctor;
 import Logic.Paciente;
+import Logic.ResumenClinico;
 import Logic.Usuario;
 
 import java.awt.FlowLayout;
@@ -28,6 +30,9 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
@@ -112,6 +117,9 @@ public class IniciarSesion extends JFrame {
 							dispose();
 						}else if(user.isPaciente()) {
 							Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(user.getCedula());
+							/*
+							 * Crear menu para aquellos pacientes que se volvieron mayores de edady necesitan ingresar su cedula
+							 */
 							if(paciente!=null) {
 								PrincipalPaciente menu = new PrincipalPaciente(paciente);
 								menu.setVisible(true);
@@ -147,7 +155,7 @@ public class IniciarSesion extends JFrame {
 		JButton btnNewButton = new JButton("Registrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegUsuario reg = new RegUsuario();
+				RegUsuario reg = new RegUsuario(true, false);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}

@@ -3,6 +3,7 @@ package Visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.print.attribute.standard.Media;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -16,12 +17,19 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import Logic.Clinica;
+import Logic.Doctor;
+import Logic.Paciente;
+import Logic.Persona;
 
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 
 public class RegUsuario extends JDialog {
@@ -34,15 +42,17 @@ public class RegUsuario extends JDialog {
 	private JTextField txtConfirmarClave;
 	private JRadioButton btnMasculino;
 	private JRadioButton btnFemenino;
-	private String clave;
-	private String confirmarClave;
+	private String clave = null;
+	private String confirmarClave = null;
+	private JTextField txtEspecialidad;
+	private static Persona miPersona;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RegUsuario dialog = new RegUsuario();
+			RegUsuario dialog = new RegUsuario(true, false);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -53,9 +63,19 @@ public class RegUsuario extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public RegUsuario() {
-		setTitle("Registrar Usuario Paciente Nuevo");
-		setBounds(100, 100, 450, 383);
+	public RegUsuario(boolean esPaciente, boolean esAdmin) {
+		
+		if(esPaciente) {
+			setTitle("Registrar Usuario Paciente Nuevo");
+			setBounds(100, 100, 450, 440);
+		}else if(esAdmin) {
+			setTitle("Registrar Usuario Admin Nuevo");
+			setBounds(100, 100, 450, 383);
+		}else {
+			setTitle("Registrar Usuario Docor Nuevo");
+			setBounds(100, 100, 450, 440);
+		}
+		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setForeground(Color.GRAY);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -148,7 +168,7 @@ public class RegUsuario extends JDialog {
 					e.consume();
 				}else {
 					if(clave == null) 
-						clave = e.toString();
+						clave = Character.toString(key);
 					else 
 						clave+=key;
 					
@@ -180,7 +200,7 @@ public class RegUsuario extends JDialog {
 					e.consume();
 				}else {
 					if(confirmarClave  == null) 
-						confirmarClave = e.toString();
+						confirmarClave = Character.toString(key);
 					else 
 						confirmarClave += key;
 					
@@ -192,6 +212,42 @@ public class RegUsuario extends JDialog {
 		txtConfirmarClave.setColumns(10);
 		txtConfirmarClave.setBounds(277, 31, 116, 22);
 		panel_1.add(txtConfirmarClave);
+		
+		if(!esPaciente && !esAdmin) {
+			JPanel panel_3 = new JPanel();
+			panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			panel_3.setBounds(12, 302, 408, 47);
+			contentPanel.add(panel_3);
+			panel_3.setLayout(null);
+			
+			JLabel lblNewLabel_7 = new JLabel("Especialidad:");
+			lblNewLabel_7.setBounds(12, 15, 83, 16);
+			panel_3.add(lblNewLabel_7);
+			
+			txtEspecialidad = new JTextField();
+			txtEspecialidad.setBounds(95, 12, 301, 22);
+			panel_3.add(txtEspecialidad);
+			txtEspecialidad.setColumns(10);
+		}
+		
+		
+		if(esPaciente) {
+			JPanel panel_2 = new JPanel();
+			panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			panel_2.setBounds(12, 302, 408, 42);
+			contentPanel.add(panel_2);
+			panel_2.setLayout(null);
+			
+			JLabel lblNewLabel_6 = new JLabel("Tipo de Sangre:");
+			lblNewLabel_6.setBounds(12, 13, 102, 16);
+			panel_2.add(lblNewLabel_6);
+			
+			JSpinner spinner = new JSpinner();
+			spinner.setModel(new SpinnerListModel(new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"}));
+			spinner.setBounds(114, 10, 44, 22);
+			panel_2.add(spinner);
+		}
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -202,19 +258,19 @@ public class RegUsuario extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(!clave.equals(confirmarClave)){
-							JOptionPane.showMessageDialog(null, "No // clave 1 = "+ clave + " calve 2 = " + confirmarClave, "Error", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}else {
 							JOptionPane.showMessageDialog(null, "Las claves coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}
 						
-//						else if(calcEdad(/*fchNacim*/) < 16 && txtCedula.equals("")) {
-//							JOptionPane.showMessageDialog(null, "Porfavor ingrese la cedula de un padre o tutor", "Error", JOptionPane.INFORMATION_MESSAGE);
-//						}else if(!txtCedula.equals("") && !txtNombre.equals("") && !txtClave.equals("") && !txtConfirmarClave.equals("") && !txtDireccion.equals("") 
-//								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())|| calcEdad(/*fchNacim*/) < 16)) {
-//							
-//						}else {
-//							JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
-//						}
+						if(/*calcEdad(fchNacim) < 16 && */txtCedula.equals("")) {
+							JOptionPane.showMessageDialog(null, "Porfavor ingrese la cedula de un padre o tutor", "Error", JOptionPane.INFORMATION_MESSAGE);
+						}else if(!txtCedula.equals("") && !txtNombre.equals("") && !txtClave.equals("") && !txtConfirmarClave.equals("") && !txtDireccion.equals("") 
+								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
+							//Si la cedula ya existe preguntar si se desea autorellenar los datos
+						}else {
+							JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+						}
 						
 					}
 				});
