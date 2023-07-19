@@ -126,8 +126,6 @@ public class Clinica {
 	}
 
 	public Persona buscarPersonaByCedula(String cedula) {
-		// TODO Auto-generated method stub
-		
 		for (Persona persona : misPersonas) {
 			if(persona.getCedula().equals(cedula))
 			{
@@ -139,9 +137,16 @@ public class Clinica {
 	}
 
 	public void insertarPersona(Persona persona) {
-		// TODO Auto-generated method stub
 		misPersonas.add(persona);
 		
+	}
+
+	public boolean existeUsuarioDePaciente(String cedula) {
+		for(Usuario usuario : misUsuarios) {
+			if(usuario.getCedula().equalsIgnoreCase(cedula))
+				return true;
+		}
+		return false;
 	}
 
 }

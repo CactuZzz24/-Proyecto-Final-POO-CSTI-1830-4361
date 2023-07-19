@@ -17,11 +17,16 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import Logic.Clinica;
+import Logic.Consulta;
 import Logic.Doctor;
+import Logic.Enfermedad;
 import Logic.Paciente;
 import Logic.Persona;
+import Logic.ResumenClinico;
+import Logic.Vacuna;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -30,6 +35,10 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import java.awt.Font;
 import java.awt.SystemColor;
+import javax.swing.JPasswordField;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField$AbstractFormatter;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 
 
 public class RegUsuario extends JDialog {
@@ -38,14 +47,13 @@ public class RegUsuario extends JDialog {
 	private JTextField txtCedula;
 	private JTextField txtNombre;
 	private JTextField txtDireccion;
-	private JTextField txtClave;
-	private JTextField txtConfirmarClave;
 	private JRadioButton btnMasculino;
 	private JRadioButton btnFemenino;
-	private String clave = null;
-	private String confirmarClave = null;
 	private JTextField txtEspecialidad;
 	private static Persona miPersona;
+	private JPasswordField pswClave;
+	private JPasswordField pswConfirmar;
+	private JSpinner spnSangre;
 
 	/**
 	 * Launch the application.
@@ -142,6 +150,10 @@ public class RegUsuario extends JDialog {
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
+		JFormattedTextField formattedTextField = new JFormattedTextField();
+		formattedTextField.setBounds(276, 20, 116, 22);
+		panel.add(formattedTextField);
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.setBounds(12, 13, 408, 66);
@@ -157,30 +169,6 @@ public class RegUsuario extends JDialog {
 		lblNewLabel.setBounds(15, 13, 56, 16);
 		panel_1.add(lblNewLabel);
 		
-		txtClave = new JTextField();
-		txtClave.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char key = e.getKeyChar();
-				
-				String especiales = "!@#$%^&*()-_=+[]{}|;:,.<>?";
-				if(!Character.isLetter(key) && !Character.isDigit(key) && especiales.indexOf(key) == -1) {
-					e.consume();
-				}else {
-					if(clave == null) 
-						clave = Character.toString(key);
-					else 
-						clave+=key;
-					
-					txtClave.setText(txtClave.getText() + '*');
-					e.consume();
-				}
-			}
-		});
-		txtClave.setColumns(10);
-		txtClave.setBounds(146, 31, 116, 22);
-		panel_1.add(txtClave);
-		
 		JLabel lblClave = new JLabel("Clave:");
 		lblClave.setBounds(146, 13, 56, 16);
 		panel_1.add(lblClave);
@@ -189,29 +177,13 @@ public class RegUsuario extends JDialog {
 		lblConfirmarClave.setBounds(277, 13, 101, 16);
 		panel_1.add(lblConfirmarClave);
 		
-		txtConfirmarClave = new JTextField();
-		txtConfirmarClave.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char key = e.getKeyChar();
-				
-				String especiales = "!@#$%^&*()-_=+[]{}|;:,.<>?";
-				if(!Character.isLetter(key) && !Character.isDigit(key) && especiales.indexOf(key) == -1) {
-					e.consume();
-				}else {
-					if(confirmarClave  == null) 
-						confirmarClave = Character.toString(key);
-					else 
-						confirmarClave += key;
-					
-					txtConfirmarClave.setText(txtConfirmarClave.getText() + '*');
-					e.consume();
-				}
-			}
-		});
-		txtConfirmarClave.setColumns(10);
-		txtConfirmarClave.setBounds(277, 31, 116, 22);
-		panel_1.add(txtConfirmarClave);
+		pswClave = new JPasswordField();
+		pswClave.setBounds(146, 31, 116, 22);
+		panel_1.add(pswClave);
+		
+		pswConfirmar = new JPasswordField();
+		pswConfirmar.setBounds(274, 31, 116, 22);
+		panel_1.add(pswConfirmar);
 		
 		if(!esPaciente && !esAdmin) {
 			JPanel panel_3 = new JPanel();
@@ -242,10 +214,10 @@ public class RegUsuario extends JDialog {
 			lblNewLabel_6.setBounds(12, 13, 102, 16);
 			panel_2.add(lblNewLabel_6);
 			
-			JSpinner spinner = new JSpinner();
-			spinner.setModel(new SpinnerListModel(new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"}));
-			spinner.setBounds(114, 10, 44, 22);
-			panel_2.add(spinner);
+			spnSangre = new JSpinner();
+			spnSangre.setModel(new SpinnerListModel(new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"}));
+			spnSangre.setBounds(114, 10, 44, 22);
+			panel_2.add(spnSangre);
 		}
 		
 		{
@@ -257,21 +229,62 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(!clave.equals(confirmarClave)){
+						if(!pswClave.getText().equals(pswConfirmar.getText())){
 							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}else {
-							JOptionPane.showMessageDialog(null, "Las claves coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
-						}
-						
-						if(/*calcEdad(fchNacim) < 16 && */txtCedula.equals("")) {
-							JOptionPane.showMessageDialog(null, "Porfavor ingrese la cedula de un padre o tutor", "Error", JOptionPane.INFORMATION_MESSAGE);
-						}else if(!txtCedula.equals("") && !txtNombre.equals("") && !txtClave.equals("") && !txtConfirmarClave.equals("") && !txtDireccion.equals("") 
+							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
 								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
-							//Si la cedula ya existe preguntar si se desea autorellenar los datos
-						}else {
-							JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
-						}
+								if(esPaciente)
+									crearPaciente();
+								else if(esAdmin)
+									crearPersona();
+								else
+									crerDoctor();
+							}else {
+								JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+							}
+						}						
+					}
+
+					private void crerDoctor() {
+						Doctor doctor = new Doctor(txtCedula.getText(), 
+								txtNombre.getText(), 
+								null /*fchNacim*/, 
+								null /*numero Telefono*/, 
+								txtDireccion.getText(), 
+								charGenero(),
+								txtEspecialidad.getText());
+						Clinica.getInstance().insertarPersona(doctor);
+						JOptionPane.showMessageDialog(null, "Registro de Usuario Doctor Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
+					}
+
+					private void crearPersona() {
+						// TODO Auto-generated method stub
 						
+					}
+
+					private void crearPaciente() {
+						Paciente paciente = new Paciente(txtCedula.getText(), 
+								txtNombre.getText(), 
+								null /*fchNacim*/, 
+								null /*numero Telefono*/, 
+								txtDireccion.getText(), 
+								charGenero(), 
+								new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()),
+								new ArrayList<Consulta>(),
+								spnSangre.getValue().toString(), 
+								false);
+						Clinica.getInstance().insertarPersona(paciente);
+						JOptionPane.showMessageDialog(null, "Registro de Usuario Paciente Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
+					}
+
+					private char charGenero() {
+						if(btnMasculino.isSelected())
+							return 'M';
+						else
+							return 'F';
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -298,5 +311,9 @@ public class RegUsuario extends JDialog {
 			edad--;
 
         return edad;
+	}
+	
+	private void loadPaciente() {
+		//txtNombre.setText();
 	}
 }
