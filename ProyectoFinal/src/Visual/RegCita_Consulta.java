@@ -339,7 +339,7 @@ public class RegCita_Consulta extends JFrame {
    
         		
         		Cita cita = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
-        		Consulta consulta = new Consulta(fechaCita, persona, doctor, " ");
+        		Consulta consulta = new Consulta(fechaCita, persona, doctor, " ", textCodigo.getText());
         		
         		Clinica.getInstance().insertarConsulta(consulta);
         		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",

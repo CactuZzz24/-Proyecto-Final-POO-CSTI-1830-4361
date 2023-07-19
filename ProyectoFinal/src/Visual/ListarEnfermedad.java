@@ -139,7 +139,6 @@ public class ListarEnfermedad extends JDialog {
 	}
 
 	public static void loadEnfermedades() {
-		// TODO Auto-generated method stub
 		modelo.setRowCount(0);
 row = new Object[table.getColumnCount()];
 		

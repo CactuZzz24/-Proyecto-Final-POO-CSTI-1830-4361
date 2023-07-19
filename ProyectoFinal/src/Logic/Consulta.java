@@ -3,18 +3,26 @@ package Logic;
 import java.util.Date;
 
 public class Consulta {
+	String codigo;
 	Date fecha;
 	Persona miPersona;
 	Doctor miDoctor;
 	String observaciones;
 	//double precio;
 	
-	public Consulta(Date fecha, Persona miPersona, Doctor miDoctor, String observaciones) {
+	public Consulta(Date fecha, Persona miPersona, Doctor miDoctor, String observaciones, String codigo) {
 		super();
 		this.fecha = fecha;
 		this.miPersona = miPersona;
 		this.miDoctor = miDoctor;
 		this.observaciones = observaciones;
+		this.codigo = codigo;
+	}
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	public Date getFecha() {
 		return fecha;

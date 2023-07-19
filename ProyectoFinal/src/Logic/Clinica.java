@@ -185,6 +185,24 @@ public class Clinica {
 		misEnfermedades.remove(selectedEnfermedad);
 		
 	}
+
+	public Consulta buscarConsultaByCode(String codigo) {
+		
+
+		for (Consulta consulta : misConsultas) {
+			if(consulta.getCodigo().equals(codigo))
+			{
+				return consulta;
+			}
+			
+		}
+		return 	null;
+				}
+
+	public void eliminarConsulta(Consulta selectedConsulta) {
+		misConsultas.remove(selectedConsulta);
+		
+	}
 	
 		
 	
