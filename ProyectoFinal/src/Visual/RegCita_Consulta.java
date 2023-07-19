@@ -5,9 +5,11 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -23,6 +25,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -34,6 +37,14 @@ import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Doctor;
 import Logic.Persona;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JTable;
+import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
@@ -57,6 +68,14 @@ public class RegCita_Consulta extends JFrame {
 	private JTextArea textmotivoConsulta;
 	private JButton btnBuscar;
 	private JTextField txtFechaNacim;
+	private JRadioButton rdbHombre;
+	private JRadioButton rdbMujer;
+	private JTable table;
+    private DefaultTableModel doctoresTableModel;
+	private Doctor selectedDoctor;
+
+
+
 
 	
 
@@ -95,7 +114,7 @@ public class RegCita_Consulta extends JFrame {
 		contentPane.add(layeredPane);
 		
 		JPanel primera_pagina = new JPanel();
-		primera_pagina.setBounds(0, 0, 588, 391);
+		primera_pagina.setBounds(374, 425, 588, 391);
 		primera_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		layeredPane.add(primera_pagina);
 		primera_pagina.setLayout(null);
@@ -104,6 +123,7 @@ public class RegCita_Consulta extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
 		lblNewLabel.setBounds(15, 16, 69, 20);
+		primera_pagina.setBounds(0, 0, 588, 391);
 		primera_pagina.add(lblNewLabel);
 		
 		textCodigo = new JTextField();
@@ -190,11 +210,11 @@ public class RegCita_Consulta extends JFrame {
 		    lblNewLabel_11.setBounds(252, 16, 69, 20);
 		    panel_1.add(lblNewLabel_11);
 		    
-		    JRadioButton rdbHombre = new JRadioButton("Hombre");
+		    rdbHombre = new JRadioButton("Hombre");
 		    rdbHombre.setBounds(212, 51, 155, 29);
 		    panel_1.add(rdbHombre);
 		    
-		    JRadioButton rdbMujer = new JRadioButton("Mujer");
+		    rdbMujer = new JRadioButton("Mujer");
 		    rdbMujer.setBounds(212, 129, 155, 29);
 		    panel_1.add(rdbMujer);
 		    
@@ -206,7 +226,7 @@ public class RegCita_Consulta extends JFrame {
 		    
 		    JPanel panel = new JPanel();
 		    panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		    panel.setBounds(19, 165, 543, 204);
+		    panel.setBounds(19, 205, 543, 164);
 		    segunda_pagina.add(panel);
 		    panel.setLayout(null);
 		    
@@ -215,16 +235,12 @@ public class RegCita_Consulta extends JFrame {
 		    panel.add(lblNewLabel_8);
 		    
 		    textmotivoConsulta = new JTextArea();
-		    textmotivoConsulta.setBounds(14, 37, 506, 150);
+		    textmotivoConsulta.setBounds(23, 42, 506, 108);
 		    panel.add(textmotivoConsulta);
 		    
-		    JLabel lblNewLabel_9 = new JLabel("Doctor a cargo:");
+		    JLabel lblNewLabel_9 = new JLabel("Doctor a cargo");
 		    lblNewLabel_9.setBounds(19, 16, 132, 20);
 		    segunda_pagina.add(lblNewLabel_9);
-		    
-		    JComboBox comboBox = new JComboBox();
-		    comboBox.setBounds(19, 46, 208, 26);
-		    segunda_pagina.add(comboBox);
 		    
 		    JLabel lblNewLabel_10 = new JLabel("Fecha");
 		    lblNewLabel_10.setBounds(533, 16, 40, 20);
@@ -234,6 +250,37 @@ public class RegCita_Consulta extends JFrame {
 		    textFechaConsulta.setBounds(427, 46, 146, 26);
 		    segunda_pagina.add(textFechaConsulta);
 		    textFechaConsulta.setColumns(10);
+		    
+		    JPanel panel_2 = new JPanel();
+		    panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		    panel_2.setBounds(19, 46, 213, 143);
+		    segunda_pagina.add(panel_2);
+		    panel_2.setLayout(new BorderLayout(0, 0));
+		    
+		    JScrollPane scrollPane = new JScrollPane();
+		    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		    panel_2.add(scrollPane, BorderLayout.CENTER);
+		    
+		    table = new JTable();
+		    doctoresTableModel = new DefaultTableModel(); // Line 264
+
+		    String[] doctorHeaders = { "Cédula", "Nombre", "Especialidad" };
+		    doctoresTableModel.setColumnIdentifiers(doctorHeaders);
+		    table.setModel(doctoresTableModel);
+	        loadDoctores();
+
+		    table.addMouseListener(new MouseAdapter() {
+
+				@Override
+		    	public void mouseClicked(MouseEvent e) {
+		    		int index = table.getSelectedRow();
+	                if (index >= 0) {
+	                	selectedDoctor = Clinica.getInstance().buscarMedicoByCedula(table.
+	                			getValueAt(index,0 ).toString());
+	                }
+		    	}
+		    });
+		    scrollPane.setViewportView(table);
 		    textFechaConsulta.setVisible(false);
 		
 		btnNewButton = new JButton("Siguiente");
@@ -242,6 +289,7 @@ public class RegCita_Consulta extends JFrame {
                 primera_pagina.setVisible(false);
                 segunda_pagina.setVisible(true);
                 btnNewButton.setVisible(false); 
+                table.setVisible(true);
                 textFechaConsulta.setVisible(true);
                 btnAtras.setVisible(true); 
                 btnRegistrar.setVisible(true); 
@@ -287,10 +335,7 @@ public class RegCita_Consulta extends JFrame {
         		String secretaria = textSecretaria.getText();
         		java.util.Date fechaCita = (java.util.Date) datePickerCita.getModel().getValue();
 
-        		/*
-        		 * Implementar metodo para seleccionar el Doctor
-        		 */
-        		Doctor doctor = null;
+        		Doctor doctor = selectedDoctor;
    
         		
         		Cita cita = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
@@ -321,6 +366,7 @@ public class RegCita_Consulta extends JFrame {
                 btnRegistrar.setVisible(false); 
         		btnCancelar.setBounds(404, 426, 105, 21);
                 textFechaConsulta.setVisible(false);
+                table.setVisible(false);
 
 
             }
@@ -341,6 +387,11 @@ public class RegCita_Consulta extends JFrame {
                     textNombre.setText(personaEncontrada.getNombre());
                     textTel.setText(personaEncontrada.getTelefono());
                     textDir.setText(personaEncontrada.getDireccion());
+                    if (personaEncontrada.getGenero() == 'H') {
+                        rdbHombre.setSelected(true);
+                    } else if (personaEncontrada.getGenero() == 'M') {
+                        rdbMujer.setSelected(true);
+                    }
 
                     txtFechaNacim.setText(new SimpleDateFormat("yyyy-MM-dd").format(personaEncontrada.getFchNacim()));
                     datePicker.setVisible(false);
@@ -427,6 +478,27 @@ public class RegCita_Consulta extends JFrame {
 	        textFechaConsulta.setText("");
 	        btnRegistrar.setVisible(false);
 	        textmotivoConsulta.setText("");
+	        rdbHombre.setSelected(false);
+	        rdbMujer.setSelected(false);
+	        
 	        
 	    }
+	 
+	 private void loadDoctores() {
+		    // Get the list of doctors from the Clinica class (replace with the actual method).
+		    ArrayList<Persona> personas = Clinica.getInstance().getMisPersonas();
+
+		    // Clear the existing data in the table.
+		    doctoresTableModel.setRowCount(0);
+
+		    // Loop through the list of doctors and add each doctor's information to the table.
+		    for (Persona persona : personas) {
+		    	if(persona instanceof Doctor) {
+		    		 Object[] row = { persona.getCedula(), persona.getNombre(), ((Doctor) persona).getEspecialidad() };
+				        doctoresTableModel.addRow(row);
+		    	}
+		       
+		    }
+		}
+	
 }
