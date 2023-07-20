@@ -225,8 +225,6 @@ public class Clinica {
 			
 		}
 		return contador;
-		
-
 	}
 	
 	private int cantidadPacientesAtendidos(){

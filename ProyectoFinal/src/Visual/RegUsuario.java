@@ -15,6 +15,11 @@ import javax.swing.JRadioButton;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import Logic.Clinica;
 import Logic.Consulta;
@@ -28,17 +33,21 @@ import Logic.Vacuna;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+
 import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.JPasswordField;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFormattedTextField$AbstractFormatter;
 import javax.swing.JFormattedTextField.AbstractFormatter;
+import javax.swing.SpringLayout;
+
 
 
 public class RegUsuario extends JDialog {
@@ -72,7 +81,7 @@ public class RegUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegUsuario(boolean esPaciente, boolean esAdmin) {
-		
+
 		if(esPaciente) {
 			setTitle("Registrar Usuario Paciente Nuevo");
 			setBounds(100, 100, 450, 440);
@@ -83,7 +92,8 @@ public class RegUsuario extends JDialog {
 			setTitle("Registrar Usuario Docor Nuevo");
 			setBounds(100, 100, 450, 440);
 		}
-		
+
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setForeground(Color.GRAY);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -150,9 +160,9 @@ public class RegUsuario extends JDialog {
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBounds(276, 20, 116, 22);
-		panel.add(formattedTextField);
+		JFormattedTextField fmtTelefono = new JFormattedTextField();
+		fmtTelefono.setBounds(276, 20, 116, 22);
+		panel.add(fmtTelefono);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -183,7 +193,8 @@ public class RegUsuario extends JDialog {
 		
 		pswConfirmar = new JPasswordField();
 		pswConfirmar.setBounds(274, 31, 116, 22);
-		panel_1.add(pswConfirmar);
+		panel_1.add(pswConfirmar);		
+		
 		
 		if(!esPaciente && !esAdmin) {
 			JPanel panel_3 = new JPanel();
@@ -229,10 +240,10 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(!pswClave.getText().equals(pswConfirmar.getText())){
+						if(!pswClave.equals(pswConfirmar)){
 							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}else {
-							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
+							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.equals("") && !pswConfirmar.equals("") && !txtDireccion.equals("") 
 								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
 								if(esPaciente)
 									crearPaciente();
@@ -250,7 +261,7 @@ public class RegUsuario extends JDialog {
 						Doctor doctor = new Doctor(txtCedula.getText(), 
 								txtNombre.getText(), 
 								null /*fchNacim*/, 
-								null /*numero Telefono*/, 
+								fmtTelefono.getText(), 
 								txtDireccion.getText(), 
 								charGenero(),
 								txtEspecialidad.getText());
@@ -260,15 +271,25 @@ public class RegUsuario extends JDialog {
 					}
 
 					private void crearPersona() {
-						// TODO Auto-generated method stub
-						
+						Persona persona = new Persona(
+								txtCedula.getText(), 
+								txtNombre.getText(), 
+								null /*fchNacim*/, 
+								fmtTelefono.getText(), 
+								txtDireccion.getText(),  	
+								charGenero());
+						Clinica.getInstance().insertarPersona(persona);
+						JOptionPane.showMessageDialog(null, "Registro de Usuario Administrador4"
+								+ " Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
 					}
 
 					private void crearPaciente() {
-						Paciente paciente = new Paciente(txtCedula.getText(), 
+						Paciente paciente = new Paciente(
+								txtCedula.getText(), 
 								txtNombre.getText(), 
 								null /*fchNacim*/, 
-								null /*numero Telefono*/, 
+								fmtTelefono.getText(), 
 								txtDireccion.getText(), 
 								charGenero(), 
 								new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()),
