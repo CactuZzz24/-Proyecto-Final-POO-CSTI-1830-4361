@@ -9,9 +9,17 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
+
+import Logic.Clinica;
+import Logic.Vacuna;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class RegVacuna extends JDialog {
 
@@ -20,7 +28,9 @@ public class RegVacuna extends JDialog {
 	private JTextField txtNombre;
 	private JTextField txtDescripcion;
 	private JTextField txtLote;
-	private JTextField textField;
+	private JTextField txtDistribuidor;
+	private JSpinner spnEdad;
+	private JSpinner spnCant;
 
 	/**
 	 * Launch the application.
@@ -94,9 +104,10 @@ public class RegVacuna extends JDialog {
 		lblNewLabel_5.setBounds(12, 20, 98, 16);
 		panel_1.add(lblNewLabel_5);
 		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(318, 16, 78, 22);
-		panel_1.add(spinner_1);
+		spnCant = new JSpinner();
+		spnCant.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
+		spnCant.setBounds(318, 16, 78, 22);
+		panel_1.add(spnCant);
 		
 		JLabel lblNewLabel_4 = new JLabel("Cantidad:");
 		lblNewLabel_4.setBounds(253, 19, 56, 16);
@@ -106,14 +117,15 @@ public class RegVacuna extends JDialog {
 		lblDistribiudor.setBounds(12, 56, 85, 16);
 		panel_1.add(lblDistribiudor);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(91, 54, 116, 22);
-		panel_1.add(textField);
+		txtDistribuidor = new JTextField();
+		txtDistribuidor.setColumns(10);
+		txtDistribuidor.setBounds(91, 54, 116, 22);
+		panel_1.add(txtDistribuidor);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(348, 51, 48, 22);
-		panel_1.add(spinner);
+		spnEdad = new JSpinner();
+		spnEdad.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+		spnEdad.setBounds(348, 51, 48, 22);
+		panel_1.add(spnEdad);
 		
 		JLabel lblNewLabel_3 = new JLabel("Edad Requerida:");
 		lblNewLabel_3.setBounds(243, 54, 107, 16);
@@ -125,12 +137,36 @@ public class RegVacuna extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Registrar");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(!txtCodigo.equals("") && !txtNombre.equals("") && !txtDescripcion.equals("") && !txtLote.equals("") && !txtDistribuidor.equals("")) {
+							Vacuna vacuna = new Vacuna(
+									txtCodigo.getText(),
+									txtNombre.getText(),
+									txtDescripcion.getText(),
+									Integer.parseInt(spnEdad.getValue().toString()),
+									Integer.parseInt(spnCant.getValue().toString()),
+									txtLote.getText(),
+									txtDistribuidor.getText());
+							Clinica.getInstance().insertarVacuna(vacuna);
+							JOptionPane.showMessageDialog(null, "Registro de Vacuna Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+
+						}else {
+							JOptionPane.showMessageDialog(null, "Favor llenar todos los campos", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancelar");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
