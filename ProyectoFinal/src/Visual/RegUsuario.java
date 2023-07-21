@@ -37,7 +37,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.JPasswordField;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFormattedTextField$AbstractFormatter;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
 

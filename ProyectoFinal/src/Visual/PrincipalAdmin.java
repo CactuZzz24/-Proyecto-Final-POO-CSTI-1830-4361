@@ -55,8 +55,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegistrarConsulta = new JMenuItem("Registrar");
 		btnRegistrarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegConsulta reg = new RegConsulta();
-				reg.setModal(true);
+				RegCita_Consulta reg = new RegCita_Consulta();
 				reg.setVisible(true);
 			}
 		});
