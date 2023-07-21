@@ -179,14 +179,19 @@ public class Clinica {
 
 	public Enfermedad buscarEnfermedadByCode(String codigo) {
 		
-		for (Enfermedad enfermedad : misEnfermedades) {
-			if(enfermedad.getCodigo().equals(codigo))
-			{
-				return enfermedad;
+		Enfermedad aux = null;
+		boolean encontrado = false;
+		int i = 0;
+		while (i < misEnfermedades.size() && !encontrado) {
+			if(misEnfermedades.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				encontrado = true;
+				aux = misEnfermedades.get(i);
+				
 			}
+			i++;
 			
 		}
-		return null;
+		return aux;
 	}
 
 	public void eliminarEnfermedad(Enfermedad selectedEnfermedad) {

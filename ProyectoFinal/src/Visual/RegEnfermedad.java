@@ -34,7 +34,10 @@ public class RegEnfermedad extends JFrame {
 	 * Create the frame.
 	 */
 	public RegEnfermedad(Enfermedad miEnfermedad) {
+		
 		setResizable(false);
+	    this.miEnfermedad = miEnfermedad;
+
 		if(miEnfermedad == null) {
 			setTitle("Registrar Enfermedad");
 		}
@@ -110,7 +113,7 @@ public class RegEnfermedad extends JFrame {
 					miEnfermedad.setDescripcion(textAreaDetalles.getText());
 					Clinica.getInstance().modificarEnfermedad(miEnfermedad);
 					dispose();
-					//ListarEnfermedades.loadEnfermedades();
+					ListarEnfermedad.loadEnfermedades();
 					
 					
 				}
@@ -133,17 +136,24 @@ public class RegEnfermedad extends JFrame {
 		});
 		btnCancelar.setBounds(55, 370, 115, 29);
 		contentPane.add(btnCancelar);
-		loadEnf();
 
 	}
 	private void loadEnf() {
-		if(miEnfermedad != null) {
-			textCodigo.setText(miEnfermedad.getCodigo());
-			textNombre.setText(miEnfermedad.getNombre());
-			textAreaDetalles.setText(miEnfermedad.getDescripcion());
-			comboGravedad.setSelectedItem((String) miEnfermedad.getGravedad());
-		}
+		this.miEnfermedad = miEnfermedad;
+	    if (miEnfermedad != null) {
+	        textCodigo.setText(miEnfermedad.getCodigo());
+	        textNombre.setText(miEnfermedad.getNombre());
+	        textAreaDetalles.setText(miEnfermedad.getDescripcion());
+
+	        String gravedad = miEnfermedad.getGravedad();
+	        comboGravedad.setSelectedItem(gravedad);
+	    } else {
+	        textCodigo.setText("No hay datos");
+	        clear();
+	    }
 	}
+
+
 	private void clear() {
 		textCodigo.setText("");
 		textNombre.setText("");
