@@ -225,8 +225,6 @@ public class Clinica {
 			
 		}
 		return contador;
-		
-
 	}
 	
 	private int cantidadPacientesAtendidos(){
@@ -241,6 +239,19 @@ public class Clinica {
 			
 		}
 		return contador;
+	}
+
+	public boolean existeVacuna(String nombre) {
+		for(Vacuna vacuna : misVacunas) {
+			if(vacuna.getNombre().equalsIgnoreCase(nombre))
+				return true;
+		}
+		return false;
+	}
+
+	public void insertarVacuna(Vacuna vacuna) {
+		misVacunas.add(vacuna);
+		codVacuna++;
 	}
 }
 

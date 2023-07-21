@@ -119,5 +119,4 @@ public class Vacuna {
 	public void setDistribuidor(String distribuidor) {
 		this.distribuidor = distribuidor;
 	}
-
 }
