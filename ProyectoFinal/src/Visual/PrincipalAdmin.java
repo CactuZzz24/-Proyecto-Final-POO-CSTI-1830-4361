@@ -140,6 +140,25 @@ public class PrincipalAdmin extends JFrame {
 			}
 		});
 		mnNewMenu_3.add(btnListarAdmin);
+		
+		JMenu mnNewMenu_4 = new JMenu("Vacunas");
+		menuBar.add(mnNewMenu_4);
+		
+		JMenuItem btnRegVacuna = new JMenuItem("Registrar");
+		btnRegVacuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegVacuna reg = new RegVacuna();
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
+		mnNewMenu_4.add(btnRegVacuna);
+		
+		JMenuItem btnListarVacuna = new JMenuItem("Listar");
+		mnNewMenu_4.add(btnListarVacuna);
+		
+		JMenu mnNewMenu_5 = new JMenu("Enfermedades");
+		menuBar.add(mnNewMenu_5);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
