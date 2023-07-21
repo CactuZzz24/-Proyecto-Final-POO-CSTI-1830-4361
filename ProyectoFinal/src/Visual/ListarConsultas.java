@@ -103,8 +103,10 @@ public class ListarConsultas extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						//RegDoctor uptadeDoctor = new(selectedConsulta);
-						//uptadeDoctor.setVisible(true);
+						RegCita_Consulta regCita_Consulta = new RegCita_Consulta(false, false , null);
+						regCita_Consulta.setVisible(true);
+
+
 					}
 				});
 				btnActualizar.setEnabled(false);

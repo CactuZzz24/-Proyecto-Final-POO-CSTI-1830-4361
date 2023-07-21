@@ -12,6 +12,8 @@ import Logic.Doctor;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PrincipalMedico extends JFrame {
 
@@ -51,6 +53,13 @@ public class PrincipalMedico extends JFrame {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Historial");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarConsultas listarConsultas = new ListarConsultas();
+				listarConsultas.setModal(true);
+				listarConsultas.setVisible(true);
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenu mnNewMenu_1 = new JMenu("Pacientes");

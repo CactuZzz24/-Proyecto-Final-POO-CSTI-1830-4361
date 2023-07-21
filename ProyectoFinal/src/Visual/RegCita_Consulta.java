@@ -2,6 +2,7 @@ package Visual;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -73,32 +74,26 @@ public class RegCita_Consulta extends JFrame {
 	private JTable table;
     private DefaultTableModel doctoresTableModel;
 	private Doctor selectedDoctor;
+	private JPanel primera_pagina;
+	private JPanel segunda_pagina;
 
 
 
 
 	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegCita_Consulta frame = new RegCita_Consulta();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
+	 * @param miConsulta 
+	 * @param esAdmin 
+	 * @param esDoctor 
 	 */
-	public RegCita_Consulta() {
+	public RegCita_Consulta(boolean esDoctor, boolean esAdmin, Consulta miConsulta) {
+		if(esDoctor) {
+			loadConsultas();
+		}
 		setTitle("Agendar Cita");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,7 +108,7 @@ public class RegCita_Consulta extends JFrame {
 		layeredPane.setBounds(45, 28, 588, 391);
 		contentPane.add(layeredPane);
 		
-		JPanel primera_pagina = new JPanel();
+		primera_pagina = new JPanel();
 		primera_pagina.setBounds(374, 425, 588, 391);
 		primera_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		layeredPane.add(primera_pagina);
@@ -218,7 +213,7 @@ public class RegCita_Consulta extends JFrame {
 		    rdbMujer.setBounds(212, 129, 155, 29);
 		    panel_1.add(rdbMujer);
 		    
-		    JPanel segunda_pagina = new JPanel();
+		    segunda_pagina = new JPanel();
 		    segunda_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		    segunda_pagina.setBounds(0, 0, 588, 391);
 		    layeredPane.add(segunda_pagina);
@@ -485,13 +480,10 @@ public class RegCita_Consulta extends JFrame {
 	    }
 	 
 	 private void loadDoctores() {
-		    // Get the list of doctors from the Clinica class (replace with the actual method).
 		    ArrayList<Persona> personas = Clinica.getInstance().getMisPersonas();
 
-		    // Clear the existing data in the table.
 		    doctoresTableModel.setRowCount(0);
 
-		    // Loop through the list of doctors and add each doctor's information to the table.
 		    for (Persona persona : personas) {
 		    	if(persona instanceof Doctor) {
 		    		 Object[] row = { persona.getCedula(), persona.getNombre(), ((Doctor) persona).getEspecialidad() };
@@ -500,5 +492,13 @@ public class RegCita_Consulta extends JFrame {
 		       
 		    }
 		}
-	
+	 
+	 private void loadConsultas() {
+		 //if(miConsulta != null) {
+			 primera_pagina.setVisible(false);
+			 segunda_pagina.setVisible(false);
+			 
+			 
+		// }
+	 }
 }
