@@ -55,7 +55,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegistrarConsulta = new JMenuItem("Registrar");
 		btnRegistrarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegCita_Consulta reg = new RegCita_Consulta();
+				RegCita_Consulta reg = new RegCita_Consulta(false, true, null);
 				reg.setVisible(true);
 			}
 		});
@@ -64,7 +64,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarConsulta = new JMenuItem("Listar");
 		btnListarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsulta listar = new ListarConsulta();
+				ListarConsultas listar = new ListarConsultas();
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
@@ -87,7 +87,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarMedico = new JMenuItem("Listar");
 		btnListarMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarMedico listar = new ListarMedico();
+				ListarDoctor listar = new ListarDoctor();
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
