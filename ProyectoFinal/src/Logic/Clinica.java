@@ -235,7 +235,7 @@ public class Clinica {
 		contador = 0;
 		for (Persona persona : misPersonas) {
 			
-			if(persona instanceof Paciente && ((Paciente) persona).isStatus() == false) {
+			if(persona instanceof Paciente && ((Paciente) persona).isVigilancia() == false) {
 				contador++;
 				
 			}

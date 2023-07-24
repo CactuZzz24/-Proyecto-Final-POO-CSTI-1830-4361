@@ -145,11 +145,10 @@ public class ListarPaciente extends JDialog {
 		row = new Object[table.getColumnCount()];
 		
 		for (Persona persona : Clinica.getInstance().getMisPersonas()) {
-			
 				row[0] = persona.getCedula();
 				row[1] = persona.getNombre();
 				row[2] = persona.getTelefono();
-				row[4] = ((Paciente) persona).isStatus();
+				row[4] = ((Paciente) persona).isVigilancia();
 				modelo.addRow(row);
 				
 			

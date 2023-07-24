@@ -12,6 +12,9 @@ import Logic.Paciente;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.border.EtchedBorder;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 
 public class PrincipalPaciente extends JFrame {
 
@@ -50,7 +53,7 @@ public class PrincipalPaciente extends JFrame {
 		JMenu mnMiInformacion = new JMenu("Mi Informacion");
 		menuBar.add(mnMiInformacion);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Resumen Medico");
+		JMenuItem mntmNewMenuItem = new JMenuItem("Resumen Clinico");
 		mnMiInformacion.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Hoja de Vacunacion");
@@ -59,10 +62,22 @@ public class PrincipalPaciente extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Mis Enfermedades");
 		mnMiInformacion.add(mntmNewMenuItem_2);
 		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Historial de Consultas");
+		mnMiInformacion.add(mntmNewMenuItem_3);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBounds(12, 13, 196, 51);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JButton btnNewButton = new JButton("Agendar Cita");
+		btnNewButton.setBounds(12, 13, 161, 25);
+		panel.add(btnNewButton);
 	}
-
 }

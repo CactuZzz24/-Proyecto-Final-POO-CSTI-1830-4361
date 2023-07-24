@@ -28,6 +28,7 @@ import Logic.Enfermedad;
 import Logic.Paciente;
 import Logic.Persona;
 import Logic.ResumenClinico;
+import Logic.Usuario;
 import Logic.Vacuna;
 
 import java.awt.event.ActionListener;
@@ -283,10 +284,10 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(!pswClave.equals(pswConfirmar)){
+						if(!pswClave.getText().equals(pswConfirmar.getText())){
 							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}else {
-							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.equals("") && !pswConfirmar.equals("") && !txtDireccion.equals("") 
+							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
 								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
 								if(esPaciente)
 									crearPaciente();
@@ -294,6 +295,13 @@ public class RegUsuario extends JDialog {
 									crearPersona();
 								else
 									crerDoctor();
+								
+								Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
+										txtCedula.getText(), 
+										pswClave.getText(), 
+										esPaciente, 
+										esAdmin);
+								
 							}else {
 								JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
 							}
@@ -380,15 +388,6 @@ public class RegUsuario extends JDialog {
 		
 	}
 	
-	private int calcEdad(Date fchNacim) {
-		Date curr = new Date();
-		int edad = curr.getYear() - fchNacim.getYear();
-		if(curr.getMonth() < fchNacim.getMonth() || (curr.getMonth() == fchNacim.getMonth() && curr.getDay() < fchNacim.getDay()))
-			edad--;
-
-        return edad;
-	}
-	
 	private void loadPersona() {
 		txtCedula.setText(miPersona.getCedula());
 		txtNombre.setText(miPersona.getNombre());
@@ -415,6 +414,7 @@ public class RegUsuario extends JDialog {
 	private void loadDoctor() {
 		txtEspecialidad.setText(((Doctor)miPersona).getEspecialidad());
 	}
+	
 	 private MaskFormatter createPhoneFormatter() {
 	        MaskFormatter formatter = null;
 	        try {
@@ -425,6 +425,7 @@ public class RegUsuario extends JDialog {
 	        }
 	        return formatter;
 	    }
+	 
 	 private JDatePickerImpl createDatePicker() {
 		    UtilDateModel model = new UtilDateModel();
 		    Properties properties = new Properties();

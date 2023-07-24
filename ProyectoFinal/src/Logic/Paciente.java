@@ -36,10 +36,10 @@ public class Paciente extends Persona {
 	public void setTipoSangre(String tipoSangre) {
 		TipoSangre = tipoSangre;
 	}
-	public boolean isStatus() {
+	public boolean isVigilancia() {
 		return vigilancia;
 	}
-	public void setStatus(boolean status) {
+	public void setvigilancia(boolean status) {
 		this.vigilancia = status;
 	}
 	
