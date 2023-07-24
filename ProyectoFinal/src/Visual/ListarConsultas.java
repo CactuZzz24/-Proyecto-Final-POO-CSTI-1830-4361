@@ -104,7 +104,7 @@ public class ListarConsultas extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						RegCita_Consulta regCita_Consulta = new RegCita_Consulta(false, false , null);
+						RegCita_Consulta regCita_Consulta = new RegCita_Consulta(false, false , selectedConsulta);
 						regCita_Consulta.setVisible(true);
 
 
@@ -148,7 +148,7 @@ row = new Object[table.getColumnCount()];
 		for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
 				row[0] = consulta.getCodigo();
 				row[1] = consulta.getMiPersona().getNombre();
-				row[2] = consulta.getMiDoctor().getNombre();
+				//row[2] = consulta.getMiDoctor().getNombre();
 				modelo.addRow(row);
 				
 			
