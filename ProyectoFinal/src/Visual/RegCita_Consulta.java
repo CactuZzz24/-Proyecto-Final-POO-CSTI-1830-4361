@@ -188,9 +188,9 @@ public class RegCita_Consulta extends JDialog {
 	        panel_1.add(textTel);
 	        textTel.setColumns(10);
 		
-		JLabel lblNewLabel_7 = new JLabel("Fecha de Nacimiento");
-		lblNewLabel_7.setBounds(397, 94, 146, 20);
-		panel_1.add(lblNewLabel_7);
+			JLabel lblNewLabel_7 = new JLabel("Fecha de Nacimiento");
+			lblNewLabel_7.setBounds(397, 94, 146, 20);
+			panel_1.add(lblNewLabel_7);
 		
 		 	datePicker = createDatePicker();
 		    datePicker.setBounds(397, 130, 146, 26);
@@ -503,6 +503,10 @@ public class RegCita_Consulta extends JDialog {
 			 textCodigo.setText(miConsulta.getCodigo());
 			 textNombre.setText(miConsulta.getMiPersona().getNombre());
 			 textDir.setText(miConsulta.getMiPersona().getDireccion());
+			 textTel.setText(miConsulta.getMiPersona().getTelefono());
+			 //textFechaConsulta.set(miConsulta.getFecha());
+			 
+			 
 			
 			 
 			 
