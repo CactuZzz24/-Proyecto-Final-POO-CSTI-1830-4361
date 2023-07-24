@@ -28,6 +28,7 @@ import Logic.Enfermedad;
 import Logic.Paciente;
 import Logic.Persona;
 import Logic.ResumenClinico;
+import Logic.Usuario;
 import Logic.Vacuna;
 
 import java.awt.event.ActionListener;
@@ -294,6 +295,13 @@ public class RegUsuario extends JDialog {
 									crearPersona();
 								else
 									crerDoctor();
+								
+								Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
+										txtCedula.getText(), 
+										pswClave.getText(), 
+										esPaciente, 
+										esAdmin);
+								
 							}else {
 								JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
 							}
@@ -378,15 +386,6 @@ public class RegUsuario extends JDialog {
 				loadDoctor();
 		}
 		
-	}
-	
-	private int calcEdad(Date fchNacim) {
-		Date curr = new Date();
-		int edad = curr.getYear() - fchNacim.getYear();
-		if(curr.getMonth() < fchNacim.getMonth() || (curr.getMonth() == fchNacim.getMonth() && curr.getDay() < fchNacim.getDay()))
-			edad--;
-
-        return edad;
 	}
 	
 	private void loadPersona() {
