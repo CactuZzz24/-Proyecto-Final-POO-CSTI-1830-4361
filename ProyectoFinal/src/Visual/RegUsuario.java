@@ -283,10 +283,10 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(!pswClave.equals(pswConfirmar)){
+						if(!pswClave.getText().equals(pswConfirmar.getText())){
 							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}else {
-							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.equals("") && !pswConfirmar.equals("") && !txtDireccion.equals("") 
+							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
 								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
 								if(esPaciente)
 									crearPaciente();
@@ -415,6 +415,7 @@ public class RegUsuario extends JDialog {
 	private void loadDoctor() {
 		txtEspecialidad.setText(((Doctor)miPersona).getEspecialidad());
 	}
+	
 	 private MaskFormatter createPhoneFormatter() {
 	        MaskFormatter formatter = null;
 	        try {
@@ -425,6 +426,7 @@ public class RegUsuario extends JDialog {
 	        }
 	        return formatter;
 	    }
+	 
 	 private JDatePickerImpl createDatePicker() {
 		    UtilDateModel model = new UtilDateModel();
 		    Properties properties = new Properties();
