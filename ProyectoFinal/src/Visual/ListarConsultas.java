@@ -105,6 +105,7 @@ public class ListarConsultas extends JDialog {
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						RegCita_Consulta regCita_Consulta = new RegCita_Consulta(false, false , selectedConsulta);
+						regCita_Consulta.setModal(true);
 						regCita_Consulta.setVisible(true);
 
 

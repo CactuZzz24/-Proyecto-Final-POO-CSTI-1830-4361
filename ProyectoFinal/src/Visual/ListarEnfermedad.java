@@ -103,6 +103,7 @@ public class ListarEnfermedad extends JDialog {
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						RegEnfermedad uptadeEnfermedad = new RegEnfermedad(selectedEnfermedad);
+						uptadeEnfermedad.setModal(true);
 						uptadeEnfermedad.setVisible(true);
 					}
 				});

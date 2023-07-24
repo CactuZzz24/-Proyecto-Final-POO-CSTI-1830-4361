@@ -105,6 +105,8 @@ public class ListarDoctor extends JDialog {
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
+						//TODO Logica para actualizar el doctor;
+						
 					}
 				});
 				btnActualizar.setEnabled(false);

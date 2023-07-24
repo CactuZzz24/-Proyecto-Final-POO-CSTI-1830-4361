@@ -105,6 +105,7 @@ public class ListarVacuna extends JDialog {
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						RegVacuna uptade = new RegVacuna(selectedVacuna);
+						uptade.setModal(true);
 						uptade.setVisible(true);
 					}
 				});

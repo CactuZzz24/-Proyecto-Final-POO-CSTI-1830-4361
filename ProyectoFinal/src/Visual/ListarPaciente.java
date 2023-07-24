@@ -106,6 +106,7 @@ public class ListarPaciente extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						//TODO Actualizar datos de Paciente
 						
 					}
 				});
