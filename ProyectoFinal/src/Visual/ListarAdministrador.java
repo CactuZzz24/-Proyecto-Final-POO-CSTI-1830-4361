@@ -50,6 +50,7 @@ public class ListarAdministrador extends JDialog {
 	 */
 	public ListarAdministrador() {
 		setBounds(100, 100, 450, 300);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

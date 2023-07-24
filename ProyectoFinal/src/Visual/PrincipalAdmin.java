@@ -148,7 +148,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegVacuna = new JMenuItem("Registrar");
 		btnRegVacuna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegVacuna reg = new RegVacuna();
+				RegVacuna reg = new RegVacuna(null);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}

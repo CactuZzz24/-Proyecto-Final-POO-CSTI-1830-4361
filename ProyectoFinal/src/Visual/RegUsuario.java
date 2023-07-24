@@ -183,7 +183,7 @@ public class RegUsuario extends JDialog {
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
-		fmtTelefono = new JFormattedTextField();
+		fmtTelefono = new JFormattedTextField(createPhoneFormatter());
 		fmtTelefono.setBounds(276, 20, 116, 22);
 		panel.add(fmtTelefono);
 		
@@ -408,4 +408,14 @@ public class RegUsuario extends JDialog {
 	private void loadDoctor() {
 		txtEspecialidad.setText(((Doctor)miPersona).getEspecialidad());
 	}
+	 private MaskFormatter createPhoneFormatter() {
+	        MaskFormatter formatter = null;
+	        try {
+	            formatter = new MaskFormatter("(###) ###-####");
+	            formatter.setPlaceholderCharacter('_');
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return formatter;
+	    }
 }

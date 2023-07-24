@@ -185,7 +185,7 @@ public class RegCita_Consulta extends JDialog {
 		lblNewLabel_7.setBounds(397, 94, 146, 20);
 		panel_1.add(lblNewLabel_7);
 		
-		 datePicker = createDatePicker();
+		 	datePicker = createDatePicker();
 		    datePicker.setBounds(397, 130, 146, 26);
 		    panel_1.add(datePicker);
 		    
@@ -253,7 +253,7 @@ public class RegCita_Consulta extends JDialog {
 		    panel_2.add(scrollPane, BorderLayout.CENTER);
 		    
 		    table = new JTable();
-		    doctoresTableModel = new DefaultTableModel(); // Line 264
+		    doctoresTableModel = new DefaultTableModel(); 
 
 		    String[] doctorHeaders = { "Cédula", "Nombre", "Especialidad" };
 		    doctoresTableModel.setColumnIdentifiers(doctorHeaders);

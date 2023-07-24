@@ -32,25 +32,16 @@ public class RegVacuna extends JDialog {
 	private JSpinner spnEdad;
 	private JSpinner spnCant;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			RegVacuna dialog = new RegVacuna();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
+	 * @param selectedVacuna 
 	 */
-	public RegVacuna() {
+	public RegVacuna(Vacuna selectedVacuna) {
 		setTitle("Registrar Vacuna");
 		setBounds(100, 100, 450, 336);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

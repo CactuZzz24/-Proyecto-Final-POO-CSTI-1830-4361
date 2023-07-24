@@ -47,6 +47,7 @@ public class RegEnfermedad extends JDialog {
 
 		}
 		setBounds(100, 100, 639, 472);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -49,6 +49,7 @@ public class ListarDoctor extends JDialog {
 	 */
 	public ListarDoctor() {
 		setBounds(100, 100, 679, 469);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

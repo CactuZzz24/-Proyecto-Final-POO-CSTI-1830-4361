@@ -3,10 +3,7 @@
  */
 package Logic;
 
-/**
- * @author edwin
- *
- */
+
 public class Vacuna {
 	private String codigo;
 	private String nombre;

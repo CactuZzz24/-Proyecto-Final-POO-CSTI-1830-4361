@@ -76,7 +76,6 @@ public class Clinica {
 	}
 
 	public void agregarEnfermedad(Enfermedad enfermedad) {
-		// TODO Auto-generated method stub
 		misEnfermedades.add(enfermedad);
 		
 	}
@@ -172,8 +171,8 @@ public class Clinica {
 		return aux;
 	}
 
-	public void eliminarPersona(Doctor selectedDoctor) {
-		misPersonas.remove(selectedDoctor);
+	public void eliminarPersona(Persona selectedPersona) {
+		misPersonas.remove(selectedPersona);
 		
 	}
 
@@ -258,5 +257,27 @@ public class Clinica {
 		misVacunas.add(vacuna);
 		codVacuna++;
 	}
+
+	public void eliminarVacuna(Vacuna selectedVacuna) {
+		misVacunas.remove(selectedVacuna);
+		
+	}
+
+	public Vacuna buscarVacunaByCode(String codigo) {
+		
+		
+		Vacuna aux = null;
+		boolean encontrado = false;
+		int i = 0;
+		while (i < misVacunas.size() && !encontrado) {
+			if(misVacunas.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				encontrado = true;
+				aux = misVacunas.get(i);
+				
+			}
+			i++;
+			
+		}
+		return aux;	}
 }
 
