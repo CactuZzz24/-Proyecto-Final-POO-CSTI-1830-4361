@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +20,7 @@ import javax.swing.border.EtchedBorder;
 import Logic.Clinica;
 import Logic.Enfermedad;
 
-public class RegEnfermedad extends JFrame {
+public class RegEnfermedad extends JDialog {
 
 	private JPanel contentPane;
 	private JButton btnRegistrar;
@@ -45,7 +46,6 @@ public class RegEnfermedad extends JFrame {
 			setTitle("Editar Enfermedad");
 
 		}
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 639, 472);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);

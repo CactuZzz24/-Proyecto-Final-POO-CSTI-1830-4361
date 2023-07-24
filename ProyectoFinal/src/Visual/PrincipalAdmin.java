@@ -56,7 +56,9 @@ public class PrincipalAdmin extends JFrame {
 		btnRegistrarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegCita_Consulta reg = new RegCita_Consulta(false, true, null);
+				reg.setModal(true);
 				reg.setVisible(true);
+			
 			}
 		});
 		mnNewMenu.add(btnRegistrarConsulta);
@@ -154,10 +156,37 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_4.add(btnRegVacuna);
 		
 		JMenuItem btnListarVacuna = new JMenuItem("Listar");
+		btnListarVacuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarVacuna listar = new ListarVacuna();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnNewMenu_4.add(btnListarVacuna);
 		
 		JMenu mnNewMenu_5 = new JMenu("Enfermedades");
 		menuBar.add(mnNewMenu_5);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Registrar");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegEnfermedad reg = new RegEnfermedad(null);
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
+		mnNewMenu_5.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listar");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarEnfermedad listar = new ListarEnfermedad();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
+		mnNewMenu_5.add(mntmNewMenuItem_1);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

@@ -141,7 +141,7 @@ public class IniciarSesion extends JFrame {
 							JOptionPane.showMessageDialog(null, "La cedula ingresada no esta registrada", "Error", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Profavor llenar todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Porfavor llenar todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 					
 				

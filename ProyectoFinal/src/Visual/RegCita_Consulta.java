@@ -1,18 +1,18 @@
 package Visual;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,8 +20,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -38,19 +41,11 @@ import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Doctor;
 import Logic.Persona;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JTable;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 
 
 
-public class RegCita_Consulta extends JFrame {
+public class RegCita_Consulta extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textCodigo;
@@ -96,8 +91,8 @@ public class RegCita_Consulta extends JFrame {
 		}
 		setTitle("Agendar Cita");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 677, 503);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -242,6 +237,7 @@ public class RegCita_Consulta extends JFrame {
 		    segunda_pagina.add(lblNewLabel_10);
 		    
 		    textFechaConsulta = new JTextField();
+		    textFechaConsulta.setEditable(false);
 		    textFechaConsulta.setBounds(427, 46, 146, 26);
 		    segunda_pagina.add(textFechaConsulta);
 		    textFechaConsulta.setColumns(10);
