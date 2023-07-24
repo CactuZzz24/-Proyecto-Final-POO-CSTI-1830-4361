@@ -71,6 +71,7 @@ public class RegCita_Consulta extends JDialog {
 	private Doctor selectedDoctor;
 	private JPanel primera_pagina;
 	private JPanel segunda_pagina;
+	private Consulta miConsulta = null;
 
 
 
@@ -85,11 +86,17 @@ public class RegCita_Consulta extends JDialog {
 	 * @param esAdmin 
 	 * @param esDoctor 
 	 */
-	public RegCita_Consulta(boolean esDoctor, boolean esAdmin, Consulta miConsulta) {
-		if(esDoctor) {
-			loadConsultas();
+	public RegCita_Consulta(boolean esDoctor, boolean esAdmin, Consulta consulta) {
+		miConsulta = consulta;
+		if(miConsulta == null) {
+			setTitle("Agendar Cita");
+
 		}
-		setTitle("Agendar Cita");
+		
+		else {
+			setTitle("Editar Cita");
+		}
+		
 		setResizable(false);
 		setBounds(100, 100, 677, 503);
 		setLocationRelativeTo(null);
@@ -181,9 +188,9 @@ public class RegCita_Consulta extends JDialog {
 	        panel_1.add(textTel);
 	        textTel.setColumns(10);
 		
-		JLabel lblNewLabel_7 = new JLabel("Fecha de Nacimiento");
-		lblNewLabel_7.setBounds(397, 94, 146, 20);
-		panel_1.add(lblNewLabel_7);
+			JLabel lblNewLabel_7 = new JLabel("Fecha de Nacimiento");
+			lblNewLabel_7.setBounds(397, 94, 146, 20);
+			panel_1.add(lblNewLabel_7);
 		
 		 	datePicker = createDatePicker();
 		    datePicker.setBounds(397, 130, 146, 26);
@@ -401,6 +408,7 @@ public class RegCita_Consulta extends JDialog {
         });
         btnBuscar.setBounds(73, 14, 88, 25);
         panel_1.add(btnBuscar);
+        loadConsultas();
 
 
       
@@ -490,11 +498,21 @@ public class RegCita_Consulta extends JDialog {
 		}
 	 
 	 private void loadConsultas() {
-		 //if(miConsulta != null) {
-			 primera_pagina.setVisible(false);
-			 segunda_pagina.setVisible(false);
+		 if(miConsulta != null) {
+			 textCedula.setText(miConsulta.getMiPersona().getCedula());
+			 textCodigo.setText(miConsulta.getCodigo());
+			 textNombre.setText(miConsulta.getMiPersona().getNombre());
+			 textDir.setText(miConsulta.getMiPersona().getDireccion());
+			 textTel.setText(miConsulta.getMiPersona().getTelefono());
+			 //textFechaConsulta.set(miConsulta.getFecha());
 			 
 			 
-		// }
+			
+			 
+			 
+		 }
+		 else {
+			
+		}
 	 }
 }

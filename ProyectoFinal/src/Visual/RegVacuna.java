@@ -31,6 +31,8 @@ public class RegVacuna extends JDialog {
 	private JTextField txtDistribuidor;
 	private JSpinner spnEdad;
 	private JSpinner spnCant;
+	private Vacuna miVacuna = null;
+
 
 
 
@@ -39,7 +41,15 @@ public class RegVacuna extends JDialog {
 	 * @param selectedVacuna 
 	 */
 	public RegVacuna(Vacuna selectedVacuna) {
-		setTitle("Registrar Vacuna");
+		miVacuna = selectedVacuna;
+		if(miVacuna == null) {
+			
+			setTitle("Registrar Vacuna");
+		
+		}
+		else {
+			setTitle("Modificar Vacuna");
+		}
 		setBounds(100, 100, 450, 336);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -130,6 +140,9 @@ public class RegVacuna extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						if(miVacuna == null) {
+							
+						
 						if(!txtCodigo.equals("") && !txtNombre.equals("") && !txtDescripcion.equals("") && !txtLote.equals("") && !txtDistribuidor.equals("")) {
 							Vacuna vacuna = new Vacuna(
 									txtCodigo.getText(),
@@ -141,9 +154,25 @@ public class RegVacuna extends JDialog {
 									txtDistribuidor.getText());
 							Clinica.getInstance().insertarVacuna(vacuna);
 							JOptionPane.showMessageDialog(null, "Registro de Vacuna Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+							
 
 						}else {
 							JOptionPane.showMessageDialog(null, "Favor llenar todos los campos", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+						}
+						}
+						else {
+							miVacuna.setCodigo(txtCodigo.getText());
+							miVacuna.setNombre(txtNombre.getText());
+							miVacuna.setDescripcion(txtDescripcion.getText());
+							miVacuna.setEdadRequerida(Integer.parseInt(spnEdad.getValue().toString()));
+							miVacuna.setCantidadDisponible(Integer.parseInt(spnCant.getValue().toString()));
+							miVacuna.setCodLote(txtLote.getText());
+							miVacuna.setDistribuidor(txtDistribuidor.getText());
+							
+							Clinica.getInstance().uptadeVacuna(miVacuna);
+							dispose();
+							ListarVacuna.loadVacunas();
+							
 						}
 					}
 				});
@@ -160,7 +189,28 @@ public class RegVacuna extends JDialog {
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
+				loadVacuna();
 			}
 		}
+	}
+
+
+
+
+	private void loadVacuna() {
+		if(miVacuna != null) {
+			txtCodigo.setText(miVacuna.getCodigo());
+			txtNombre.setText(miVacuna.getNombre());
+			txtDescripcion.setText(miVacuna.getDistribuidor());
+			txtDistribuidor.setText(miVacuna.getDistribuidor());
+			txtLote.setText(miVacuna.getCodLote());
+			spnEdad.setValue(miVacuna.getEdadRequerida());
+			spnCant.setValue(miVacuna.getCantidadDisponible());
+			
+		}
+		else {
+			// TODO nothing;
+		}
+		
 	}
 }

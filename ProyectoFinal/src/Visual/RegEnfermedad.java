@@ -34,10 +34,10 @@ public class RegEnfermedad extends JDialog {
 	/**
 	 * Create the frame.
 	 */
-	public RegEnfermedad(Enfermedad miEnfermedad) {
+	public RegEnfermedad(Enfermedad enf) {
 		
 		setResizable(false);
-	    this.miEnfermedad = miEnfermedad;
+		miEnfermedad = enf;
 
 		if(miEnfermedad == null) {
 			setTitle("Registrar Enfermedad");
@@ -137,10 +137,10 @@ public class RegEnfermedad extends JDialog {
 		});
 		btnCancelar.setBounds(55, 370, 115, 29);
 		contentPane.add(btnCancelar);
+		loadEnf();
 
 	}
 	private void loadEnf() {
-		this.miEnfermedad = miEnfermedad;
 	    if (miEnfermedad != null) {
 	        textCodigo.setText(miEnfermedad.getCodigo());
 	        textNombre.setText(miEnfermedad.getNombre());

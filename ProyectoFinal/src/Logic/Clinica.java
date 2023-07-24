@@ -279,5 +279,29 @@ public class Clinica {
 			
 		}
 		return aux;	}
+
+	public void uptadeVacuna(Vacuna miVacuna) {
+		// TODO Auto-generated method stub
+		int index = buscarIndexVacunaByCode(miVacuna.getCodigo());
+		if(index != -1) {
+			misVacunas.set(index, miVacuna);
+		}
+		
+	}
+
+	private int buscarIndexVacunaByCode(String codigo) {
+		int aux = -1;
+		boolean encontrado = false;
+		int i = 0;
+		while (i < misVacunas.size() && !encontrado) {
+			if (misVacunas.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				encontrado = true;
+				aux = i;
+			}
+			i++;
+			
+		}
+		return aux;
+	}
 }
 

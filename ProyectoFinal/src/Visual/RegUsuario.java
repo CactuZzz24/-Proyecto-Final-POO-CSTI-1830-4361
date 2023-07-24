@@ -68,7 +68,9 @@ public class RegUsuario extends JDialog {
 	private JPasswordField pswConfirmar;
 	private JFormattedTextField fmtTelefono;
 	private JList listSangre;
+	private JDatePickerImpl datePicker;
 	String[] tiposDeSangre = new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
+	private JTextField textFechaNacim;
 
 	
 	/**
@@ -187,6 +189,11 @@ public class RegUsuario extends JDialog {
 		fmtTelefono.setBounds(276, 20, 116, 22);
 		panel.add(fmtTelefono);
 		
+		datePicker = createDatePicker();
+	    datePicker.setBounds(104, 63, 116, 25);
+		
+		panel.add(datePicker);
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.setBounds(12, 13, 408, 66);
@@ -296,7 +303,7 @@ public class RegUsuario extends JDialog {
 					private void crerDoctor() {
 						Doctor doctor = new Doctor(txtCedula.getText(), 
 								txtNombre.getText(), 
-								null /*fchNacim*/, 
+								(java.util.Date) datePicker.getModel().getValue(),  
 								fmtTelefono.getText(), 
 								txtDireccion.getText(), 
 								charGenero(),
@@ -310,7 +317,7 @@ public class RegUsuario extends JDialog {
 						Persona persona = new Persona(
 								txtCedula.getText(), 
 								txtNombre.getText(), 
-								null /*fchNacim*/, 
+								(java.util.Date) datePicker.getModel().getValue(), 
 								fmtTelefono.getText(), 
 								txtDireccion.getText(),  	
 								charGenero());
@@ -324,7 +331,7 @@ public class RegUsuario extends JDialog {
 						Paciente paciente = new Paciente(
 								txtCedula.getText(), 
 								txtNombre.getText(), 
-								null /*fchNacim*/, 
+								(java.util.Date) datePicker.getModel().getValue(), 
 								fmtTelefono.getText(), 
 								txtDireccion.getText(), 
 								charGenero(), 
@@ -418,4 +425,22 @@ public class RegUsuario extends JDialog {
 	        }
 	        return formatter;
 	    }
+	 private JDatePickerImpl createDatePicker() {
+		    UtilDateModel model = new UtilDateModel();
+		    Properties properties = new Properties();
+		    properties.put("text.today", "Today");
+		    properties.put("text.month", "Month");
+		    properties.put("text.year", "Year");
+		    JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
+
+		    datePanel.addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            java.util.Date selectedDate = (java.util.Date) model.getValue();
+		            datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(selectedDate));
+		        }
+		    });
+
+		    return new JDatePickerImpl(datePanel, null);
+		}
 }
