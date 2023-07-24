@@ -47,6 +47,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.SpringLayout;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 
 
@@ -62,14 +66,17 @@ public class RegUsuario extends JDialog {
 	private static Persona miPersona;
 	private JPasswordField pswClave;
 	private JPasswordField pswConfirmar;
-	private JSpinner spnSangre;
+	private JFormattedTextField fmtTelefono;
+	private JList listSangre;
+	String[] tiposDeSangre = new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
 
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RegUsuario dialog = new RegUsuario(true, false);
+			RegUsuario dialog = new RegUsuario(true, false, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -80,21 +87,37 @@ public class RegUsuario extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public RegUsuario(boolean esPaciente, boolean esAdmin) {
-
+	public RegUsuario(boolean esPaciente, boolean esAdmin, Persona persona) {	
+		String titulo = null;
+		miPersona = persona;
+		
+		if((miPersona instanceof Paciente && (!esPaciente || esAdmin)) || 
+				(miPersona instanceof Doctor && (esPaciente || esAdmin)) || (esPaciente && esAdmin)){
+			JOptionPane.showMessageDialog(null, "Se a producido un Error posiblemente en el codigo Fuente", "ERROR 404", JOptionPane.INFORMATION_MESSAGE);
+			dispose();
+		}
+		
+		
+		if(miPersona == null)
+			titulo = "Registrar";
+		else
+			titulo = "Modificar";
+		
 		if(esPaciente) {
-			setTitle("Registrar Usuario Paciente Nuevo");
-			setBounds(100, 100, 450, 440);
+			setTitle(titulo + " Usuario Paciente Nuevo");
+			setBounds(100, 100, 450, 474);
 		}else if(esAdmin) {
-			setTitle("Registrar Usuario Admin Nuevo");
+			setTitle(titulo + " Registrar Usuario Admin Nuevo");
 			setBounds(100, 100, 450, 383);
 		}else {
-			setTitle("Registrar Usuario Docor Nuevo");
+			setTitle(titulo + " Registrar Usuario Docor Nuevo");
 			setBounds(100, 100, 450, 440);
 		}
-
+		
+		setBackground(new Color(102, 153, 153));
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(102, 153, 153));
 		contentPanel.setForeground(Color.GRAY);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -160,7 +183,7 @@ public class RegUsuario extends JDialog {
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
-		JFormattedTextField fmtTelefono = new JFormattedTextField();
+		fmtTelefono = new JFormattedTextField();
 		fmtTelefono.setBounds(276, 20, 116, 22);
 		panel.add(fmtTelefono);
 		
@@ -217,22 +240,35 @@ public class RegUsuario extends JDialog {
 		if(esPaciente) {
 			JPanel panel_2 = new JPanel();
 			panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-			panel_2.setBounds(12, 302, 408, 42);
+			panel_2.setBounds(12, 302, 408, 66);
 			contentPanel.add(panel_2);
 			panel_2.setLayout(null);
 			
 			JLabel lblNewLabel_6 = new JLabel("Tipo de Sangre:");
-			lblNewLabel_6.setBounds(12, 13, 102, 16);
+			lblNewLabel_6.setBounds(12, 25, 102, 16);
 			panel_2.add(lblNewLabel_6);
 			
-			spnSangre = new JSpinner();
-			spnSangre.setModel(new SpinnerListModel(new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"}));
-			spnSangre.setBounds(114, 10, 44, 22);
-			panel_2.add(spnSangre);
+			JScrollPane scrollPane_1 = new JScrollPane();
+			scrollPane_1.setBounds(126, 12, 73, 42);
+			panel_2.add(scrollPane_1);
+			
+			listSangre = new JList();
+			listSangre.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			scrollPane_1.setViewportView(listSangre);
+			listSangre.setModel(new AbstractListModel() {
+				public int getSize() {
+					return tiposDeSangre.length;
+				}
+				public Object getElementAt(int index) {
+					return tiposDeSangre[index];
+				}
+			});
+			listSangre.setSelectedIndex(0);
 		}
 		
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBackground(new Color(204, 204, 204));
 			buttonPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -294,7 +330,7 @@ public class RegUsuario extends JDialog {
 								charGenero(), 
 								new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()),
 								new ArrayList<Consulta>(),
-								spnSangre.getValue().toString(), 
+								listSangre.getSelectedValue().toString(), 
 								false);
 						Clinica.getInstance().insertarPersona(paciente);
 						JOptionPane.showMessageDialog(null, "Registro de Usuario Paciente Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
@@ -323,6 +359,18 @@ public class RegUsuario extends JDialog {
 				buttonPane.add(btnCacncelar);
 			}
 		}
+
+		if(miPersona != null) {			
+			txtCedula.setEnabled(false);
+			// disable fch Nacim
+			
+			loadPersona();
+			if(miPersona instanceof Paciente)
+				loadPaciente();
+			else if(miPersona instanceof Doctor)
+				loadDoctor();
+		}
+		
 	}
 	
 	private int calcEdad(Date fchNacim) {
@@ -334,7 +382,30 @@ public class RegUsuario extends JDialog {
         return edad;
 	}
 	
+	private void loadPersona() {
+		txtCedula.setText(miPersona.getCedula());
+		txtNombre.setText(miPersona.getNombre());
+		//fchNacim
+		fmtTelefono.setText(miPersona.getTelefono());
+		txtDireccion.setText(miPersona.getDireccion());
+		if(miPersona.getGenero() == 'M') {
+			btnMasculino.setSelected(true);
+			btnFemenino.setSelected(false);
+		}else {
+			btnFemenino.setSelected(true);
+			btnMasculino.setSelected(false);
+		}
+	}
+	
 	private void loadPaciente() {
-		//txtNombre.setText();
+		for(int i = 0; tiposDeSangre[i]!=null; i++) {
+			if(((Paciente) miPersona).getTipoSangre().equals(tiposDeSangre[i]))
+				listSangre.setSelectedIndex(i);
+			return;
+		}
+	}
+	
+	private void loadDoctor() {
+		txtEspecialidad.setText(((Doctor)miPersona).getEspecialidad());
 	}
 }

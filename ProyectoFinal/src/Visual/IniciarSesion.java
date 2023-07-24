@@ -155,7 +155,7 @@ public class IniciarSesion extends JFrame {
 		JButton btnNewButton = new JButton("Registrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegUsuario reg = new RegUsuario(true, false);
+				RegUsuario reg = new RegUsuario(true, false, null);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}
