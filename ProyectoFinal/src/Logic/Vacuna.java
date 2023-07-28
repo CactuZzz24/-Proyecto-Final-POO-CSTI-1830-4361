@@ -3,8 +3,14 @@
  */
 package Logic;
 
+import java.io.Serializable;
 
-public class Vacuna {
+public class Vacuna implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2810176989299158222L;
 	private String codigo;
 	private String nombre;
 	private String descripcion;

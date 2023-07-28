@@ -3,6 +3,10 @@ package Logic;
 import java.util.Date;
 
 public class Doctor extends Persona {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String especialidad;
 	
 	public Doctor(String cedula, String nombre, Date fchNacim, String telefono, String direccion, char genero,

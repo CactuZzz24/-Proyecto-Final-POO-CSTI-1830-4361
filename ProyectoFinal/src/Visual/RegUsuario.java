@@ -301,6 +301,8 @@ public class RegUsuario extends JDialog {
 										pswClave.getText(), 
 										esPaciente, 
 										esAdmin);
+										Clinica.getInstance().agregarUsuario(usuario);
+								
 								
 							}else {
 								JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
