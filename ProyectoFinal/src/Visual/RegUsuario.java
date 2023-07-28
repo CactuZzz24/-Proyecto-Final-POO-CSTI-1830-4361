@@ -64,7 +64,7 @@ public class RegUsuario extends JDialog {
 	private JRadioButton btnMasculino;
 	private JRadioButton btnFemenino;
 	private JTextField txtEspecialidad;
-	private static Persona miPersona;
+	private static Usuario miPersona;
 	private JPasswordField pswClave;
 	private JPasswordField pswConfirmar;
 	private JFormattedTextField fmtTelefono;
@@ -91,12 +91,12 @@ public class RegUsuario extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public RegUsuario(boolean esPaciente, boolean esAdmin, Persona persona) {	
+	public RegUsuario(boolean esPaciente, boolean esAdmin, Usuario persona) {	
 		String titulo = null;
 		miPersona = persona;
 		
-		if((miPersona instanceof Paciente && (!esPaciente || esAdmin)) || 
-				(miPersona instanceof Doctor && (esPaciente || esAdmin)) || (esPaciente && esAdmin)){
+		if((miPersona.getPersona() instanceof Paciente && (!esPaciente || esAdmin)) || 
+				(miPersona.getPersona() instanceof Doctor && (esPaciente || esAdmin)) || (esPaciente && esAdmin)){
 			JOptionPane.showMessageDialog(null, "Se a producido un Error posiblemente en el codigo Fuente", "ERROR 404", JOptionPane.INFORMATION_MESSAGE);
 			dispose();
 		}
@@ -294,52 +294,63 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(miPersona==null) {
-							if(!pswClave.getText().equals(pswConfirmar.getText())){
-								JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
-	
-								if(!pswClave.getText().equals(pswConfirmar.getText())){
-									JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
-								}else {
-									if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
-										&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
-										if(esPaciente)
-											crearPaciente();
-										else if(esAdmin)
-											crearPersona();
-										else
-											crearDoctor();
-										
-										Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
-												txtCedula.getText(), 
-												pswClave.getText(), 
-												esPaciente, 
-												esAdmin);
-												Clinica.getInstance().agregarUsuario(usuario);								
-								}else {
-									if(!txtNombreUsuario.getText().equals("") && !txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
-										&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText()))){
-										if(esPaciente)
-											crearPaciente();
-										else if(esAdmin)
-											crearPersona();
-										else
-											crearDoctor();
-										
-										Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
-												txtNombreUsuario.getText(), 
-												pswClave.getText(), 
-												esPaciente, 
-												esAdmin);
-										dispose();
-									}else {
-										JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
-									}												
-								}
+						if(miPersona==null && condicionesDeRegistro()) {
+							if(esPaciente) {
+								crearPaciente();
+								JOptionPane.showMessageDialog(null, "Registro de Usuario Paciente Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+							}
+							else if(esAdmin) {
+								crearPersona();
+								JOptionPane.showMessageDialog(null, "Registro de Usuario Administrador Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+							}
+							else {
+								crearDoctor();
+								JOptionPane.showMessageDialog(null, "Registro de Usuario Doctor Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+							}
+							
+							Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
+									txtCedula.getText(), 
+									pswClave.getText(), 
+									esPaciente, 
+									esAdmin);
+							Clinica.getInstance().agregarUsuario(usuario);	
+							dispose();
+						}else {
+							miPersona.setNombre(pswClave.getText());
+							miPersona.setNombre(txtNombreUsuario.getText());
+							
+							if(esPaciente) {
+								actualizarPersona();
+								
+							}else if(esAdmin) {
+								actualizarPersona();
+							}else {
+								actualizarPersona();
 							}
 						}
-					}
 				}
+				
+					
+				private void actualizarPersona(){
+					miPersona.getPersona().setCedula(txtCedula.getText());
+					miPersona.getPersona().setDireccion(txtDireccion.getText());
+					miPersona.getPersona().setFchNacim((java.util.Date) datePicker.getModel().getValue());
+					miPersona.getPersona().setGenero(charGenero());
+					miPersona.getPersona().setNombre(txtNombre.getText());
+					miPersona.getPersona().setTelefono(fmtTelefono.getText());
+				}
+				
+				private boolean condicionesDeRegistro() {
+						if(!pswClave.getText().equals(pswConfirmar.getText())){
+							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
+							return false;
+						}else if(!txtNombreUsuario.getText().equals("") && !txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
+								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && !Clinica.getInstance().existeCedulaRol(txtCedula.getText(), esPaciente, esAdmin) && !Clinica.getInstance().existeNombreUsuario(txtNombreUsuario.getText())) {
+								return true;
+						}
+						return false;
+					}
+				
 				private char charGenero() {
 					if(btnMasculino.isSelected())
 						return 'M';
@@ -356,8 +367,6 @@ public class RegUsuario extends JDialog {
 								charGenero(),
 								txtEspecialidad.getText());
 						Clinica.getInstance().insertarPersona(doctor);
-						JOptionPane.showMessageDialog(null, "Registro de Usuario Doctor Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-						dispose();
 					}
 
 				private void crearPersona() {
@@ -369,9 +378,6 @@ public class RegUsuario extends JDialog {
 							txtDireccion.getText(),  	
 							charGenero());
 					Clinica.getInstance().insertarPersona(persona);
-					JOptionPane.showMessageDialog(null, "Registro de Usuario Administrador4"
-							+ " Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-					dispose();
 				}
 
 				private void crearPaciente() {
@@ -387,8 +393,6 @@ public class RegUsuario extends JDialog {
 							listSangre.getSelectedValue().toString(), 
 							false);
 					Clinica.getInstance().insertarPersona(paciente);
-					JOptionPane.showMessageDialog(null, "Registro de Usuario Paciente Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-					dispose();
 				}});
 				
 				okButton.setActionCommand("OK");
@@ -409,24 +413,23 @@ public class RegUsuario extends JDialog {
 			
 		if(miPersona != null) {			
 			txtCedula.setEnabled(false);
-			// disable fch Nacim
-			
+			datePicker.setEnabled(false);
 			loadPersona();
-			if(miPersona instanceof Paciente)
+			if(miPersona.getPersona() instanceof Paciente)
 				loadPaciente();
-			else if(miPersona instanceof Doctor)
+			else if(miPersona.getPersona() instanceof Doctor)
 				loadDoctor();
 		}
 	}
 
 	
 	private void loadPersona() {
-		txtCedula.setText(miPersona.getCedula());
+		txtCedula.setText(miPersona.getPersona().getCedula());
 		txtNombre.setText(miPersona.getNombre());
-		//fchNacim
-		fmtTelefono.setText(miPersona.getTelefono());
-		txtDireccion.setText(miPersona.getDireccion());
-		if(miPersona.getGenero() == 'M') {
+		//datePicker
+		fmtTelefono.setText(miPersona.getPersona().getTelefono());
+		txtDireccion.setText(miPersona.getPersona().getDireccion());
+		if(miPersona.getPersona().getGenero() == 'M') {
 			btnMasculino.setSelected(true);
 			btnFemenino.setSelected(false);
 		}else {
@@ -437,14 +440,14 @@ public class RegUsuario extends JDialog {
 	
 	private void loadPaciente() {
 		for(int i = 0; tiposDeSangre[i]!=null; i++) {
-			if(((Paciente) miPersona).getTipoSangre().equals(tiposDeSangre[i]))
+			if(((Paciente)miPersona.getPersona()).getTipoSangre().equals(tiposDeSangre[i]))
 				listSangre.setSelectedIndex(i);
 			return;
 		}
 	}
 	
 	private void loadDoctor() {
-		txtEspecialidad.setText(((Doctor)miPersona).getEspecialidad());
+		txtEspecialidad.setText(((Doctor)miPersona.getPersona()).getEspecialidad());
 	}
 	
 	 private MaskFormatter createPhoneFormatter() {

@@ -28,10 +28,10 @@ public class Usuario implements Serializable{
 	public void setPersona(Persona persona) {
 		this.persona = persona;
 	}
-	public String getCedula() {
+	public String getNombre() {
 		return nombreUsuario;
 	}
-	public void setCedula(String cedula) {
+	public void setNombre(String cedula) {
 		this.nombreUsuario = cedula;
 	}
 	public String getClave() {

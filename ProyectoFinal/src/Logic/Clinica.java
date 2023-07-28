@@ -76,14 +76,6 @@ public class Clinica implements Serializable {
 	public void setMisUsuarios(ArrayList<Usuario> misUsuarios) {
 		this.misUsuarios = misUsuarios;
 	}
-
-	public Usuario buscarUsiarioByCedula(String cedula) {
-		for(Usuario usuario : misUsuarios) {
-			if(usuario.getCedula().equalsIgnoreCase(cedula))
-				return usuario;
-		}
-		return null;
-	}
 	
 	public void insertarConsulta(Consulta consulta){
 		misConsultas.add(consulta);
@@ -132,10 +124,12 @@ public class Clinica implements Serializable {
 		return null;
 	}
 
-	public boolean seRepiteCedula(String cedula) {
-		for(Usuario usuario : misUsuarios) {
-			if(usuario.getCedula().equalsIgnoreCase(cedula))
+	public boolean existeCedulaRol(String cedula, boolean esPaciente, boolean esAdmin) {
+		for(Persona persona : misPersonas) {
+			if(((esPaciente && persona instanceof Paciente) || (!esPaciente || !esAdmin && persona instanceof Doctor) || (!(persona instanceof Paciente) && !(persona instanceof Doctor)))
+					&& persona.getCedula().equalsIgnoreCase(cedula)){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -156,20 +150,11 @@ public class Clinica implements Serializable {
 		
 	}
 
-	public boolean existeUsuarioDePaciente(String cedula) {
-		for(Usuario usuario : misUsuarios) {
-			if(usuario.getCedula().equalsIgnoreCase(cedula))
-				return true;
-		}
-		return false;
-	}
-
 	public void uptadePersona(Persona miPersona) {
 		int index = buscarIndexUsuarioByCedula(miPersona.getCedula());
 		if(index != -1) {
 			misPersonas.set(index, miPersona);
 		}
-		
 	}
 
 	private int buscarIndexUsuarioByCedula(String cedula) {
@@ -320,6 +305,30 @@ public class Clinica implements Serializable {
 	}
 	public void agregarUsuario(Usuario aux) {
 		misUsuarios.add(aux);
+	}
+
+	public boolean existeNombreUsuario(String nombre) {
+		for(Usuario usuario : misUsuarios) {
+			if(usuario.getNombre().equalsIgnoreCase(nombre))
+				return true;
+		}
+		return false;
+	}
+
+	public Usuario buscarUsuarioByPersona(Persona persona) {
+		for(Usuario usuario : misUsuarios) {
+			if(usuario.getPersona().equals(persona))
+				return usuario;
+		}
+		return null;
+	}
+
+	public Usuario buscarUsiarioByNombreAndClave(String nombre, String clave) {
+		for(Usuario usuario : misUsuarios) {
+			if(usuario.getNombre().equals(nombre) && usuario.getClave().equals(clave))
+				return usuario;
+		}
+		return null;
 	}
 }
 

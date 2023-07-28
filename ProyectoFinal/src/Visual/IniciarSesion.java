@@ -45,12 +45,13 @@ import java.util.ResourceBundle.Control;
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
+import javax.swing.JPasswordField;
 
 public class IniciarSesion extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtCedula;
-	private JTextField txtContra;
+	private JTextField txtUsuario;
+	private JPasswordField pswClave;
 
 	/**
 	 * Launch the application.
@@ -122,23 +123,22 @@ public class IniciarSesion extends JFrame {
 		panel.setBounds(12, 13, 282, 94);
 		contentPane.add(panel);
 		
-		JLabel lblCedula = new JLabel("Cedula:");
+		JLabel lblCedula = new JLabel("Usuario:");
 		lblCedula.setBounds(25, 19, 56, 16);
 		panel.add(lblCedula);
 		
-		txtCedula = new JTextField();
-		txtCedula.setColumns(10);
-		txtCedula.setBounds(124, 16, 130, 22);
-		panel.add(txtCedula);
+		txtUsuario = new JTextField();
+		txtUsuario.setColumns(10);
+		txtUsuario.setBounds(124, 16, 130, 22);
+		panel.add(txtUsuario);
 		
 		JLabel label_1 = new JLabel("Contrase\u00F1a:");
 		label_1.setBounds(24, 57, 75, 16);
 		panel.add(label_1);
 		
-		txtContra = new JTextField();
-		txtContra.setColumns(10);
-		txtContra.setBounds(124, 54, 130, 22);
-		panel.add(txtContra);
+		pswClave = new JPasswordField();
+		pswClave.setBounds(124, 54, 130, 22);
+		panel.add(pswClave);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -151,43 +151,27 @@ public class IniciarSesion extends JFrame {
 		panel_1.add(btnNewButton_2);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!txtCedula.getText().equals("") && !txtContra.getText().equals("")) {
-					Usuario user = Clinica.getInstance().buscarUsiarioByCedula(txtCedula.getText());
-					if(user!=null || user.getClave().equalsIgnoreCase(txtContra.getText())) {
-						if(user.isAdmin()) {
-							PrincipalAdmin menu = new PrincipalAdmin();
+				Usuario user = Clinica.getInstance().buscarUsiarioByNombreAndClave(txtUsuario.getText(), pswClave.getText());
+				if(user!=null) {
+					if(user.isAdmin()) {
+						PrincipalAdmin menu = new PrincipalAdmin();
+						menu.setVisible(true);
+						dispose();
+					}else if(user.isPaciente()) {
+							PrincipalPaciente menu = new PrincipalPaciente((Paciente)user.getPersona());
 							menu.setVisible(true);
 							dispose();
-						}else if(user.isPaciente()) {
-							Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(user.getCedula());
-							/*
-							 * Crear menu para aquellos pacientes que se volvieron mayores de edady necesitan ingresar su cedula
-							 */
-							if(paciente!=null) {
-								PrincipalPaciente menu = new PrincipalPaciente(paciente);
-								menu.setVisible(true);
-								dispose();
-							}
-	
-						}else if(!user.isPaciente()){
-							Doctor doc = Clinica.getInstance().buscarMedicoByCedula(user.getCedula());
-							if(doc!=null) {
-								PrincipalMedico menu = new PrincipalMedico(doc);
-								menu.setVisible(true);
-								dispose();
-							}
-						}
-					}else {
-						if(!user.getClave().equalsIgnoreCase(txtContra.getText()))
-							JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta", "Error", JOptionPane.INFORMATION_MESSAGE);
-						else
-							JOptionPane.showMessageDialog(null, "La cedula ingresada no esta registrada", "Error", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+							PrincipalMedico menu = new PrincipalMedico((Doctor)user.getPersona());
+							menu.setVisible(true);
+							dispose();
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Porfavor llenar todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+					if(!user.getClave().equals(pswClave.getText()))
+						JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta", "Error", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "El Usario ingresadd no esta registradd", "Error", JOptionPane.INFORMATION_MESSAGE);
 				}
-					
-				
 			}
 		});
 		
