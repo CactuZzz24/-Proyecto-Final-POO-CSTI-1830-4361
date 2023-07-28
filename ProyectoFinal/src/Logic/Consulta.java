@@ -1,8 +1,13 @@
 package Logic;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Consulta {
+public class Consulta implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8403556167981137462L;
 	String codigo;
 	Date fecha;
 	Persona miPersona;

@@ -3,11 +3,17 @@
  */
 package Logic;
 
+import java.io.Serializable;
+
 /**
  * @author edwin
  *
  */
-public class Enfermedad {
+public class Enfermedad implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1920903675029221677L;
 	String codigo;
 	String nombre;
 	String descripcion;

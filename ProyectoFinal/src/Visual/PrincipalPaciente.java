@@ -3,11 +3,18 @@ package Visual;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Logic.Clinica;
 import Logic.Paciente;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -41,6 +48,25 @@ public class PrincipalPaciente extends JFrame {
 	 * Create the frame.
 	 */
 	public PrincipalPaciente(Paciente paciente) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream clinica_2;
+				ObjectOutputStream clinicaWrite;
+				try {
+					clinica_2 = new  FileOutputStream("clinica.dat");
+					clinicaWrite = new ObjectOutputStream(clinica_2);
+					clinicaWrite.writeObject(Clinica.getInstance());
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		dim = super.getToolkit().getScreenSize();

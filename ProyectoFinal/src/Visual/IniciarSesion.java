@@ -30,8 +30,17 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ResourceBundle.Control;
 
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
@@ -49,6 +58,40 @@ public class IniciarSesion extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				FileInputStream clinica;
+				FileOutputStream clinica_2;
+				ObjectInputStream clinicaRead;
+				ObjectOutputStream clinicaWrite;
+				try {
+					clinica = new FileInputStream("clinica.dat");
+					clinicaRead = new ObjectInputStream(clinica);
+					Clinica temp = (Clinica)clinicaRead.readObject();
+					Clinica.setClinica(temp);
+					clinica.close();
+					clinicaRead.close();
+				} catch (FileNotFoundException e) {
+					try {
+						clinica_2 = new FileOutputStream("clinica.dat");
+						clinicaWrite = new ObjectOutputStream(clinica_2);
+						clinicaWrite.writeObject(Clinica.getInstance());
+						clinica_2.close();
+						clinicaWrite.close();
+					} catch (FileSystemNotFoundException e1) {
+						
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				try {
 					IniciarSesion frame = new IniciarSesion();
 					frame.setVisible(true);
@@ -155,7 +198,7 @@ public class IniciarSesion extends JFrame {
 		JButton btnNewButton = new JButton("Registrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegUsuario reg = new RegUsuario(true, false, null);
+				RegUsuario reg = new RegUsuario(false, true, null);
 				reg.setModal(true);
 				reg.setVisible(true);
 			}

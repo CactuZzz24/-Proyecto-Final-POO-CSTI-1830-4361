@@ -1,8 +1,13 @@
 package Logic;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Persona {
+public class Persona implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1129465876595645426L;
 	private String cedula;
 	private String nombre;
 	private Date fchNacim;

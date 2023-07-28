@@ -1,10 +1,16 @@
 package Logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Clinica {
 
+public class Clinica implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3422390151419653470L;
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Vacuna> misVacunas;
 	private ArrayList<Consulta> misConsultas;
@@ -30,6 +36,15 @@ public class Clinica {
 			clinica = new Clinica();
 		return clinica;
 	}
+	
+	public static Clinica getClinica() {
+		return clinica;
+	}
+
+	public static void setClinica(Clinica clinica) {
+		Clinica.clinica = clinica;
+	}
+
 	
 	public ArrayList<Enfermedad> getMisEnfermedades() {
 		return misEnfermedades;
@@ -302,6 +317,9 @@ public class Clinica {
 			
 		}
 		return aux;
+	}
+	public void agregarUsuario(Usuario aux) {
+		misUsuarios.add(aux);
 	}
 }
 

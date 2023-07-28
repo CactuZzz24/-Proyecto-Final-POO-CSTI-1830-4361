@@ -1,8 +1,13 @@
 package Logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ResumenClinico {
+public class ResumenClinico implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6889591859345642092L;
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Vacuna> hojaVacunacion;
 	private ArrayList<String> notas;

@@ -144,12 +144,12 @@ public class ListarConsultas extends JDialog {
 	public static void loadConsultas() {
 		// TODO Auto-generated method stub
 		modelo.setRowCount(0);
-row = new Object[table.getColumnCount()];
+		row = new Object[table.getColumnCount()];
 		
 		for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
 				row[0] = consulta.getCodigo();
 				row[1] = consulta.getMiPersona().getNombre();
-				//row[2] = consulta.getMiDoctor().getNombre();
+				row[2] = consulta.getMiDoctor().getNombre();
 				modelo.addRow(row);
 				
 			
