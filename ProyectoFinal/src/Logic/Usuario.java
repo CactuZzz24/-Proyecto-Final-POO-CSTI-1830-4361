@@ -2,7 +2,7 @@ package Logic;
 
 public class Usuario {
 	private Persona persona;
-	private String cedula;
+	private String nombreUsuario;
 	private String clave;
 	private boolean paciente;
 	private boolean admin;
@@ -10,7 +10,7 @@ public class Usuario {
 	public Usuario(Persona persona, String usuario, String clave, boolean paciente, boolean admin) {
 		super();
 		this.persona = persona;
-		this.cedula = usuario;
+		this.nombreUsuario = usuario;
 		this.clave = clave;
 		this.paciente = paciente;
 		this.admin = admin;
@@ -23,10 +23,10 @@ public class Usuario {
 		this.persona = persona;
 	}
 	public String getCedula() {
-		return cedula;
+		return nombreUsuario;
 	}
 	public void setCedula(String cedula) {
-		this.cedula = cedula;
+		this.nombreUsuario = cedula;
 	}
 	public String getClave() {
 		return clave;

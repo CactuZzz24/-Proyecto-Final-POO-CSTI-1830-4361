@@ -72,6 +72,7 @@ public class RegUsuario extends JDialog {
 	private JDatePickerImpl datePicker;
 	String[] tiposDeSangre = new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
 	private JTextField textFechaNacim;
+	private JTextField txtNombreUsuario;
 
 	
 	/**
@@ -137,11 +138,11 @@ public class RegUsuario extends JDialog {
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Telefono:");
-		lblNewLabel_2.setBounds(208, 23, 56, 16);
+		lblNewLabel_2.setBounds(12, 71, 56, 16);
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("fch nacimineto:");
-		lblNewLabel_3.setBounds(12, 68, 100, 16);
+		lblNewLabel_3.setBounds(192, 107, 100, 16);
 		panel.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Genero:");
@@ -182,33 +183,33 @@ public class RegUsuario extends JDialog {
 		panel.add(btnFemenino);
 		
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(12, 128, 381, 56);
+		txtDireccion.setBounds(12, 128, 173, 56);
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
 		fmtTelefono = new JFormattedTextField(createPhoneFormatter());
-		fmtTelefono.setBounds(276, 20, 116, 22);
+		fmtTelefono.setBounds(80, 68, 116, 22);
 		panel.add(fmtTelefono);
 		
 		datePicker = createDatePicker();
-	    datePicker.setBounds(104, 63, 116, 25);
+	    datePicker.setBounds(284, 102, 116, 25);
 		
 		panel.add(datePicker);
+		
+		txtCedula = new JTextField();
+		txtCedula.setBounds(284, 20, 116, 22);
+		panel.add(txtCedula);
+		txtCedula.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Cedula:");
+		lblNewLabel.setBounds(226, 23, 56, 16);
+		panel.add(lblNewLabel);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.setBounds(12, 13, 408, 66);
 		contentPanel.add(panel_1);
 		panel_1.setLayout(null);
-		
-		txtCedula = new JTextField();
-		txtCedula.setBounds(15, 31, 116, 22);
-		panel_1.add(txtCedula);
-		txtCedula.setColumns(10);
-		
-		JLabel lblNewLabel = new JLabel("Cedula:");
-		lblNewLabel.setBounds(15, 13, 56, 16);
-		panel_1.add(lblNewLabel);
 		
 		JLabel lblClave = new JLabel("Clave:");
 		lblClave.setBounds(146, 13, 56, 16);
@@ -225,6 +226,15 @@ public class RegUsuario extends JDialog {
 		pswConfirmar = new JPasswordField();
 		pswConfirmar.setBounds(274, 31, 116, 22);
 		panel_1.add(pswConfirmar);		
+		
+		JLabel lblNombreDeUsuario = new JLabel("Nombre de Usuario:");
+		lblNombreDeUsuario.setBounds(12, 13, 122, 16);
+		panel_1.add(lblNombreDeUsuario);
+		
+		txtNombreUsuario = new JTextField();
+		txtNombreUsuario.setColumns(10);
+		txtNombreUsuario.setBounds(12, 31, 116, 22);
+		panel_1.add(txtNombreUsuario);
 		
 		
 		if(!esPaciente && !esAdmin) {
@@ -284,31 +294,35 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(!pswClave.getText().equals(pswConfirmar.getText())){
-							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
-						}else {
-							if(!txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
-								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText())/*|| calcEdad(fchNacim) < 16*/)) {
-								if(esPaciente)
-									crearPaciente();
-								else if(esAdmin)
-									crearPersona();
-								else
-									crerDoctor();
-								
-								Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
-										txtCedula.getText(), 
-										pswClave.getText(), 
-										esPaciente, 
-										esAdmin);
-								
+						if(miPersona==null) {
+							if(!pswClave.getText().equals(pswConfirmar.getText())){
+								JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 							}else {
-								JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+								if(!txtNombreUsuario.getText().equals("") && !txtCedula.equals("") && !txtNombre.equals("") && !pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
+									&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && (!Clinica.getInstance().seRepiteCedula(txtCedula.getText()))){
+									if(esPaciente)
+										crearPaciente();
+									else if(esAdmin)
+										crearPersona();
+									else
+										crearDoctor();
+									
+									Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
+											txtNombreUsuario.getText(), 
+											pswClave.getText(), 
+											esPaciente, 
+											esAdmin);
+									dispose();
+								}else {
+									JOptionPane.showMessageDialog(null, "Porfavor complete todos los campos", "Error", JOptionPane.INFORMATION_MESSAGE);
+								}
 							}
-						}						
+						}else {
+							
+						}												
 					}
 
-					private void crerDoctor() {
+					private void crearDoctor() {
 						Doctor doctor = new Doctor(txtCedula.getText(), 
 								txtNombre.getText(), 
 								(java.util.Date) datePicker.getModel().getValue(),  
