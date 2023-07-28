@@ -94,15 +94,6 @@ public class ListarPaciente extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton btnNewButton = new JButton("Cancelar");
-				btnNewButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				buttonPane.add(btnNewButton);
-			}
-			{
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -136,6 +127,15 @@ public class ListarPaciente extends JDialog {
 				btnEliminar.setEnabled(false);
 				btnEliminar.setActionCommand("Cancel");
 				buttonPane.add(btnEliminar);
+			}
+			{
+				JButton btnNewButton = new JButton("Cancelar");
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				buttonPane.add(btnNewButton);
 			}
 		}
 	}
