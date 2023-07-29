@@ -310,7 +310,7 @@ public class RegUsuario extends JDialog {
 								}
 								
 								Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
-										txtCedula.getText(), 
+										txtNombreUsuario.getText(), 
 										pswClave.getText(), 
 										esPaciente, 
 										esAdmin);
