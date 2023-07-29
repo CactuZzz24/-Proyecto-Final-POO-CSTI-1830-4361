@@ -2,40 +2,45 @@ package Visual;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLayeredPane;
-import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Enfermedad;
 
-import javax.swing.border.BevelBorder;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class EditarConsulta_Paciente extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textCodigo;
-	private JTextField textFecha;
 	private JTextField textNombre;
 	private JTextField textGender;
 	private JTextField textEdad;
@@ -45,6 +50,8 @@ public class EditarConsulta_Paciente extends JDialog {
 	private DefaultTableModel enfermedadesTableModel;
 	private Enfermedad selectedEnfermedad;
 	private Consulta miConsulta;
+	private JDatePickerImpl datePicker;
+
 
 	/**
 	 * Launch the application.
@@ -55,9 +62,8 @@ public class EditarConsulta_Paciente extends JDialog {
 	 * Create the frame.
 	 */
 	public EditarConsulta_Paciente(Consulta cons) {
+		setTitle("Detalles de la Consulta");
 		miConsulta = cons;
-		loadDatos();
-		setResizable(false);
 		setBounds(100, 100, 677, 503);
 		setLocationRelativeTo(null);		
 		
@@ -79,11 +85,16 @@ public class EditarConsulta_Paciente extends JDialog {
 		layeredPane.add(panel);
 		panel.setLayout(null);
 		
+		datePicker = createDatePicker();
+	    datePicker.setBounds(427, 52, 146, 26);
+	    panel.add(datePicker);
+		
 		JLabel lblNewLabel = new JLabel("C\u00F3digo");
 		lblNewLabel.setBounds(15, 16, 69, 20);
 		panel.add(lblNewLabel);
 		
 		textCodigo = new JTextField();
+		textCodigo.setEditable(false);
 		textCodigo.setBounds(15, 52, 146, 26);
 		panel.add(textCodigo);
 		textCodigo.setColumns(10);
@@ -91,11 +102,6 @@ public class EditarConsulta_Paciente extends JDialog {
 		JLabel lblNewLabel_1 = new JLabel("Fecha");
 		lblNewLabel_1.setBounds(533, 16, 40, 20);
 		panel.add(lblNewLabel_1);
-		
-		textFecha = new JTextField();
-		textFecha.setBounds(427, 52, 146, 26);
-		panel.add(textFecha);
-		textFecha.setColumns(10);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -135,9 +141,9 @@ public class EditarConsulta_Paciente extends JDialog {
 		panel_1.add(textEdad);
 		textEdad.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(15, 146, 267, 119);
-		panel_1.add(textArea);
+		JTextArea textObservaciones = new JTextArea();
+		textObservaciones.setBounds(15, 146, 267, 119);
+		panel_1.add(textObservaciones);
 		
 		JLabel lblNewLabel_5 = new JLabel("Observaciones");
 		lblNewLabel_5.setBounds(15, 110, 124, 20);
@@ -172,6 +178,27 @@ public class EditarConsulta_Paciente extends JDialog {
 		scrollPane.setViewportView(table);
 		
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				miConsulta.setObservaciones(textObservaciones.getText());
+				miConsulta.setFecha((java.util.Date) datePicker.getModel().getValue());
+				Clinica.getInstance().modificarConsulta(miConsulta);
+				
+				int option = JOptionPane.showConfirmDialog(null,
+						"¿Quiere colocar el sujeto como paciente?",
+						"Confirmación", JOptionPane.OK_CANCEL_OPTION);
+				if (option == JOptionPane.OK_OPTION) {
+					
+				}
+				else {
+					
+				}
+				
+       		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
+                     JOptionPane.INFORMATION_MESSAGE);
+				
+			}
+		});
 		btnAceptar.setBounds(526, 426, 107, 21);
 		contentPane.add(btnAceptar);
 		
@@ -183,17 +210,47 @@ public class EditarConsulta_Paciente extends JDialog {
 		});
 		btnCancelar.setBounds(401, 426, 107, 21);
 		contentPane.add(btnCancelar);
+		loadDatos();
+
 	}
 
 	private void loadDatos() {
-		// TODO Auto-generated method stub
-		textNombre.setText(miConsulta.getMiPersona().getNombre());
-		// rellenar demas campos
-		
+		   textNombre.setText(miConsulta.getMiPersona().getNombre());
+		   UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+           modelNacim.setValue(miConsulta.getFecha());
+           datePicker.getJFormattedTextField().setText
+           (new SimpleDateFormat("yyyy-MM-dd").format(miConsulta.getFecha()));
+           textEdad.setText(edad());
+           textCodigo.setText(miConsulta.getCodigo());
+           textGender.setText(String.valueOf(miConsulta.getMiPersona().getGenero()));
+           
+	}
+
+	private String edad() {
+	    // Obtener la fecha de nacimiento de la persona
+	    Date fechaNacimiento = miConsulta.getMiPersona().getFchNacim();
+
+	    // Crear un objeto Calendar para la fecha actual
+	    Calendar fechaActual = Calendar.getInstance();
+
+	    // Crear un objeto Calendar para la fecha de nacimiento
+	    Calendar fechaNacimientoCalendar = Calendar.getInstance();
+	    fechaNacimientoCalendar.setTime(fechaNacimiento);
+
+	    // Calcular la edad
+	    int edad = fechaActual.get(Calendar.YEAR) - fechaNacimientoCalendar.get(Calendar.YEAR);
+	    // Ajustar la edad si la fecha actual todavía no ha alcanzado la fecha de nacimiento
+	    if (fechaActual.get(Calendar.MONTH) < fechaNacimientoCalendar.get(Calendar.MONTH) ||
+	        (fechaActual.get(Calendar.MONTH) == fechaNacimientoCalendar.get(Calendar.MONTH) &&
+	         fechaActual.get(Calendar.DAY_OF_MONTH) < fechaNacimientoCalendar.get(Calendar.DAY_OF_MONTH))) {
+	        edad--;
+	    }
+
+	    // Retornar la edad como cadena de texto
+	    return String.valueOf(edad);
 	}
 
 	private void loadEnfermedades() {
-		// TODO Auto-generated method stub
 		ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
 		enfermedadesTableModel.setRowCount(0);
 		for (Enfermedad enfermedad : misEnfermedades) {
@@ -203,4 +260,23 @@ public class EditarConsulta_Paciente extends JDialog {
 		}
 		
 	}
+	private JDatePickerImpl createDatePicker() {
+	    UtilDateModel model = new UtilDateModel();
+	    Properties properties = new Properties();
+	    properties.put("text.today", "Today");
+	    properties.put("text.month", "Month");
+	    properties.put("text.year", "Year");
+	    JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
+
+	    datePanel.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            java.util.Date selectedDate = (java.util.Date) model.getValue();
+	            datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(selectedDate));
+	        }
+	    });
+
+	    return new JDatePickerImpl(datePanel, null);
+	}
+	
 }

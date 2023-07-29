@@ -341,5 +341,25 @@ public class Clinica implements Serializable {
 		}
 		return false;
 	}
+
+	public void modificarConsulta(Consulta miConsulta) {
+		int index = buscarIndexConsultaByCode(miConsulta.getCodigo());
+		misConsultas.set(index, miConsulta);		
+	}
+
+	private int buscarIndexConsultaByCode(String codigo) {
+		int aux = -1;
+		boolean encontrado = false;
+		int i = 0;
+		while (i < misConsultas.size() && !encontrado) {
+			if (misConsultas.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				encontrado = true;
+				aux = i;
+			}
+			i++;
+			
+		}
+		return aux;
+	}
 }
 
