@@ -118,8 +118,11 @@ public class Clinica implements Serializable {
 
 	public Doctor buscarMedicoByCedula(String cedula) {
 		for(Persona persona : misPersonas) {
-			if(persona instanceof Doctor & persona.getCedula().equalsIgnoreCase(cedula));
+			if(persona instanceof Doctor && persona.getCedula().equalsIgnoreCase(cedula)) {
+				
+			
 				return (Doctor) persona;
+			}
 		}
 		return null;
 	}

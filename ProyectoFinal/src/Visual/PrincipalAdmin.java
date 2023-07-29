@@ -91,7 +91,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarConsulta = new JMenuItem("Listar");
 		btnListarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listar = new ListarConsultas();
+				ListarConsultas listar = new ListarConsultas(false);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}

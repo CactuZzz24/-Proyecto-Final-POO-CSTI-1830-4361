@@ -337,9 +337,9 @@ public class RegCita_Consulta extends JDialog {
    
         		
         		Cita cita = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
-        		Consulta consulta = new Consulta(fechaCita, persona, doctor, " ", textCodigo.getText());
+        		Consulta miConsulta_2 = new Consulta(fechaCita, persona, doctor, " ", textCodigo.getText());
         		
-        		Clinica.getInstance().insertarConsulta(consulta);
+        		Clinica.getInstance().insertarConsulta(miConsulta_2);
         		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
                          JOptionPane.INFORMATION_MESSAGE);
         		
@@ -391,9 +391,12 @@ public class RegCita_Consulta extends JDialog {
                         rdbMujer.setSelected(true);
                     }
 
-                    txtFechaNacim.setText(new SimpleDateFormat("yyyy-MM-dd").format(personaEncontrada.getFchNacim()));
-                    datePicker.setVisible(false);
-                    txtFechaNacim.setVisible(true);
+                    UtilDateModel model = (UtilDateModel) datePicker.getModel();
+                    model.setValue(personaEncontrada.getFchNacim());
+
+                    
+                    // Show the JDatePickerImpl
+                    datePicker.getJFormattedTextField().setVisible(true);
                 } else {
                     textNombre.setEditable(true);
                     textTel.setEditable(true);
@@ -504,11 +507,7 @@ public class RegCita_Consulta extends JDialog {
 			 textNombre.setText(miConsulta.getMiPersona().getNombre());
 			 textDir.setText(miConsulta.getMiPersona().getDireccion());
 			 textTel.setText(miConsulta.getMiPersona().getTelefono());
-			 //textFechaConsulta.set(miConsulta.getFecha());
-			 
-			 
-			
-			 
+	         textFechaConsulta.setText(new SimpleDateFormat("yyyy-MM-dd").format(miConsulta.getFecha())); 
 			 
 		 }
 		 else {

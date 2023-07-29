@@ -34,20 +34,12 @@ public class ListarConsultas extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			ListarConsultas dialog = new ListarConsultas();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
 	 */
-	public ListarConsultas() {
+	public ListarConsultas(boolean esDoctor) {
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -142,20 +134,22 @@ public class ListarConsultas extends JDialog {
 	}
 
 	public static void loadConsultas() {
-		// TODO Auto-generated method stub
-		modelo.setRowCount(0);
-		row = new Object[table.getColumnCount()];
-		
-		for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
-				row[0] = consulta.getCodigo();
-				row[1] = consulta.getMiPersona().getNombre();
-				row[2] = consulta.getMiDoctor().getNombre();
-				modelo.addRow(row);
-				
-			
-		}
-			
-		
+	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null) {
+	        return; 
+	    }
+
+	    modelo.setRowCount(0);
+	    row = new Object[table.getColumnCount()];
+
+	    for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
+	        if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
+	            row[0] = consulta.getCodigo();
+	            row[1] = consulta.getMiPersona().getNombre();
+	            row[2] = consulta.getMiDoctor().getNombre();
+	            modelo.addRow(row);
+	        }
+	    }
 	}
+
 
 }

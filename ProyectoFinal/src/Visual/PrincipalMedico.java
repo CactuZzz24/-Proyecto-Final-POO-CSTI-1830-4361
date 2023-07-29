@@ -81,7 +81,7 @@ public class PrincipalMedico extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Historial");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listarConsultas = new ListarConsultas();
+				ListarConsultas listarConsultas = new ListarConsultas(true);
 				listarConsultas.setModal(true);
 				listarConsultas.setVisible(true);
 			}
