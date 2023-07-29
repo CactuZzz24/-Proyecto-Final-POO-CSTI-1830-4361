@@ -475,8 +475,11 @@ public class RegUsuario extends JDialog {
 	private void loadPersona(Persona persona) {
 		txtCedula.setText(persona.getCedula());
 		txtNombre.setText(persona.getNombre());
-		//datePicker
-		fmtTelefono.setText(persona.getTelefono());
+		  UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+          modelNacim.setValue(persona.getFchNacim());
+          datePicker.getJFormattedTextField().setText(new 
+        		  SimpleDateFormat("yyyy-MM-dd").format(persona.getFchNacim()));		
+          fmtTelefono.setText(persona.getTelefono());
 		txtDireccion.setText(persona.getDireccion());
 		if(persona.getGenero() == 'M') {
 			btnMasculino.setSelected(true);
