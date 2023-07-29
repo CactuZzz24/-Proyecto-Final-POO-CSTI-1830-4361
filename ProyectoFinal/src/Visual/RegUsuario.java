@@ -366,7 +366,6 @@ public class RegUsuario extends JDialog {
 							
 							if(esPaciente) {
 								actualizarPersona();
-								
 							}else if(esAdmin) {
 								actualizarPersona();
 							}else {
@@ -471,7 +470,6 @@ public class RegUsuario extends JDialog {
 		}
 	}
 
-	
 	private void loadPersona(Persona persona) {
 		txtCedula.setText(persona.getCedula());
 		txtNombre.setText(persona.getNombre());
