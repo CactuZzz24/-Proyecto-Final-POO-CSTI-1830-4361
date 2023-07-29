@@ -95,11 +95,11 @@ public class RegUsuario extends JDialog {
 		String titulo = null;
 		miPersona = persona;
 		
-		if((miPersona.getPersona() instanceof Paciente && (!esPaciente || esAdmin)) || 
-				(miPersona.getPersona() instanceof Doctor && (esPaciente || esAdmin)) || (esPaciente && esAdmin)){
-			JOptionPane.showMessageDialog(null, "Se a producido un Error posiblemente en el codigo Fuente", "ERROR 404", JOptionPane.INFORMATION_MESSAGE);
-			dispose();
-		}
+//		if((miPersona.getPersona() instanceof Paciente && (!esPaciente || esAdmin)) || 
+//				(miPersona.getPersona() instanceof Doctor && (esPaciente || esAdmin)) || (esPaciente && esAdmin)){
+//			JOptionPane.showMessageDialog(null, "Se a producido un Error posiblemente en el codigo Fuente", "ERROR 404", JOptionPane.INFORMATION_MESSAGE);
+//			dispose();
+//		}
 		
 		
 		if(miPersona == null)
@@ -294,29 +294,34 @@ public class RegUsuario extends JDialog {
 				JButton okButton = new JButton("Registrar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(miPersona==null && condicionesDeRegistro()) {
-							if(esPaciente) {
+						if(miPersona==null) {
+							if(condicionesDeRegistro()) {
+								if(esPaciente) {
 								crearPaciente();
 								JOptionPane.showMessageDialog(null, "Registro de Usuario Paciente Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-							}
-							else if(esAdmin) {
-								crearPersona();
-								JOptionPane.showMessageDialog(null, "Registro de Usuario Administrador Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-							}
-							else {
-								crearDoctor();
-								JOptionPane.showMessageDialog(null, "Registro de Usuario Doctor Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+								}
+								else if(esAdmin) {
+									crearPersona();
+									JOptionPane.showMessageDialog(null, "Registro de Usuario Administrador Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+								}
+								else {
+									crearDoctor();
+									JOptionPane.showMessageDialog(null, "Registro de Usuario Doctor Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+								}
+								
+								Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
+										txtCedula.getText(), 
+										pswClave.getText(), 
+										esPaciente, 
+										esAdmin);
+								Clinica.getInstance().agregarUsuario(usuario);	
+								dispose();
+							}else {
+								JOptionPane.showMessageDialog(null, "No se an llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 							}
 							
-							Usuario usuario = new Usuario(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()), 
-									txtCedula.getText(), 
-									pswClave.getText(), 
-									esPaciente, 
-									esAdmin);
-							Clinica.getInstance().agregarUsuario(usuario);	
-							dispose();
-						}else {
-							miPersona.setNombre(pswClave.getText());
+						}else if(condicionesDeRegistro()){
+							miPersona.setClave(pswClave.getText());
 							miPersona.setNombre(txtNombreUsuario.getText());
 							
 							if(esPaciente) {

@@ -152,7 +152,12 @@ public class IniciarSesion extends JFrame {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Usuario user = Clinica.getInstance().buscarUsiarioByNombreAndClave(txtUsuario.getText(), pswClave.getText());
-				if(user!=null) {
+				if(user == null) {
+					if(!user.getClave().equals(pswClave.getText()))
+						JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta", "Error", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "El Usario ingresadd no esta registrado", "Error", JOptionPane.INFORMATION_MESSAGE);
+				}else {
 					if(user.isAdmin()) {
 						PrincipalAdmin menu = new PrincipalAdmin();
 						menu.setVisible(true);
@@ -166,11 +171,6 @@ public class IniciarSesion extends JFrame {
 							menu.setVisible(true);
 							dispose();
 					}
-				}else {
-					if(!user.getClave().equals(pswClave.getText()))
-						JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta", "Error", JOptionPane.INFORMATION_MESSAGE);
-					else
-						JOptionPane.showMessageDialog(null, "El Usario ingresadd no esta registradd", "Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
