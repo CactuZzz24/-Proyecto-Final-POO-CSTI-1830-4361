@@ -330,5 +330,13 @@ public class Clinica implements Serializable {
 		}
 		return null;
 	}
+
+	public boolean existeCedulaPersona(String cedula) {
+		for(Persona persona : misPersonas) {
+			if(persona.getCedula().equals(cedula))
+				return true;
+		}
+		return false;
+	}
 }
 
