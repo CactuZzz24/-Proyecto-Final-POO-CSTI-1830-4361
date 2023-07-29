@@ -7,15 +7,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -25,6 +32,11 @@ public class PrincipalAdmin extends JFrame {
 
 	private JPanel contentPane;
 	private Dimension dim;
+	
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
+
 
 	/**
 	 * Launch the application.
@@ -166,6 +178,37 @@ public class PrincipalAdmin extends JFrame {
 			}
 		});
 		mnNewMenu_3.add(btnListarAdmin);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Realizar Respaldo");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        Clinica clinicaActual = Clinica.getInstance();
+
+		        try {
+		            Socket socket = new Socket("127.0.0.1", 7000);
+		            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+		            oos.writeObject(clinicaActual);
+		            oos.flush();
+		            oos.close();
+		            socket.close();
+
+		            System.out.println("Clínica enviada al servidor para respaldo.");
+		            JOptionPane.showMessageDialog(null, "Clínica enviada al servidor para respaldo.",
+		                    "Respaldo exitoso", JOptionPane.INFORMATION_MESSAGE);
+		        } catch (UnknownHostException uhe) {
+		            System.out.println("No se puede acceder al servidor.");
+		            JOptionPane.showMessageDialog(null, "No se puede acceder al servidor.",
+		                    "Error de conexión", JOptionPane.ERROR_MESSAGE);
+		        } catch (IOException ioe) {
+		            System.out.println("Fallo en la comunicación: " + ioe.getMessage());
+		            JOptionPane.showMessageDialog(null, "Fallo en la comunicación: " + ioe.getMessage(),
+		                    "Error de comunicación", JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+		});
+
+		mnNewMenu_3.add(mntmNewMenuItem_2);
 		
 		JMenu mnNewMenu_4 = new JMenu("Vacunas");
 		menuBar.add(mnNewMenu_4);
