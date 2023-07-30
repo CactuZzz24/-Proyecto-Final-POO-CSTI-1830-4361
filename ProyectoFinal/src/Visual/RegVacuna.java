@@ -143,7 +143,13 @@ public class RegVacuna extends JDialog {
 						if(miVacuna == null) {
 							
 						
-						if(!txtCodigo.equals("") && !txtNombre.equals("") && !txtDescripcion.equals("") && !txtLote.equals("") && !txtDistribuidor.equals("")) {
+				            if (!txtCodigo.getText().equals("") && !txtNombre.getText().equals("") && !txtDescripcion.getText().equals("") && !txtLote.getText().equals("") && !txtDistribuidor.getText().equals("")) {
+			                if (Clinica.getInstance().buscarVacunaByCode(txtCodigo.getText()) != null ) {
+			                    JOptionPane.showMessageDialog(null, 
+			                    		"El código ya está en uso por otra vacuna.", "Error de registro",
+			                            JOptionPane.ERROR_MESSAGE);
+			                    return;
+			                }
 							Vacuna vacuna = new Vacuna(
 									txtCodigo.getText(),
 									txtNombre.getText(),

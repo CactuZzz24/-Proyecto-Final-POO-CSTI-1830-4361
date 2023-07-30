@@ -95,6 +95,9 @@ public class RegEnfermedad extends JDialog {
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!validateFields()) {
+					return;
+				}
 				if(miEnfermedad == null) {
 					
 				
@@ -161,5 +164,24 @@ public class RegEnfermedad extends JDialog {
 		textAreaDetalles.setText("");
 		comboGravedad.setSelectedIndex(0);
 	}
+	 private boolean validateFields() {
+	        String codigo = textCodigo.getText().trim();
+	        String nombre = textNombre.getText().trim();
+	        String detalles = textAreaDetalles.getText().trim();
+	        String gravedad = (String) comboGravedad.getSelectedItem();
+
+	        if (codigo.isEmpty() || nombre.isEmpty() || detalles.isEmpty() || gravedad.equals("<Gravedad de la Enfermedad>")) {
+	            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.", "Error de registro",
+	                    JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+	        if (miEnfermedad == null && Clinica.getInstance().buscarEnfermedadByCode(codigo) != null) {
+	            JOptionPane.showMessageDialog(null, "El código ya está en uso por otra enfermedad.", "Error de registro",
+	                    JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+
+	        return true;
+	    }
 
 }

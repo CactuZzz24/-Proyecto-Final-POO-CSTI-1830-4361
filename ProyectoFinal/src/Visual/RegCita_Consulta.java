@@ -311,7 +311,25 @@ public class RegCita_Consulta extends JDialog {
         }
         btnRegistrar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		if(!validateFields()) {
+        			return;
+        		}
         		if(miConsulta== null) {
+        		     java.util.Date currentDate = new java.util.Date();
+
+        		        java.util.Date birthDate = (java.util.Date) datePicker.getModel().getValue();
+        		        if (birthDate == null || birthDate.after(currentDate)) {
+        		            JOptionPane.showMessageDialog(null, "La fecha de nacimiento no es válida.",
+        		                    "Error de fecha", JOptionPane.ERROR_MESSAGE);
+        		            return; 
+        		        }
+
+        		        java.util.Date selectedDate = (java.util.Date) datePickerCita.getModel().getValue();
+        		        if (selectedDate == null || selectedDate.before(currentDate)) {
+        		            JOptionPane.showMessageDialog(null, "Seleccione una fecha válida para la cita.",
+        		                    "Error de fecha", JOptionPane.ERROR_MESSAGE);
+        		            return; 
+        		        }
         	  		String cedula = textCedula.getText();
             		String nombre = textNombre.getText();
             		java.util.Date fchNacim = (java.util.Date) datePicker.getModel().getValue();
@@ -339,6 +357,21 @@ public class RegCita_Consulta extends JDialog {
                              JOptionPane.INFORMATION_MESSAGE);
         		}
         		else {
+        		     java.util.Date currentDate = new java.util.Date();
+
+        		        java.util.Date birthDate = (java.util.Date) datePicker.getModel().getValue();
+        		        if (birthDate == null || birthDate.after(currentDate)) {
+        		            JOptionPane.showMessageDialog(null, "La fecha de nacimiento no es válida.",
+        		                    "Error de fecha", JOptionPane.ERROR_MESSAGE);
+        		            return; 
+        		        }
+
+        		        java.util.Date selectedDate = (java.util.Date) datePickerCita.getModel().getValue();
+        		        if (selectedDate == null) {
+        		            JOptionPane.showMessageDialog(null, "Seleccione una fecha válida para la cita.",
+        		                    "Error de fecha", JOptionPane.ERROR_MESSAGE);
+        		            return; 
+        		        }
         			miConsulta.setMiDoctor(selectedDoctor);
         			miConsulta.setFecha((java.util.Date) datePickerCita.getModel().getValue());
         			miConsulta.setObservaciones("");
@@ -562,4 +595,19 @@ public class RegCita_Consulta extends JDialog {
 			else
 				return 'F';
 		}
+		private boolean validateFields() {
+		    if (textCodigo.getText().isEmpty() || textSecretaria.getText().isEmpty() ||
+		        textCedula.getText().isEmpty() || textNombre.getText().isEmpty() ||
+		        textDir.getText().isEmpty() || textTel.getText().isEmpty() ||
+		        datePicker.getModel().getValue() == null || datePickerCita.getModel().getValue() == null ||
+		        (!rdbHombre.isSelected() && !rdbMujer.isSelected())) {
+		        
+		        JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios. Por favor, complete todos los campos.",
+		                "Campos vacíos", JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+
+		    return true;
+		}
+
 }

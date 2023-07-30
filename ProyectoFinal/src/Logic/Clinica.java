@@ -284,7 +284,6 @@ public class Clinica implements Serializable {
 		return aux;	}
 
 	public void uptadeVacuna(Vacuna miVacuna) {
-		// TODO Auto-generated method stub
 		int index = buscarIndexVacunaByCode(miVacuna.getCodigo());
 		if(index != -1) {
 			misVacunas.set(index, miVacuna);

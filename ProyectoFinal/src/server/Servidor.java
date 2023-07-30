@@ -23,12 +23,10 @@ public class Servidor extends Thread {
 
                 ObjectInputStream ois = new ObjectInputStream(nsfd.getInputStream());
 
-                // Leer la instancia de la clínica enviada por el cliente
                 Clinica clinica = (Clinica) ois.readObject();
                 ois.close();
                 nsfd.close();
 
-                // Generar el respaldo con la instancia de la clínica recibida
                 generarRespaldo(clinica);
 
                 System.out.println("Respaldo generado correctamente.");
@@ -43,7 +41,6 @@ public class Servidor extends Thread {
             FileOutputStream clinicaRespaldoFile = new FileOutputStream("clinica_respaldo.dat");
             ObjectOutputStream clinicaRespaldoStream = new ObjectOutputStream(clinicaRespaldoFile);
 
-            // Guardar la instancia de la clínica en el archivo clinica_respaldo.dat
             clinicaRespaldoStream.writeObject(clinica);
             clinicaRespaldoStream.close();
             clinicaRespaldoFile.close();
