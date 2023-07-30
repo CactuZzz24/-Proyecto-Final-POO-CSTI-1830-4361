@@ -26,11 +26,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+
 import Logic.Clinica;
 
 public class PrincipalAdmin extends JFrame {
-
+	JPanel panel;
 	private JPanel contentPane;
+	
 	private Dimension dim;
 	
 	static Socket sfd = null;
@@ -257,8 +263,34 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_5.add(mntmNewMenuItem_1);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		panel = new JPanel();
+		panel.setBounds(102, 56, 636, 450);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		init();
 	}
+	
+	private void init() {
+	    DefaultPieDataset data = new DefaultPieDataset();
+	    data.setValue("C", 40);
+	    data.setValue("Java", 45);
+	    data.setValue("Python", 15);
 
+	    JFreeChart chart = ChartFactory.createPieChart(
+	        "Ejemplo Rapido de Grafico en un ChartFrame",
+	        data,
+	        true,
+	        true,
+	        false
+	    );
+
+	    ChartPanel chartPanel = new ChartPanel(chart);
+	    
+	    contentPane.setLayout(new BorderLayout());
+	    
+	    contentPane.add(chartPanel, BorderLayout.CENTER);
+    }
 }
