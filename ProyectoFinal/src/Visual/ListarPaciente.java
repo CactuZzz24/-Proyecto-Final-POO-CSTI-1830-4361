@@ -97,8 +97,9 @@ public class ListarPaciente extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						//TODO Actualizar datos de Paciente
-						
+						RegUsuario actualizar = new RegUsuario(true, false, Clinica.getInstance().buscarUsuarioByPersona(selectedPaciente));
+						actualizar.setModal(true);
+						actualizar.setVisible(true);
 					}
 				});
 				btnActualizar.setEnabled(false);
@@ -117,6 +118,7 @@ public class ListarPaciente extends JDialog {
 									"Confirmacion", JOptionPane.OK_CANCEL_OPTION);
 							if (option == JOptionPane.OK_OPTION) {
 								Clinica.getInstance().eliminarPersona(selectedPaciente);
+								Clinica.getInstance().eliminarUsuario(Clinica.getInstance().buscarUsuarioByPersona(selectedPaciente));
 								loadPacientes();
 							}
 						}
@@ -145,9 +147,7 @@ public class ListarPaciente extends JDialog {
 		row = new Object[table.getColumnCount()];
 		
 		for (Persona persona : Clinica.getInstance().getMisPersonas()) {
-			if(persona instanceof Paciente) {
-				
-			
+			if(persona instanceof Paciente) {			
 				row[0] = persona.getCedula();
 				row[1] = persona.getNombre();
 				row[2] = persona.getTelefono();

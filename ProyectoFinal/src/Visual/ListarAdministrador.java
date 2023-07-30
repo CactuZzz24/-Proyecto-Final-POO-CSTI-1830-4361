@@ -95,7 +95,9 @@ public class ListarAdministrador extends JDialog {
 				btnModificar.setEnabled(false);
 				btnModificar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						RegUsuario modificar = new RegUsuario(false, true, Clinica.getClinica().buscarUsuarioByPersona(selected));
+						RegUsuario actualizar = new RegUsuario(false, true, Clinica.getClinica().buscarUsuarioByPersona(selected));
+						actualizar.setModal(true);
+						actualizar.setVisible(true);
 					}
 				});
 				btnModificar.setActionCommand("OK");

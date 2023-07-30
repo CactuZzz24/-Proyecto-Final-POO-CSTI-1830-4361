@@ -150,7 +150,6 @@ public class Clinica implements Serializable {
 
 	public void insertarPersona(Persona persona) {
 		misPersonas.add(persona);
-		
 	}
 
 	public void uptadePersona(Persona miPersona) {
@@ -176,11 +175,9 @@ public class Clinica implements Serializable {
 
 	public void eliminarPersona(Persona selectedPersona) {
 		misPersonas.remove(selectedPersona);
-		
 	}
 
 	public Enfermedad buscarEnfermedadByCode(String codigo) {
-		
 		Enfermedad aux = null;
 		boolean encontrado = false;
 		int i = 0;
@@ -188,10 +185,8 @@ public class Clinica implements Serializable {
 			if(misEnfermedades.get(i).getCodigo().equalsIgnoreCase(codigo)) {
 				encontrado = true;
 				aux = misEnfermedades.get(i);
-				
 			}
 			i++;
-			
 		}
 		return aux;
 	}
@@ -202,17 +197,12 @@ public class Clinica implements Serializable {
 	}
 
 	public Consulta buscarConsultaByCode(String codigo) {
-		
-
 		for (Consulta consulta : misConsultas) {
 			if(consulta.getCodigo().equals(codigo))
-			{
-				return consulta;
-			}
-			
+				return consulta;			
 		}
 		return 	null;
-				}
+	}
 
 	public void eliminarConsulta(Consulta selectedConsulta) {
 		misConsultas.remove(selectedConsulta);
@@ -223,13 +213,9 @@ public class Clinica implements Serializable {
 	private int cantidadPaciententesGenero(char genero) {
 		contador = 0;
 		for (Persona persona : misPersonas) {
-			
 			if(persona instanceof Paciente && persona.getGenero() == genero) {
 				contador++;
-				
 			}
-			
-			
 		}
 		return contador;
 	}
@@ -237,13 +223,9 @@ public class Clinica implements Serializable {
 	private int cantidadPacientesAtendidos(){
 		contador = 0;
 		for (Persona persona : misPersonas) {
-			
 			if(persona instanceof Paciente && ((Paciente) persona).isVigilancia() == false) {
 				contador++;
-				
 			}
-			
-			
 		}
 		return contador;
 	}
@@ -359,6 +341,10 @@ public class Clinica implements Serializable {
 			
 		}
 		return aux;
+	}
+
+	public void eliminarUsuario(Usuario usuario) {
+		misUsuarios.remove(usuario);
 	}
 }
 

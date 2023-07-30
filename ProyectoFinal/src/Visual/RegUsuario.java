@@ -335,7 +335,7 @@ public class RegUsuario extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(miPersona==null) {
-							if(condicionesDeRegistro()) {
+							if(condicionesUsuarioNuevo()) {
 								if(esPaciente) {
 								crearPaciente();
 								JOptionPane.showMessageDialog(null, "Registro de Usuario Paciente Exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
@@ -360,7 +360,7 @@ public class RegUsuario extends JDialog {
 								JOptionPane.showMessageDialog(null, "No se an llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 							}
 							
-						}else if(condicionesDeRegistro()){
+						}else if(condicionesUsuario()){
 							miPersona.setClave(pswClave.getText());
 							miPersona.setNombre(txtNombreUsuario.getText());
 							
@@ -371,9 +371,17 @@ public class RegUsuario extends JDialog {
 							}else {
 								actualizarPersona();
 							}
+							dispose();
+							if(esPaciente)
+								ListarPaciente.loadPacientes();
+							else if(esAdmin)
+								ListarAdministrador.loadAdministradores();
+							else
+								ListarDoctor.loadDoctores();
+						}else {
+							JOptionPane.showMessageDialog(null, "No se an llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}
 				}
-				
 					
 				private void actualizarPersona(){
 					miPersona.getPersona().setCedula(txtCedula.getText());
@@ -384,19 +392,30 @@ public class RegUsuario extends JDialog {
 					miPersona.getPersona().setTelefono(fmtTelefono.getText());
 				}
 				
-				private boolean condicionesDeRegistro() {
-						if(!pswClave.getText().equals(pswConfirmar.getText())){
-							JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
+				private boolean condicionesUsuarioNuevo() {
+						if(condicionesUsuario()) {
+							return true;
+						}else if(Clinica.getInstance().existeCedulaRol(txtCedula.getText(), esPaciente, esAdmin) ) {
+							JOptionPane.showMessageDialog(null, "Ya existe un Usuario de esta clase con la cedula " + txtCedula.getText(), "Error", JOptionPane.INFORMATION_MESSAGE);
 							return false;
-						}else if(!txtNombreUsuario.getText().equals("") && !txtCedula.equals("") && !txtNombre.equals("") && 
-								!pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
-								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) && 
-								!Clinica.getInstance().existeCedulaRol(txtCedula.getText(), esPaciente, esAdmin) && 
-								!Clinica.getInstance().existeNombreUsuario(txtNombreUsuario.getText())) {
-								return true;
+						}else if(Clinica.getInstance().existeNombreUsuario(txtNombreUsuario.getText())) {
+							JOptionPane.showMessageDialog(null, "Ya existe un Usuario con este nombre" + txtCedula.getText(), "Error", JOptionPane.INFORMATION_MESSAGE);
+							return false;
 						}
 						return false;
 					}
+				
+				private boolean condicionesUsuario() {
+					if(!pswClave.getText().equals(pswConfirmar.getText())){
+						JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
+						return false;
+					}else if(!txtNombreUsuario.getText().equals("") && !txtCedula.equals("") && !txtNombre.equals("") && 
+								!pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
+								&& (btnMasculino.isSelected() || btnFemenino.isSelected())) {
+						return true;
+					}
+					return false;
+				}
 				
 				private char charGenero() {
 					if(btnMasculino.isSelected())
@@ -462,6 +481,8 @@ public class RegUsuario extends JDialog {
 			txtCedula.setEnabled(false);
 			datePicker.setEnabled(false);
 			txtNombreUsuario.setText(miPersona.getNombre());
+			pswClave.setText(miPersona.getClave());
+			pswConfirmar.setText(miPersona.getClave());
 			loadPersona(miPersona.getPersona());
 			if(miPersona.getPersona() instanceof Paciente)
 				loadPaciente();
@@ -473,11 +494,10 @@ public class RegUsuario extends JDialog {
 	private void loadPersona(Persona persona) {
 		txtCedula.setText(persona.getCedula());
 		txtNombre.setText(persona.getNombre());
-		  UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
-          modelNacim.setValue(persona.getFchNacim());
-          datePicker.getJFormattedTextField().setText(new 
-        		  SimpleDateFormat("yyyy-MM-dd").format(persona.getFchNacim()));		
-          fmtTelefono.setText(persona.getTelefono());
+		UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+        modelNacim.setValue(persona.getFchNacim());
+        datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(persona.getFchNacim()));		
+        fmtTelefono.setText(persona.getTelefono());
 		txtDireccion.setText(persona.getDireccion());
 		if(persona.getGenero() == 'M') {
 			btnMasculino.setSelected(true);

@@ -95,9 +95,9 @@ public class ListarDoctor extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						//TODO Logica para actualizar el doctor;
-						
+						RegUsuario actualizar = new RegUsuario(false, false, Clinica.getInstance().buscarUsuarioByPersona(selectedDoctor));
+						actualizar.setModal(true);
+						actualizar.setVisible(true);
 					}
 				});
 				btnActualizar.setEnabled(false);
