@@ -70,8 +70,8 @@ public class ListarAdministrador extends JDialog {
 						public void mouseClicked(MouseEvent e) {
 							int index = table.getSelectedRow();
 							if(index >= 0) {
-								btnModificar.setVisible(true);
-								btnEliminar.setVisible(true);
+								btnModificar.setEnabled(true);
+								btnEliminar.setEnabled(true);
 								selected = Clinica.getInstance().buscarPersonaByCedula(table.getValueAt(index, 0).toString());
 							}
 						}
