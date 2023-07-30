@@ -23,10 +23,13 @@ import Logic.Usuario;
 import java.awt.FlowLayout;
 
 import javax.print.attribute.standard.Media;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -48,11 +51,10 @@ import java.awt.SystemColor;
 import javax.swing.JPasswordField;
 
 public class IniciarSesion extends JFrame {
-
+	private Image imgLogo = new ImageIcon(IniciarSesion.class.getResource("/Icons/iconoSalud.png")).getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField pswClave;
-
 	/**
 	 * Launch the application.
 	 */
@@ -109,10 +111,10 @@ public class IniciarSesion extends JFrame {
 	public IniciarSesion() {
 		setTitle("Iniciar Sesion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 325, 263);
+		setBounds(100, 100, 325, 335);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(192, 192, 192));
+		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -120,7 +122,7 @@ public class IniciarSesion extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBounds(12, 13, 282, 94);
+		panel.setBounds(12, 86, 282, 94);
 		contentPane.add(panel);
 		
 		JLabel lblCedula = new JLabel("Usuario:");
@@ -142,7 +144,7 @@ public class IniciarSesion extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(12, 122, 282, 81);
+		panel_1.setBounds(12, 194, 282, 81);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -197,6 +199,25 @@ public class IniciarSesion extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("\u00BFNo tienes un Usuario?:");
 		lblNewLabel_1.setBounds(12, 17, 147, 16);
 		panel_1.add(lblNewLabel_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(255, 255, 240));
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_2.setBounds(12, 13, 282, 60);
+		contentPane.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setBounds(22, 6, 54, 47);
+		panel_2.add(lblLogo);
+		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogo.setIcon(new ImageIcon(imgLogo));
+		
+		JLabel lblNewLabel = new JLabel("Clinica POO");
+		lblNewLabel.setForeground(new Color(30, 144, 255));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel.setBounds(124, 22, 106, 16);
+		panel_2.add(lblNewLabel);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
