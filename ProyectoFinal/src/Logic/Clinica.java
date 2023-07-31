@@ -445,7 +445,40 @@ public class Clinica implements Serializable {
 
 	    return edad;
 	}
-	
-	
+
+	public ArrayList<Integer> getEdadDoctores() {
+		ArrayList<Integer> lista = new ArrayList<Integer>();
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Doctor)
+				lista.add(calcEdad(persona));
+		}
+		if(lista.size()>0)
+			return lista;
+		else
+			return null;
+	}
+
+	public ArrayList<Date> getDiasConsultas() {
+		ArrayList<Date> lista = new ArrayList<Date>();
+		for(Consulta consulta : misConsultas) {
+			if(consulta != null)
+				lista.add(consulta.getFecha());
+		}
+		if(lista.size()>0)
+			return lista;
+		else
+			return null;
+	}
+
+	public int calcCantGeneroByCond(boolean isPaciente, boolean isAdmin, boolean isMasculino) {
+		int cont = 0;
+		for(Persona persona : misPersonas) {
+			if(((persona instanceof Paciente && isPaciente) || (persona instanceof Doctor && !isAdmin && !isPaciente) || 
+					(!(persona instanceof Paciente) && !(persona instanceof Doctor) && isAdmin)) && 
+					((isMasculino && persona.getGenero() == 'M') || (!isMasculino && persona.getGenero() == 'F')))
+				cont++;
+		}
+		return cont;
+	}	
 }
 
