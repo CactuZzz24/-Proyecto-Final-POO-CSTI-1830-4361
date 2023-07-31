@@ -116,7 +116,9 @@ public class ListarDoctor extends JDialog {
 									"Confirmacion", JOptionPane.OK_CANCEL_OPTION);
 							if (option == JOptionPane.OK_OPTION) {
 								Clinica.getInstance().eliminarPersona(selectedDoctor);
+								Clinica.getInstance().eliminarUsuario(Clinica.getInstance().buscarUsuarioByPersona(selectedDoctor));
 								loadDoctores();
+								PrincipalAdmin.actualizarGraficas();
 							}
 						}
 					}

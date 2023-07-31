@@ -117,6 +117,7 @@ public class ListarVacuna extends JDialog {
 							if (option == JOptionPane.OK_OPTION) {
 								Clinica.getInstance().eliminarVacuna(selectedVacuna);
 								loadVacunas();
+								PrincipalAdmin.actualizarGraficas();
 							}
 						}
 					}

@@ -373,5 +373,11 @@ public class Clinica implements Serializable {
 	    }
 	    return cont;
 	}
+
+	public String generarResumenClinico(Paciente paciente) {
+		return null;
+	}
+	
+	
 }
 
