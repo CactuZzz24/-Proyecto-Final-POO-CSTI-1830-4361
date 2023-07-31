@@ -332,11 +332,10 @@ public class PrincipalAdmin extends JFrame {
 	    panelTrafico.setBounds(371, 13, 732, 265);
 	    contentPane.add(panelTrafico);
 	    panelTrafico.setLayout(new BorderLayout(0, 0));
-	    
-	    	    // Display the Chart in a JPanel
-	    	    ChartPanel grafTrafico = new ChartPanel(chart);
-	    	    panelTrafico.add(grafTrafico, BorderLayout.CENTER);
-	    	    grafTrafico.setPreferredSize(new Dimension(450, 350)); // Set preferred size of the chartPanel
-	    	    grafTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+    
+	    ChartPanel grafTrafico = new ChartPanel(chart);
+	    panelTrafico.add(grafTrafico, BorderLayout.CENTER);
+	    grafTrafico.setPreferredSize(new Dimension(450, 350));
+	    grafTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
 }

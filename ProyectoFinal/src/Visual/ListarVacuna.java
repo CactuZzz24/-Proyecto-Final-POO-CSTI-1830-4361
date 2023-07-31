@@ -84,7 +84,8 @@ public class ListarVacuna extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					loadVacunas();			}
+					loadVacunas();			
+				}
 			}
 		}
 		{

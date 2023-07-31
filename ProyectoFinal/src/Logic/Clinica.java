@@ -375,7 +375,11 @@ public class Clinica implements Serializable {
 	}
 
 	public String generarResumenClinico(Paciente paciente) {
-		return null;
+		StringBuilder resumenClinico = new StringBuilder();
+	    for (int i = 0; i < paciente.getResumenClinico().getNotas().size(); i++) {
+	        resumenClinico.append("Nota #" + String.valueOf(i) + "\n" + paciente.getResumenClinico().getNotas().get(i) + "\n\n");
+	    }
+	    return resumenClinico.toString();
 	}
 	
 	
