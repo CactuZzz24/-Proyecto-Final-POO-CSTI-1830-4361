@@ -84,7 +84,8 @@ public class ListarVacuna extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					loadVacunas();			}
+					loadVacunas();			
+				}
 			}
 		}
 		{
@@ -117,6 +118,7 @@ public class ListarVacuna extends JDialog {
 							if (option == JOptionPane.OK_OPTION) {
 								Clinica.getInstance().eliminarVacuna(selectedVacuna);
 								loadVacunas();
+								PrincipalAdmin.actualizarGraficas();
 							}
 						}
 					}

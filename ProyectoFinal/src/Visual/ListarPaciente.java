@@ -120,6 +120,7 @@ public class ListarPaciente extends JDialog {
 								Clinica.getInstance().eliminarPersona(selectedPaciente);
 								Clinica.getInstance().eliminarUsuario(Clinica.getInstance().buscarUsuarioByPersona(selectedPaciente));
 								loadPacientes();
+								PrincipalAdmin.actualizarGraficas();
 							}
 						}
 					}

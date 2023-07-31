@@ -121,8 +121,7 @@ public class ListarConsultas extends JDialog {
 							}
 						}
 					}
-						
-					
+
 				});
 				btnEliminar.setEnabled(false);
 				btnEliminar.setActionCommand("Cancel");

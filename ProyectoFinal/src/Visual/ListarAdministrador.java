@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -106,6 +107,22 @@ public class ListarAdministrador extends JDialog {
 			}
 			{
 				btnEliminar = new JButton("Eliminar");
+				btnEliminar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if (selected != null) {
+							int option = JOptionPane.showConfirmDialog(null,
+									"Esta seguro que desea eliminar a la persona de cedula: "
+											+ selected.getCedula(),
+									"Confirmacion", JOptionPane.OK_CANCEL_OPTION);
+							if (option == JOptionPane.OK_OPTION) {
+								Clinica.getInstance().eliminarPersona(selected);
+								Clinica.getInstance().eliminarUsuario(Clinica.getInstance().buscarUsuarioByPersona(selected));
+								loadAdministradores();
+								
+							}
+						}
+					}
+				});
 				btnEliminar.setEnabled(false);
 				btnEliminar.setActionCommand("OK");
 				buttonPane.add(btnEliminar);
@@ -127,7 +144,7 @@ public class ListarAdministrador extends JDialog {
 		modelo.setRowCount(0);
 		row = new Object[table.getColumnCount()];
 		for(Persona persona : Clinica.getInstance().getMisPersonas()) {
-			if(!(persona instanceof Paciente && persona instanceof Doctor)){
+			if(!(persona instanceof Paciente) && !(persona instanceof Doctor)){
 				row[0] = persona.getCedula();
 				row[1] = persona.getNombre();
 				row[2] = persona.getTelefono();

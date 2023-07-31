@@ -29,9 +29,12 @@ import javax.swing.border.EmptyBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Logic.Clinica;
+import javax.swing.border.EtchedBorder;
 
 public class PrincipalAdmin extends JFrame {
 	static JPanel grafUsarios;
@@ -267,6 +270,7 @@ public class PrincipalAdmin extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		graficaUsarios();
+		graficaTrafico();
 	}
 	
 	public static void actualizarGraficas() {
@@ -298,11 +302,40 @@ public class PrincipalAdmin extends JFrame {
 	    contentPane.setLayout(null);
 
 	    ChartPanel chartPanel = new ChartPanel(chart);
+	    chartPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 	    chartPanel.setBounds(12, 13, 347, 265);
 	    contentPane.add(chartPanel);
 	    
 	    grafUsarios = new JPanel();
 	    chartPanel.add(grafUsarios);
 	    grafUsarios.setLayout(null);
+    }
+	
+	private void graficaTrafico() {
+		 DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
+		 line_chart_dataset.addValue(80, "visitas", "Julio");
+		 line_chart_dataset.addValue(300, "visitas", "Agosto");
+		 line_chart_dataset.addValue(600, "visitas", "Septiembre");
+		 line_chart_dataset.addValue(1200, "visitas", "Octubre");
+		 line_chart_dataset.addValue(2400, "visitas", "Noviembre");
+
+		 // Create the Chart
+		 JFreeChart chart = ChartFactory.createLineChart(
+	            "Trafico",
+	            "Mes", "Visitas",
+	            line_chart_dataset,
+	            PlotOrientation.VERTICAL,
+	            true, true, false);
+	    
+	    JPanel panelTrafico = new JPanel();
+	    panelTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+	    panelTrafico.setBounds(371, 13, 732, 265);
+	    contentPane.add(panelTrafico);
+	    panelTrafico.setLayout(new BorderLayout(0, 0));
+    
+	    ChartPanel grafTrafico = new ChartPanel(chart);
+	    panelTrafico.add(grafTrafico, BorderLayout.CENTER);
+	    grafTrafico.setPreferredSize(new Dimension(450, 350));
+	    grafTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
 }
