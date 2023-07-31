@@ -45,7 +45,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PrincipalPaciente extends JFrame {
-
+	ChartPanel chartPanel;
+	private static DefaultCategoryDataset dataset;
 	private JPanel contentPane = new JPanel();
 	private Dimension dim;
 	private static JTable tableConsultasFuturas;
@@ -177,11 +178,16 @@ public class PrincipalPaciente extends JFrame {
 		grafEnfermedadesPaciente(paciente);
 	}
 	
+	public void actualizarGraficas(Paciente paciente) {
+		loadVacunacion(paciente);
+		loadConsultasFuturo(paciente);
+	}
+	
 	private void loadVacunacion(Paciente paciente) {
 		if (Clinica.getInstance() == null || Clinica.getInstance().getMisVacunas() == null || paciente == null) {
 	        return; 
 	    }
-		 modeloVacunacion.setRowCount(0);
+		modeloVacunacion.setRowCount(0);
 	    rowVacunacion = new Object[tableVacunacion.getColumnCount()];
 	    for (Vacuna vacuna : paciente.getResumenClinico().getHojaVacunacion()) {
             rowConsultasFuturas[0] = vacuna.getNombre();
@@ -207,12 +213,30 @@ public class PrincipalPaciente extends JFrame {
 	    }
 	}
 	
-	 private void grafEnfermedadesPaciente(Paciente paciente) {
+	private void actualizarEnfermedadesPaciente(Paciente paciente) {
+		dataset.clear();
+		int cantidadLeves = 0;
+	    int cantidadModeradas = 0;
+	    int cantidadGraves = 0;
+
+	    for (Enfermedad enfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
+	        if (enfermedad.getGravedad().equalsIgnoreCase("Leve")) {
+	            cantidadLeves++;
+	        } else if (enfermedad.getGravedad().equalsIgnoreCase("Moderada")) {
+	            cantidadModeradas++;
+	        } else if (enfermedad.getGravedad().equalsIgnoreCase("Grave")) {
+	            cantidadGraves++;
+	        }
+	    }
+	    chartPanel.repaint();
+	}
+	
+	private void grafEnfermedadesPaciente(Paciente paciente) {
 		if (paciente == null || paciente.getResumenClinico() == null || paciente.getResumenClinico().getMisEnfermedades() == null) {
 			return;
 	    }
 
-	    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	    dataset = new DefaultCategoryDataset();
 
 	    int cantidadLeves = 0;
 	    int cantidadModeradas = 0;
@@ -259,7 +283,7 @@ public class PrincipalPaciente extends JFrame {
         contentPane.add(panelEnfermedades);
 	    panelEnfermedades.setLayout(new BorderLayout(0, 0));
 		
-	    ChartPanel chartPanel = new ChartPanel(chart);
+	    chartPanel = new ChartPanel(chart);
 	    chartPanel.setPreferredSize(new Dimension(400, 400));
 
 	    panelEnfermedades.removeAll();
