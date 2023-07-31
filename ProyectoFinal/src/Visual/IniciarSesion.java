@@ -1,54 +1,36 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import javax.swing.border.EtchedBorder;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
-import Logic.Clinica;
-import Logic.Consulta;
-import Logic.Doctor;
-import Logic.Paciente;
-import Logic.ResumenClinico;
-import Logic.Usuario;
-
-import java.awt.FlowLayout;
-
-import javax.print.attribute.standard.Media;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.nio.file.FileSystemNotFoundException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.ResourceBundle.Control;
 
-import javax.swing.UIManager;
-import javax.swing.SwingConstants;
-import java.awt.SystemColor;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+
+import Logic.Clinica;
+import Logic.Doctor;
+import Logic.Paciente;
+import Logic.Usuario;
 
 public class IniciarSesion extends JFrame {
 	private Image imgLogo = new ImageIcon(IniciarSesion.class.getResource("/Icons/iconoSalud.png")).getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
