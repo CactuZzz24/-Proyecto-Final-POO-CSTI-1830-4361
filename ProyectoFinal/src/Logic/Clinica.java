@@ -346,5 +346,32 @@ public class Clinica implements Serializable {
 	public void eliminarUsuario(Usuario usuario) {
 		misUsuarios.remove(usuario);
 	}
+
+	public Number calcCantPacientes() {
+	    int cont = 0;
+	    for (Usuario usuario: misUsuarios) {
+	        if (usuario.getPersona() instanceof Paciente)
+	            cont++;
+	    }
+	    return cont;
+	}
+
+	public Number calcCantDoctores() {
+	    int cont = 0;
+	    for (Usuario usuario: misUsuarios) {
+	        if (usuario.getPersona() instanceof Doctor)
+	            cont++;
+	    }
+	    return cont;
+	}
+
+	public Number calcCantAdmins() {
+	    int cont = 0;
+	    for (Usuario usuario: misUsuarios) {
+	        if (!(usuario.getPersona() instanceof Paciente || usuario.getPersona() instanceof Doctor))
+	            cont++;
+	    }
+	    return cont;
+	}
 }
 

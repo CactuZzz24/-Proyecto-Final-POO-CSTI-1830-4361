@@ -34,11 +34,12 @@ import org.jfree.data.general.DefaultPieDataset;
 import Logic.Clinica;
 
 public class PrincipalAdmin extends JFrame {
-	JPanel panel;
+	static JPanel grafUsarios;
+	private static DefaultPieDataset data;
 	private JPanel contentPane;
 	
 	private Dimension dim;
-	
+
 	static Socket sfd = null;
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
@@ -265,32 +266,43 @@ public class PrincipalAdmin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		panel = new JPanel();
-		panel.setBounds(102, 56, 636, 450);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		init();
+		graficaUsarios();
 	}
 	
-	private void init() {
-	    DefaultPieDataset data = new DefaultPieDataset();
-	    data.setValue("C", 40);
-	    data.setValue("Java", 45);
-	    data.setValue("Python", 15);
+	public static void actualizarGraficas() {
+		actualizarGraficaUsarios();
+	}
+	
+	private static void actualizarGraficaUsarios() {
+		data.clear();
+	    data.setValue("Pacientes", Clinica.getInstance().calcCantPacientes());
+	    data.setValue("Doctores",  Clinica.getInstance().calcCantDoctores());
+	    data.setValue("Administradores", Clinica.getInstance().calcCantAdmins());
+
+	    grafUsarios.repaint();
+	}
+
+	private void graficaUsarios() {
+		data = new DefaultPieDataset();
+	    data.setValue("Pacientes", Clinica.getInstance().calcCantPacientes());
+	    data.setValue("Doctores",  Clinica.getInstance().calcCantDoctores());
+	    data.setValue("Administradores", Clinica.getInstance().calcCantAdmins());
 
 	    JFreeChart chart = ChartFactory.createPieChart(
-	        "Ejemplo Rapido de Grafico en un ChartFrame",
+	        "Usuarios en la Plataforma",
 	        data,
 	        true,
 	        true,
 	        false
 	    );
+	    contentPane.setLayout(null);
 
 	    ChartPanel chartPanel = new ChartPanel(chart);
+	    chartPanel.setBounds(12, 13, 347, 265);
+	    contentPane.add(chartPanel);
 	    
-	    contentPane.setLayout(new BorderLayout());
-	    
-	    contentPane.add(chartPanel, BorderLayout.CENTER);
+	    grafUsarios = new JPanel();
+	    chartPanel.add(grafUsarios);
+	    grafUsarios.setLayout(null);
     }
 }
