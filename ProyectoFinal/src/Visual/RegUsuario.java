@@ -145,6 +145,15 @@ public class RegUsuario extends JDialog {
 		panel.add(lblNewLabel_5);
 		
 		txtNombre = new JTextField();
+		txtNombre.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				if(!Character.isAlphabetic(key)) {
+					e.consume();
+				}
+			}
+		});
 		txtNombre.setBounds(69, 68, 116, 22);
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
@@ -155,6 +164,15 @@ public class RegUsuario extends JDialog {
 		txtDireccion.setColumns(10);
 		
 		fmtTelefono = new JFormattedTextField(createPhoneFormatter());
+		fmtTelefono.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				if(!Character.isDigit(key)) {
+					e.consume();
+				}
+			}
+		});
 		fmtTelefono.setBounds(69, 206, 116, 22);
 		panel.add(fmtTelefono);
 		
@@ -164,6 +182,15 @@ public class RegUsuario extends JDialog {
 		panel.add(datePicker);
 		
 		txtCedula = new JTextField();
+		txtCedula.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				if(!Character.isDigit(key)) {
+					e.consume();
+				}
+			}
+		});
 		txtCedula.setBounds(70, 23, 116, 22);
 		panel.add(txtCedula);
 		txtCedula.setColumns(10);
@@ -199,7 +226,7 @@ public class RegUsuario extends JDialog {
 		
 		btnFemenino = new JRadioButton("F");
 		btnFemenino.setBackground(Color.WHITE);
-		btnFemenino.setBounds(63, 2, 41, 18);
+		btnFemenino.setBounds(56, 2, 41, 18);
 		panel_4.add(btnFemenino);
 		
 		JLabel lblNewLabel_4 = new JLabel("Genero:");
@@ -237,10 +264,28 @@ public class RegUsuario extends JDialog {
 		panel_1.add(lblConfirmarClave);
 		
 		pswClave = new JPasswordField();
+		pswClave.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				if(!Character.isLetterOrDigit(key)) {
+					e.consume();
+				}
+			}
+		});
 		pswClave.setBounds(19, 98, 116, 22);
 		panel_1.add(pswClave);
 		
 		pswConfirmar = new JPasswordField();
+		pswConfirmar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				if(!Character.isLetterOrDigit(key)) {
+					e.consume();
+				}
+			}
+		});
 		pswConfirmar.setBounds(19, 158, 116, 22);
 		panel_1.add(pswConfirmar);		
 		
@@ -249,6 +294,15 @@ public class RegUsuario extends JDialog {
 		panel_1.add(lblNombreDeUsuario);
 		
 		txtNombreUsuario = new JTextField();
+		txtNombreUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				if(!Character.isLetterOrDigit(key)) {
+					e.consume();
+				}
+			}
+		});
 		txtNombreUsuario.setColumns(10);
 		txtNombreUsuario.setBounds(19, 38, 116, 22);
 		panel_1.add(txtNombreUsuario);

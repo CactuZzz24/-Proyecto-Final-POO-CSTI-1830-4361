@@ -36,7 +36,12 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Logic.Clinica;
+import Logic.Enfermedad;
+
 import javax.swing.border.EtchedBorder;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class PrincipalAdmin extends JFrame {
 	private static JPanel grafUsarios;
@@ -48,6 +53,7 @@ public class PrincipalAdmin extends JFrame {
 	private static DefaultCategoryDataset dataEdadpacientes;
 	private static DefaultCategoryDataset dataEdadDoctores;
 	private static DefaultCategoryDataset dataConsultas;
+	private static DefaultCategoryDataset dataEnfermedades;
 	private static JPanel contentPane;
 	
 	private Dimension dim;
@@ -276,6 +282,7 @@ public class PrincipalAdmin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
 		crearGraficas();
 	}
 	
@@ -298,7 +305,7 @@ public class PrincipalAdmin extends JFrame {
     }
 
     private static void actualizarGraficaUsarios() {
-        data.clear();
+    	data.clear();
         data.setValue("Pacientes", Clinica.getInstance().calcCantPacientes());
         data.setValue("Doctores", Clinica.getInstance().calcCantDoctores());
         data.setValue("Administradores", Clinica.getInstance().calcCantAdmins());
@@ -547,4 +554,37 @@ public class PrincipalAdmin extends JFrame {
         grafConsultas.setPreferredSize(new Dimension(450, 350));
         grafConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
+    
+    private void actualizarEnfermedades() {
+    	
+    }
+    
+    private void createEnfermedades() {
+    	
+    	dataEnfermedades = new DefaultCategoryDataset();
+    	
+    	ArrayList<Integer> cantPorEnferemdad = new ArrayList<Integer>();
+    	
+    	for(Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
+    		dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+    	}
+    	
+    	JFreeChart chart = ChartFactory.createBarChart(
+    	        "Cantidad de Enfermedades",
+    	        "Enfermedad",
+    	        "Cantidad",
+    	        dataEnfermedades,
+    	        PlotOrientation.VERTICAL,
+    	        true,
+    	        true,
+    	        false
+    	);
+    	
+    	JScrollPane panelEnfermedades = new JScrollPane();
+        panelEnfermedades.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        panelEnfermedades.setBounds(1115, 13, 762, 490);
+        contentPane.add(panelEnfermedades);
+    }
+    
+    
 }
