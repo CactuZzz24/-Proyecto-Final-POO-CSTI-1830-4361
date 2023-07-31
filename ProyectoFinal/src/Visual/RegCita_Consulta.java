@@ -451,7 +451,6 @@ public class RegCita_Consulta extends JDialog {
 
 
                     
-                    // Show the JDatePickerImpl
                     datePicker.getJFormattedTextField().setVisible(true);
                 } else {
                     textNombre.setEditable(true);

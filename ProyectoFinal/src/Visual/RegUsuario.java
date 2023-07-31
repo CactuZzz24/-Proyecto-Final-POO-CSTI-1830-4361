@@ -178,7 +178,7 @@ public class RegUsuario extends JDialog {
 				if(Clinica.getInstance().existeCedulaPersona(txtCedula.getText()) && Clinica.getInstance().existeCedulaRol(txtCedula.getText(), esPaciente, esAdmin)) {
 					loadPersona(Clinica.getInstance().buscarPersonaByCedula(txtCedula.getText()));
 				}else {
-					JOptionPane.showMessageDialog(null, "No se a encontrado los datos de una persona con esta cedula", "Fallo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No se han encontrado los datos de una persona con esta cedula", "Fallo", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -357,7 +357,7 @@ public class RegUsuario extends JDialog {
 								Clinica.getInstance().agregarUsuario(usuario);	
 								dispose();
 							}else {
-								JOptionPane.showMessageDialog(null, "No se an llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "No se han llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 							}
 							
 						}else if(condicionesUsuario()){
@@ -379,7 +379,7 @@ public class RegUsuario extends JDialog {
 							else
 								ListarDoctor.loadDoctores();
 						}else {
-							JOptionPane.showMessageDialog(null, "No se an llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "No se han llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}
 						PrincipalAdmin.actualizarGraficas();
 				}

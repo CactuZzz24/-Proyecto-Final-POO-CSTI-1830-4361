@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Logic.Clinica;
 import Logic.Enfermedad;
+import Logic.Paciente;
+import Logic.ResumenClinico;
 
 public class ListarEnfermedad extends JDialog {
 
@@ -32,20 +35,12 @@ public class ListarEnfermedad extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			ListarEnfermedad dialog = new ListarEnfermedad();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
 	 */
-	public ListarEnfermedad() {
+	public ListarEnfermedad(boolean esPaciente, Paciente miPaciente) {
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -82,7 +77,16 @@ public class ListarEnfermedad extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					loadEnfermedades();				}
+			        if (esPaciente) {
+			        	
+			            loadEnfermedadesPaciente(miPaciente);
+			        } else {
+			            loadEnfermedades();
+			        }
+			    }
+
+								
+			}
 			}
 		}
 		{
@@ -135,7 +139,7 @@ public class ListarEnfermedad extends JDialog {
 				buttonPane.add(btnNewButton);
 			}
 		}
-	}
+	
 
 	public static void loadEnfermedades() {
 		modelo.setRowCount(0);
@@ -153,5 +157,30 @@ row = new Object[table.getColumnCount()];
 			
 		
 	}
+	  public static void loadEnfermedadesPaciente(Paciente miPaciente) {
+	        modelo.setRowCount(0);
+	        row = new Object[table.getColumnCount()];
 
-}
+	        if (miPaciente != null && miPaciente.getResumenClinico() != null) {
+	            ArrayList<Enfermedad> misEnfermedades = miPaciente.getResumenClinico().getMisEnfermedades();
+	            if (misEnfermedades == null || misEnfermedades.isEmpty()) {
+	                JOptionPane.showMessageDialog(null, "El paciente no tiene enfermedades registradas.", "Información", JOptionPane.INFORMATION_MESSAGE);
+	                return;
+	            } else {
+	                for (Enfermedad enfermedad : misEnfermedades) {
+	                    row[0] = enfermedad.getCodigo();
+	                    row[1] = enfermedad.getNombre();
+	                    row[2] = enfermedad.getGravedad();
+	                    modelo.addRow(row);
+	                }
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(null, "El paciente no tiene resumen clínico registrado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+	            
+	        }
+	        return;
+	        
+	    }
+	}
+
+
