@@ -373,7 +373,7 @@ public class Clinica implements Serializable {
 	    }
 	    return cont;
 	}
-<<<<<<< HEAD
+
 	public void actualizaRegistroPaciente(Paciente paciente, Enfermedad selectedEnfermedad, Vacuna selectedVacuna, String observaciones, Consulta miConsulta) {
 	    ResumenClinico resumenClinico = paciente.getResumenClinico();
 
@@ -382,8 +382,8 @@ public class Clinica implements Serializable {
 	    }
 
 	    if (selectedEnfermedad != null) {
-	        ArrayList<Enfermedad> misEnfermedades = resumenClinico.getMisEnfermedades();
-	        misEnfermedades.add(selectedEnfermedad);
+	        ArrayList<Enfermedad> enfermedadesPaciente = resumenClinico.getMisEnfermedades();
+	        enfermedadesPaciente.add(selectedEnfermedad);
 	    }
 
 	    if (selectedVacuna != null) {
@@ -397,15 +397,16 @@ public class Clinica implements Serializable {
 	    }
 
 	    if (miConsulta != null) {
-	        ArrayList<Consulta> misConsultas = paciente.getMisConsultas();
-	        misConsultas.add(miConsulta);
+	        ArrayList<Consulta> consultasPaciente = paciente.getMisConsultas();
+	        consultasPaciente.add(miConsulta);
 	    }
 
 	    paciente.setResumenClinico(resumenClinico);
+	    uptadePersona(paciente);
 	}
 
 
-=======
+
 
 	public String generarResumenClinico(Paciente paciente) {
 		StringBuilder resumenClinico = new StringBuilder();
@@ -416,6 +417,5 @@ public class Clinica implements Serializable {
 	}
 	
 	
->>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361
 }
 

@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Logic.Clinica;
 import Logic.Consulta;
+import Logic.Paciente;
 import Logic.Persona;
 
 import javax.swing.JScrollPane;
@@ -39,7 +40,7 @@ public class ListarConsultas extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ListarConsultas(boolean esDoctor) {
+	public ListarConsultas(boolean esDoctor, Paciente paciente) {
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -76,7 +77,16 @@ public class ListarConsultas extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					loadConsultas();				}
+					if (esDoctor && paciente == null) {
+                        loadConsultas();
+                    } else if (!esDoctor && paciente != null) {
+                        loadConsultasPaciente(paciente);
+                    }		
+                    else if (!esDoctor) {
+                    	loadConsultas();
+						
+					}
+				}
 			}
 		}
 		{
@@ -138,6 +148,21 @@ public class ListarConsultas extends JDialog {
 			}
 		}
 	}
+
+	public static void loadConsultasPaciente(Paciente paciente) {
+        modelo.setRowCount(0);
+        row = new Object[table.getColumnCount()];
+
+        for (Consulta consulta : paciente.getMisConsultas()) {
+            if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
+                row[0] = consulta.getCodigo();
+                row[1] = consulta.getMiPersona().getNombre();
+                row[2] = consulta.getMiDoctor().getNombre();
+                modelo.addRow(row);
+            }
+        }
+    }
+
 
 	public static void loadConsultas() {
 	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null) {

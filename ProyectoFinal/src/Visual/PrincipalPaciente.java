@@ -41,6 +41,8 @@ import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PrincipalPaciente extends JFrame {
 
@@ -54,6 +56,8 @@ public class PrincipalPaciente extends JFrame {
 	private Dimension dimVacunacion;
 	private static Object[] rowVacunacion;
 	private static DefaultTableModel modeloVacunacion;
+	
+	private Paciente miPaciente = null;
 
 	/**
 	 * Launch the application.
@@ -74,7 +78,8 @@ public class PrincipalPaciente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PrincipalPaciente(Paciente paciente) {		
+	public PrincipalPaciente(Paciente paciente) {	
+		miPaciente = paciente;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -110,9 +115,23 @@ public class PrincipalPaciente extends JFrame {
 		mnMiInformacion.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Mis Enfermedades");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarEnfermedad listar = new ListarEnfermedad(true, miPaciente);
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnMiInformacion.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Historial de Consultas");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarConsultas listar = new ListarConsultas(false, miPaciente);
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnMiInformacion.add(mntmNewMenuItem_3);
 		
 		JButton btnNewButton = new JButton("Agendar Cita");

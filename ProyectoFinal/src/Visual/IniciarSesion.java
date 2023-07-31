@@ -137,12 +137,12 @@ public class IniciarSesion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Usuario user = Clinica.getInstance().buscarUsiarioByNombreAndClave(txtUsuario.getText(), pswClave.getText());
 				if(user == null) {
-					JOptionPane.showMessageDialog(null, "El Usario ingresado no esta registrado", "Error", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "El Usuario ingresado no esta registrado", "Error", JOptionPane.INFORMATION_MESSAGE);
 				}else {
 					if(!user.getClave().equals(pswClave.getText())) {
 						JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta", "Error", JOptionPane.INFORMATION_MESSAGE);
 					}else if(!user.getNombre().equals(txtUsuario.getText())){
-						JOptionPane.showMessageDialog(null, "El Usario ingresado no esta registrado", "Error", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "El Usuario ingresado no esta registrado", "Error", JOptionPane.INFORMATION_MESSAGE);
 					}else if(user.isAdmin()) {
 						PrincipalAdmin menu = new PrincipalAdmin();
 						menu.setVisible(true);

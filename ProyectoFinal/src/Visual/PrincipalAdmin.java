@@ -113,7 +113,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarConsulta = new JMenuItem("Listar");
 		btnListarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listar = new ListarConsultas(false);
+				ListarConsultas listar = new ListarConsultas(false, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
@@ -259,7 +259,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listar");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarEnfermedad listar = new ListarEnfermedad();
+				ListarEnfermedad listar = new ListarEnfermedad(false, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}

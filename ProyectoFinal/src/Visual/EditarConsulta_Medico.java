@@ -237,6 +237,7 @@ public class EditarConsulta_Medico extends JDialog {
 			                Clinica.getInstance().insertarPersona(nuevoPaciente);
 
 			                Clinica.getInstance().actualizaRegistroPaciente(nuevoPaciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
+			                
 
 			                JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
 			                        JOptionPane.INFORMATION_MESSAGE);
