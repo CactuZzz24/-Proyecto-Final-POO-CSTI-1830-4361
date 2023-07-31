@@ -32,12 +32,15 @@ import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.omg.CORBA.TRANSACTION_REQUIRED;
 
 import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Enfermedad;
+import Logic.Persona;
+import Logic.Usuario;
 
-public class EditarConsulta_Paciente extends JDialog {
+public class EditarConsulta_Medico extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textCodigo;
@@ -61,7 +64,7 @@ public class EditarConsulta_Paciente extends JDialog {
 	/**
 	 * Create the frame.
 	 */
-	public EditarConsulta_Paciente(Consulta cons) {
+	public EditarConsulta_Medico(Consulta cons) {
 		setTitle("Detalles de la Consulta");
 		miConsulta = cons;
 		setBounds(100, 100, 677, 503);
@@ -151,7 +154,7 @@ public class EditarConsulta_Paciente extends JDialog {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_2.setBounds(396, 120, 147, 145);
+		panel_2.setBounds(327, 120, 216, 145);
 		panel_1.add(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
@@ -188,6 +191,9 @@ public class EditarConsulta_Paciente extends JDialog {
 						"¿Quiere colocar el sujeto como paciente?",
 						"Confirmación", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
+					RegUsuario reg = new RegUsuario(true, false, Clinica.getInstance().buscarUsuarioByPersona(miConsulta.getMiPersona()));
+					reg.setModal(true);
+					reg.setVisible(true);
 					
 				}
 				else {
@@ -227,26 +233,20 @@ public class EditarConsulta_Paciente extends JDialog {
 	}
 
 	private String edad() {
-	    // Obtener la fecha de nacimiento de la persona
 	    Date fechaNacimiento = miConsulta.getMiPersona().getFchNacim();
 
-	    // Crear un objeto Calendar para la fecha actual
 	    Calendar fechaActual = Calendar.getInstance();
 
-	    // Crear un objeto Calendar para la fecha de nacimiento
 	    Calendar fechaNacimientoCalendar = Calendar.getInstance();
 	    fechaNacimientoCalendar.setTime(fechaNacimiento);
 
-	    // Calcular la edad
 	    int edad = fechaActual.get(Calendar.YEAR) - fechaNacimientoCalendar.get(Calendar.YEAR);
-	    // Ajustar la edad si la fecha actual todavía no ha alcanzado la fecha de nacimiento
 	    if (fechaActual.get(Calendar.MONTH) < fechaNacimientoCalendar.get(Calendar.MONTH) ||
 	        (fechaActual.get(Calendar.MONTH) == fechaNacimientoCalendar.get(Calendar.MONTH) &&
 	         fechaActual.get(Calendar.DAY_OF_MONTH) < fechaNacimientoCalendar.get(Calendar.DAY_OF_MONTH))) {
 	        edad--;
 	    }
 
-	    // Retornar la edad como cadena de texto
 	    return String.valueOf(edad);
 	}
 

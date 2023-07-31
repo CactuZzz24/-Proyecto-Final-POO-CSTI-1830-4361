@@ -88,7 +88,7 @@ public class ListarConsultas extends JDialog {
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(esDoctor) {
-							EditarConsulta_Paciente uptade = new EditarConsulta_Paciente(selectedConsulta);
+							EditarConsulta_Medico uptade = new EditarConsulta_Medico(selectedConsulta);
 							uptade.setModal(true);
 							uptade.setVisible(true);
 						}

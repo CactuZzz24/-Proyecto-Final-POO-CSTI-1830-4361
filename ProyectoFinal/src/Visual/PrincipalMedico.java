@@ -95,6 +95,13 @@ public class PrincipalMedico extends JFrame {
 		mnNewMenu_1.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listar");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarPaciente listar = new ListarPaciente();
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 		
 		contentPane = new JPanel();
