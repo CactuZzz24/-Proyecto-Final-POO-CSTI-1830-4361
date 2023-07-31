@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Consulta implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8403556167981137462L;
 	private String codigo;
 	private Date fecha;

@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Cita implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6563299755341571991L;
 	private String secretaria;
 	private String codigo;
