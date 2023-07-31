@@ -373,5 +373,36 @@ public class Clinica implements Serializable {
 	    }
 	    return cont;
 	}
+	public void actualizaRegistroPaciente(Paciente paciente, Enfermedad selectedEnfermedad, Vacuna selectedVacuna, String observaciones, Consulta miConsulta) {
+	    ResumenClinico resumenClinico = paciente.getResumenClinico();
+
+	    if (resumenClinico == null) {
+	        resumenClinico = new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>());
+	    }
+
+	    if (selectedEnfermedad != null) {
+	        ArrayList<Enfermedad> misEnfermedades = resumenClinico.getMisEnfermedades();
+	        misEnfermedades.add(selectedEnfermedad);
+	    }
+
+	    if (selectedVacuna != null) {
+	        ArrayList<Vacuna> hojaVacunacion = resumenClinico.getHojaVacunacion();
+	        hojaVacunacion.add(selectedVacuna);
+	    }
+
+	    if (observaciones != null) {
+	        ArrayList<String> notas = resumenClinico.getNotas();
+	        notas.add(observaciones);
+	    }
+
+	    if (miConsulta != null) {
+	        ArrayList<Consulta> misConsultas = paciente.getMisConsultas();
+	        misConsultas.add(miConsulta);
+	    }
+
+	    paciente.setResumenClinico(resumenClinico);
+	}
+
+
 }
 
