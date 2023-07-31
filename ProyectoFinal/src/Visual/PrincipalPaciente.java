@@ -45,13 +45,12 @@ import javax.swing.JTable;
 public class PrincipalPaciente extends JFrame {
 
 	private JPanel contentPane = new JPanel();
+	private Dimension dim;
 	private static JTable tableConsultasFuturas;
-	private Dimension dimConsultasFuturas;
 	private static Object[] rowConsultasFuturas;
 	private static DefaultTableModel modeloConsultasFuturas;
 	
 	private static JTable tableVacunacion;
-	private Dimension dimVacunacion;
 	private static Object[] rowVacunacion;
 	private static DefaultTableModel modeloVacunacion;
 
@@ -85,10 +84,8 @@ public class PrincipalPaciente extends JFrame {
 					clinicaWrite = new ObjectOutputStream(clinica_2);
 					clinicaWrite.writeObject(Clinica.getInstance());
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -96,8 +93,8 @@ public class PrincipalPaciente extends JFrame {
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		dimConsultasFuturas = super.getToolkit().getScreenSize();
-		super.setSize(dimConsultasFuturas.width, dimConsultasFuturas.height-100);
+		dim = super.getToolkit().getScreenSize();
+		super.setSize(dim.width, dim.height-100);
 		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -105,9 +102,6 @@ public class PrincipalPaciente extends JFrame {
 		
 		JMenu mnMiInformacion = new JMenu("Mi Informacion");
 		menuBar.add(mnMiInformacion);
-		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Hoja de Vacunacion");
-		mnMiInformacion.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Mis Enfermedades");
 		mnMiInformacion.add(mntmNewMenuItem_2);
@@ -125,7 +119,7 @@ public class PrincipalPaciente extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(955, 13, 342, 374);
+		scrollPane.setBounds(955, 13, 400, 374);
 		contentPane.add(scrollPane);
 		
 		JTextPane textPane = new JTextPane();
@@ -234,6 +228,11 @@ public class PrincipalPaciente extends JFrame {
 	    plot.setBackgroundPaint(Color.lightGray);
 	    plot.setDomainGridlinePaint(Color.white);
 	    plot.setRangeGridlinePaint(Color.white);
+	    
+	    org.jfree.chart.renderer.category.CategoryItemRenderer renderer = plot.getRendererForDataset(plot.getDataset(0));
+	    
+	    Color lightBlue = new Color(128, 200, 255);
+	    renderer.setSeriesPaint(0, lightBlue);
 
 		JPanel panelEnfermedades = new JPanel();
         panelEnfermedades.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -244,7 +243,6 @@ public class PrincipalPaciente extends JFrame {
 	    ChartPanel chartPanel = new ChartPanel(chart);
 	    chartPanel.setPreferredSize(new Dimension(400, 400));
 
-	    // Limpiar el panel de enfermedades antes de agregar la nueva gráfica
 	    panelEnfermedades.removeAll();
 	    panelEnfermedades.add(chartPanel);
 	    panelEnfermedades.revalidate();

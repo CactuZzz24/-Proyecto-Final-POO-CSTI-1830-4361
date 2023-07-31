@@ -2,6 +2,8 @@ package Logic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 
@@ -380,6 +382,34 @@ public class Clinica implements Serializable {
 	        resumenClinico.append("Nota #" + String.valueOf(i) + "\n" + paciente.getResumenClinico().getNotas().get(i) + "\n\n");
 	    }
 	    return resumenClinico.toString();
+	}
+	
+	public ArrayList<Integer> getEdadesPacientes(){
+		ArrayList<Integer> lista = new ArrayList<Integer>();
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Paciente)
+				lista.add(calcEdad(persona));
+		}
+		if(lista.size()>0)
+			return lista;
+		else
+			return null;
+	}
+	
+	private int calcEdad(Persona persona) {
+	    Date fechaNacimiento = persona.getFchNacim();
+	    Calendar fechaActual = Calendar.getInstance();
+	    Calendar fechaNacimientoCalendar = Calendar.getInstance();
+	    fechaNacimientoCalendar.setTime(fechaNacimiento);
+
+	    int edad = fechaActual.get(Calendar.YEAR) - fechaNacimientoCalendar.get(Calendar.YEAR);
+	    if (fechaActual.get(Calendar.MONTH) < fechaNacimientoCalendar.get(Calendar.MONTH) ||
+	        (fechaActual.get(Calendar.MONTH) == fechaNacimientoCalendar.get(Calendar.MONTH) &&
+	         fechaActual.get(Calendar.DAY_OF_MONTH) < fechaNacimientoCalendar.get(Calendar.DAY_OF_MONTH))) {
+	        edad--;
+	    }
+
+	    return edad;
 	}
 	
 	

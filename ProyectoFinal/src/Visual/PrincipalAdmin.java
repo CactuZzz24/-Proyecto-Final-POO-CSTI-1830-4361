@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,6 +40,7 @@ import javax.swing.border.EtchedBorder;
 public class PrincipalAdmin extends JFrame {
 	static JPanel grafUsarios;
 	private static DefaultPieDataset data;
+	private static DefaultCategoryDataset dataEdadpacientes;
 	private JPanel contentPane;
 	
 	private Dimension dim;
@@ -78,10 +80,8 @@ public class PrincipalAdmin extends JFrame {
 					clinicaWrite = new ObjectOutputStream(clinica_2);
 					clinicaWrite.writeObject(Clinica.getInstance());
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -270,11 +270,12 @@ public class PrincipalAdmin extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		graficaUsarios();
-		graficaTrafico();
+		graficaEdadPacientes();
 	}
 	
 	public static void actualizarGraficas() {
 		actualizarGraficaUsarios();
+		actualizarEdadPacientes();
 	}
 	
 	private static void actualizarGraficaUsarios() {
@@ -311,31 +312,76 @@ public class PrincipalAdmin extends JFrame {
 	    grafUsarios.setLayout(null);
     }
 	
-	private void graficaTrafico() {
-		 DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
-		 line_chart_dataset.addValue(80, "visitas", "Julio");
-		 line_chart_dataset.addValue(300, "visitas", "Agosto");
-		 line_chart_dataset.addValue(600, "visitas", "Septiembre");
-		 line_chart_dataset.addValue(1200, "visitas", "Octubre");
-		 line_chart_dataset.addValue(2400, "visitas", "Noviembre");
-
-		 // Create the Chart
+	private static void actualizarEdadPacientes() {
+		data.clear();
+		ArrayList<Integer> edades = Clinica.getInstance().getEdadesPacientes();
+		if(edades == null) 
+			return;
+		
+		ArrayList<Integer> uniqueEdades = new ArrayList<>();
+		ArrayList<Integer> countEdades = new ArrayList<>();
+	
+		for (Integer edad : edades) {
+		    if (!uniqueEdades.contains(edad)) {
+		        uniqueEdades.add(edad);
+		        countEdades.add(1);
+		    } else {
+		        int index = uniqueEdades.indexOf(edad);
+		        int count = countEdades.get(index);
+		        countEdades.set(index, count + 1);
+		    }
+		}
+		
+		for (int i = 0; i < uniqueEdades.size(); i++) {
+		    int edad = uniqueEdades.get(i);
+		    int cantidad = countEdades.get(i);
+		    dataEdadpacientes.addValue(cantidad, "Pacientes", String.valueOf(edad));
+		}
+	}
+	
+	private void graficaEdadPacientes() {
+		dataEdadpacientes = new DefaultCategoryDataset();
+		
+		ArrayList<Integer> edades = Clinica.getInstance().getEdadesPacientes();
+		if(edades == null) 
+			return;
+		
+		ArrayList<Integer> uniqueEdades = new ArrayList<>();
+		ArrayList<Integer> countEdades = new ArrayList<>();
+	
+		for (Integer edad : edades) {
+		    if (!uniqueEdades.contains(edad)) {
+		        uniqueEdades.add(edad);
+		        countEdades.add(1);
+		    } else {
+		        int index = uniqueEdades.indexOf(edad);
+		        int count = countEdades.get(index);
+		        countEdades.set(index, count + 1);
+		    }
+		}
+		
+		for (int i = 0; i < uniqueEdades.size(); i++) {
+		    int edad = uniqueEdades.get(i);
+		    int cantidad = countEdades.get(i);
+		    dataEdadpacientes.addValue(cantidad, "Pacientes", String.valueOf(edad));
+		}
+		
 		 JFreeChart chart = ChartFactory.createLineChart(
-	            "Trafico",
-	            "Mes", "Visitas",
-	            line_chart_dataset,
-	            PlotOrientation.VERTICAL,
-	            true, true, false);
-	    
-	    JPanel panelTrafico = new JPanel();
-	    panelTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-	    panelTrafico.setBounds(371, 13, 732, 265);
-	    contentPane.add(panelTrafico);
-	    panelTrafico.setLayout(new BorderLayout(0, 0));
-    
-	    ChartPanel grafTrafico = new ChartPanel(chart);
-	    panelTrafico.add(grafTrafico, BorderLayout.CENTER);
-	    grafTrafico.setPreferredSize(new Dimension(450, 350));
-	    grafTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		        "Paciente por Edades",
+		        "Edad", "Cantidad",
+		        dataEdadpacientes,
+		        PlotOrientation.VERTICAL,
+		        true, true, false);
+		
+		JPanel panelTrafico = new JPanel();
+		panelTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelTrafico.setBounds(371, 13, 732, 265);
+		contentPane.add(panelTrafico);
+		panelTrafico.setLayout(new BorderLayout(0, 0));
+		
+		ChartPanel grafTrafico = new ChartPanel(chart);
+		panelTrafico.add(grafTrafico, BorderLayout.CENTER);
+		grafTrafico.setPreferredSize(new Dimension(450, 350));
+		grafTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
 }
