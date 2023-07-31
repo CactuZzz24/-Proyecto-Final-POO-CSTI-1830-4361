@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Logic.Clinica;
 import Logic.Consulta;
+import Logic.Doctor;
 import Logic.Paciente;
 import Logic.Persona;
 
@@ -39,8 +40,9 @@ public class ListarConsultas extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param medico 
 	 */
-	public ListarConsultas(boolean esDoctor, Paciente paciente) {
+	public ListarConsultas(boolean esDoctor, Paciente paciente, Doctor medico) {
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -77,15 +79,13 @@ public class ListarConsultas extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					if (esDoctor && paciente == null) {
-                        loadConsultas();
-                    } else if (!esDoctor && paciente != null) {
-                        loadConsultasPaciente(paciente);
-                    }		
-                    else if (!esDoctor) {
-                    	loadConsultas();
-						
-					}
+					   if (esDoctor && medico != null) {
+				            loadConsultasDoctor(medico);
+				        } else if (!esDoctor && paciente != null) {
+				            loadConsultasPaciente(paciente);
+				        } else if (!esDoctor) {
+				            loadConsultas();
+				        }
 				}
 			}
 		}
@@ -181,6 +181,26 @@ public class ListarConsultas extends JDialog {
 	        }
 	    }
 	}
+	public static void loadConsultasDoctor(Doctor medico) {
+	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null) {
+	        return; 
+	    }
+
+	    modelo.setRowCount(0);
+	    row = new Object[table.getColumnCount()];
+
+	    for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
+	        if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
+	            if (consulta.getMiDoctor().equals(medico)) {
+	                row[0] = consulta.getCodigo();
+	                row[1] = consulta.getMiPersona().getNombre();
+	                row[2] = consulta.getMiDoctor().getNombre();
+	                modelo.addRow(row);
+	            }
+	        }
+	    }
+	}
+
 
 
 }

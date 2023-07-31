@@ -218,51 +218,40 @@ public class EditarConsulta_Medico extends JDialog {
 				miConsulta.setFecha((java.util.Date) datePicker.getModel().getValue());
 				Clinica.getInstance().modificarConsulta(miConsulta);
 				
-				 Persona persona = miConsulta.getMiPersona();
-				    if (persona instanceof Paciente) {
-				        Paciente paciente = (Paciente) persona;
-				        Clinica.getInstance().actualizaRegistroPaciente(paciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
-				   
+				Persona persona = miConsulta.getMiPersona();
+				if (persona instanceof Paciente) {
+				    Paciente paciente = (Paciente) persona;
+				    Clinica.getInstance().actualizaRegistroPaciente(paciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
+				    JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+				    Paciente pacienteExistente = Clinica.getInstance().buscarPacienteByCedula(persona.getCedula());
+				    if (pacienteExistente == null) {
+				        Paciente nuevoPaciente = new Paciente(persona.getCedula(), persona.getNombre(), 
+				            persona.getFchNacim(), persona.getTelefono(), persona.getDireccion(), 
+				            persona.getGenero(), new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
+				            new ArrayList<Consulta>(), listSangre.getSelectedValue().toString(), false);
 
-				        JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
-				                JOptionPane.INFORMATION_MESSAGE);
-				    } else {
+				        Clinica.getInstance().insertarPersona(nuevoPaciente);
 
-				       
-			                Paciente nuevoPaciente = new Paciente(persona.getCedula(), persona.getNombre(), 
-			                		persona.getFchNacim(), persona.getTelefono(), persona.getDireccion(), 
-			                		persona.getGenero(), new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), new ArrayList<Consulta>(), listSangre.getSelectedValue().toString()
-			                		, false);
+				        Clinica.getInstance().actualizaRegistroPaciente(nuevoPaciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
 
-			                Clinica.getInstance().insertarPersona(nuevoPaciente);
-
-			                Clinica.getInstance().actualizaRegistroPaciente(nuevoPaciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
-			                
-
-			                JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
-			                        JOptionPane.INFORMATION_MESSAGE);
-				        } 
-				    
-				    int option = JOptionPane.showConfirmDialog(null,
-		                    "¿Quieres crear un usuario para el paciente?",
-		                    "Confirmación", JOptionPane.OK_CANCEL_OPTION);
-		            if (option == JOptionPane.OK_OPTION) {
-		            	  Paciente nuevoPaciente = new Paciente(persona.getCedula(), persona.getNombre(), 
-			                		persona.getFchNacim(), persona.getTelefono(), persona.getDireccion(), 
-			                		persona.getGenero(), new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), new ArrayList<Consulta>(), listSangre.getSelectedValue().toString()
-			                		, false);
-		            	Usuario aux = new Usuario(nuevoPaciente,  nuevoPaciente.getNombre().toLowerCase()
-		            			, "password", true, false);
-		            	Clinica.getInstance().agregarUsuario(aux);
-		            	RegUsuario reg = new RegUsuario(true, false, Clinica.getInstance().buscarUsuarioByPersona(nuevoPaciente));
-		            	reg.setModal(true);
-		            	reg.setVisible(true);
-		            
-		            }
-				    
-				    else {
-				            
+				        JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				        
+				        int option = JOptionPane.showConfirmDialog(null,
+				                "¿Quieres crear un usuario para el paciente?",
+				                "Confirmación", JOptionPane.OK_CANCEL_OPTION);
+				        if (option == JOptionPane.OK_OPTION) {
+				            Usuario aux = new Usuario(nuevoPaciente, nuevoPaciente.getNombre().toLowerCase(),
+				                    "password", true, false);
+				            Clinica.getInstance().agregarUsuario(aux);
+				            RegUsuario reg = new RegUsuario(true, false, Clinica.getInstance().buscarUsuarioByPersona(nuevoPaciente));
+				            reg.setModal(true);
+				            reg.setVisible(true);
 				        }
+				    } else {
+				        JOptionPane.showMessageDialog(null, "La persona asociada a la consulta ya existe como paciente.", "Error", JOptionPane.ERROR_MESSAGE);
+				    }
+				}
 
 				        JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
 				                JOptionPane.INFORMATION_MESSAGE);

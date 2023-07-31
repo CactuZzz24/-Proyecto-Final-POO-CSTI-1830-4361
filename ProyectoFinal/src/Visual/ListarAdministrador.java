@@ -118,7 +118,7 @@ public class ListarAdministrador extends JDialog {
 								Clinica.getInstance().eliminarPersona(selected);
 								Clinica.getInstance().eliminarUsuario(Clinica.getInstance().buscarUsuarioByPersona(selected));
 								loadAdministradores();
-								
+								PrincipalAdmin.actualizarGraficas();
 							}
 						}
 					}

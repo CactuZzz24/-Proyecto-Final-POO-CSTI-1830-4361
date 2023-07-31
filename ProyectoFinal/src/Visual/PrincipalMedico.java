@@ -81,7 +81,7 @@ public class PrincipalMedico extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Historial");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listarConsultas = new ListarConsultas(true, null);
+				ListarConsultas listarConsultas = new ListarConsultas(true, null, medico);
 				listarConsultas.setModal(true);
 				listarConsultas.setVisible(true);
 			}
@@ -92,12 +92,19 @@ public class PrincipalMedico extends JFrame {
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Registrar");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegUsuario regUsuario = new RegUsuario(true, false, null);
+				regUsuario.setModal(true);
+				regUsuario.setVisible(true);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listar");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarPaciente listar = new ListarPaciente();
+				ListarPaciente listar = new ListarPaciente(true, medico);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
