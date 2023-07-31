@@ -3,9 +3,6 @@ package Logic;
 import java.io.Serializable;
 
 public class Usuario implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8876152773256353458L;
 	private Persona persona;
 	private String nombreUsuario;

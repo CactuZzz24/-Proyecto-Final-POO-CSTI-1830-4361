@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Paciente extends Persona {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private ResumenClinico resumenClinico;
 	private ArrayList<Consulta> misConsultas;

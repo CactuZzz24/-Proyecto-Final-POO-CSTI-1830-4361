@@ -8,10 +8,6 @@ import java.util.Iterator;
 
 
 public class Clinica implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3422390151419653470L;
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Vacuna> misVacunas;
