@@ -350,7 +350,7 @@ public class RegCita_Consulta extends JDialog {
        
             		
             		Cita cita = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
-            		Consulta miConsulta_2 = new Consulta(fechaCita, persona, doctor, " ", textCodigo.getText());
+            		Consulta miConsulta_2 = new Consulta(fechaCita, persona, doctor, " ", textCodigo.getText(), cita);
             		
             		Clinica.getInstance().insertarConsulta(miConsulta_2);
             		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",

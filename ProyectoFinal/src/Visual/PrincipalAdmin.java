@@ -36,6 +36,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Logic.Clinica;
+import Logic.UptadeGraficas;
+
 import javax.swing.border.EtchedBorder;
 
 public class PrincipalAdmin extends JFrame {
@@ -55,6 +57,9 @@ public class PrincipalAdmin extends JFrame {
 	static Socket sfd = null;
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
+	
+    private UptadeGraficas updateThread;
+
 
 
 	/**
@@ -94,6 +99,9 @@ public class PrincipalAdmin extends JFrame {
 				
 			}
 		});
+		
+		updateThread = new UptadeGraficas();
+        updateThread.start();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		dim = super.getToolkit().getScreenSize();
@@ -547,4 +555,11 @@ public class PrincipalAdmin extends JFrame {
         grafConsultas.setPreferredSize(new Dimension(450, 350));
         grafConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
+    @Override
+    public void dispose() {
+        // Stop the update thread when the application is closing
+        updateThread.stopUpdating();
+        super.dispose();
+    }
 }
+

@@ -14,10 +14,10 @@ public class Enfermedad implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1920903675029221677L;
-	String codigo;
-	String nombre;
-	String descripcion;
-	String gravedad; // Puede ser "Leve", "Moderada" o "Grave"
+	private String codigo;
+	private String nombre;
+	private String descripcion;
+	private String gravedad; // Puede ser "Leve", "Moderada" o "Grave"
 	/**
 	 * @param codigo
 	 * @param nombre
