@@ -140,7 +140,7 @@ public class PrincipalPaciente extends JFrame {
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Historial de Consultas");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listar = new ListarConsultas(false, miPaciente);
+				ListarConsultas listar = new ListarConsultas(false, miPaciente, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}

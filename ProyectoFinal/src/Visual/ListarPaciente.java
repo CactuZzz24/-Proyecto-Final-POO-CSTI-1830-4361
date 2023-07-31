@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.xml.bind.ParseConversionEvent;
 
 import Logic.Clinica;
+import Logic.Consulta;
+import Logic.Doctor;
 import Logic.Paciente;
 import Logic.Persona;
 import Logic.Vacuna;
@@ -32,24 +34,21 @@ public class ListarPaciente extends JDialog {
 	private static DefaultTableModel modelo;
 	private JButton btnEliminar;
 	private JButton btnActualizar;
+	private static Doctor doc = null;
+	private static boolean esDoctor = false;
+	 
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			ListarPaciente dialog = new ListarPaciente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
 	 */
-	public ListarPaciente() {
+	public ListarPaciente(boolean Doc, Doctor doctor) {
+		esDoctor = Doc;
+		 doc = doctor;
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -144,22 +143,35 @@ public class ListarPaciente extends JDialog {
 	}
 
 	public static void loadPacientes() {
-		modelo.setRowCount(0);
-		row = new Object[table.getColumnCount()];
-		
-		for (Persona persona : Clinica.getInstance().getMisPersonas()) {
-			if(persona instanceof Paciente) {			
-				row[0] = persona.getCedula();
-				row[1] = persona.getNombre();
-				row[2] = persona.getTelefono();
-				row[3] = ((Paciente) persona).isVigilancia();
-				modelo.addRow(row);
-			}
-				
-			
-		}
-			
-		
+	    modelo.setRowCount(0);
+	    row = new Object[table.getColumnCount()];
+
+	    if (esDoctor && doc != null) {
+	        for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
+	            Doctor attendingDoctor = consulta.getMiDoctor();
+	            if (attendingDoctor != null && attendingDoctor.equals(doc)) {
+	                Persona persona = consulta.getMiPersona();
+	                if (persona != null && persona instanceof Paciente) {
+	                    row[0] = persona.getCedula();
+	                    row[1] = persona.getNombre();
+	                    row[2] = persona.getTelefono();
+	                    row[3] = ((Paciente) persona).isVigilancia();
+	                    modelo.addRow(row);
+	                }
+	            }
+	        }
+	    } else {
+	        for (Persona persona : Clinica.getInstance().getMisPersonas()) {
+	            if (persona instanceof Paciente) {
+	                row[0] = persona.getCedula();
+	                row[1] = persona.getNombre();
+	                row[2] = persona.getTelefono();
+	                row[3] = ((Paciente) persona).isVigilancia();
+	                modelo.addRow(row);
+	            }
+	        }
+	    }
 	}
+
 
 }

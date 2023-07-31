@@ -435,7 +435,7 @@ public class RegUsuario extends JDialog {
 						}else {
 							JOptionPane.showMessageDialog(null, "No se han llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}
-						PrincipalAdmin.actualizarGraficas();
+						// PrincipalAdmin.actualizarGraficas();
 				}
 					
 				private void actualizarPersona(){

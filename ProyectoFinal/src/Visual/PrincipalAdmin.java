@@ -36,7 +36,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Logic.Clinica;
+<<<<<<< HEAD
 import Logic.Enfermedad;
+=======
+import Logic.UptadeGraficas;
+>>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361.git
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
@@ -61,6 +65,9 @@ public class PrincipalAdmin extends JFrame {
 	static Socket sfd = null;
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
+	
+    private UptadeGraficas updateThread;
+
 
 
 	/**
@@ -100,6 +107,9 @@ public class PrincipalAdmin extends JFrame {
 				
 			}
 		});
+		
+		updateThread = new UptadeGraficas();
+        updateThread.start();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		dim = super.getToolkit().getScreenSize();
@@ -126,7 +136,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarConsulta = new JMenuItem("Listar");
 		btnListarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listar = new ListarConsultas(false, null);
+				ListarConsultas listar = new ListarConsultas(false, null, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
@@ -172,7 +182,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarPaciente = new JMenuItem("Listar");
 		btnListarPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarPaciente listar = new ListarPaciente();
+				ListarPaciente listar = new ListarPaciente(false, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
@@ -554,6 +564,7 @@ public class PrincipalAdmin extends JFrame {
         grafConsultas.setPreferredSize(new Dimension(450, 350));
         grafConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
+<<<<<<< HEAD
     
     private void actualizarEnfermedades() {
     	
@@ -587,4 +598,13 @@ public class PrincipalAdmin extends JFrame {
     }
     
     
+=======
+    @Override
+    public void dispose() {
+        // Stop the update thread when the application is closing
+        updateThread.stopUpdating();
+        super.dispose();
+    }
+>>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361.git
 }
+

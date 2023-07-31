@@ -11,6 +11,12 @@ public class Enfermedad implements Serializable {
 	private String nombre;
 	private String descripcion;
 	private String gravedad; // Puede ser "Leve", "Moderada" o "Grave"
+	/**
+	 * @param codigo
+	 * @param nombre
+	 * @param descripcion
+	 * @param gravedad
+	 */
 	
 	public Enfermedad(String codigo, String nombre, String descripcion, String gravedad) {
 		super();

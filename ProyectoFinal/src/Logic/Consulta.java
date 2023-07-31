@@ -5,20 +5,28 @@ import java.util.Date;
 
 public class Consulta implements Serializable {
 	private static final long serialVersionUID = -8403556167981137462L;
-	String codigo;
-	Date fecha;
-	Persona miPersona;
-	Doctor miDoctor;
-	String observaciones;
+	private String codigo;
+	private Date fecha;
+	private Persona miPersona;
+	private Doctor miDoctor;
+	private String observaciones;
+	private Cita miCita;
 	//double precio;
 	
-	public Consulta(Date fecha, Persona miPersona, Doctor miDoctor, String observaciones, String codigo) {
+	public Cita getMiCita() {
+		return miCita;
+	}
+	public void setMiCita(Cita miCita) {
+		this.miCita = miCita;
+	}
+	public Consulta(Date fecha, Persona miPersona, Doctor miDoctor, String observaciones, String codigo, Cita miCita) {
 		super();
 		this.fecha = fecha;
 		this.miPersona = miPersona;
 		this.miDoctor = miDoctor;
 		this.observaciones = observaciones;
 		this.codigo = codigo;
+		this.miCita = miCita;
 	}
 	public String getCodigo() {
 		return codigo;
