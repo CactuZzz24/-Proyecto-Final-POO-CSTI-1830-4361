@@ -6,9 +6,13 @@ import java.net.*;
 import Logic.Clinica;
 
 public class Servidor extends Thread {
+    private static boolean isRunning = true; 
+    private static ServerSocket sfd;
+
+
     
     public static void main(String args[]) {
-        ServerSocket sfd = null;
+         sfd = null;
         try {
             sfd = new ServerSocket(7000);
         } catch (IOException ioe) {
@@ -16,7 +20,7 @@ public class Servidor extends Thread {
             System.exit(1);
         }
 
-        while (true) {
+        while (isRunning) {
             try {
                 Socket nsfd = sfd.accept();
                 System.out.println("Conexion aceptada de: " + nsfd.getInetAddress());
@@ -48,4 +52,16 @@ public class Servidor extends Thread {
             System.out.println("Error al generar el respaldo: " + ioe);
         }
     }
+    public static void stopServer() {
+        isRunning = false;
+        try {
+            if (sfd != null) {
+                sfd.close();
+            }
+        } catch (IOException ioe) {
+            System.out.println("Error al cerrar el socket del servidor: " + ioe);
+        }
+    }
 }
+
+

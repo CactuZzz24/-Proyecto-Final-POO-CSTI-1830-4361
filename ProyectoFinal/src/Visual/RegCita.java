@@ -44,7 +44,7 @@ import Logic.Persona;
 
 
 
-public class RegCita_Consulta extends JDialog {
+public class RegCita extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textCodigo;
@@ -70,7 +70,7 @@ public class RegCita_Consulta extends JDialog {
 	private Doctor selectedDoctor;
 	private JPanel primera_pagina;
 	private JPanel segunda_pagina;
-	private Consulta miConsulta = null;
+	private Cita miCita = null;
 
 
 
@@ -85,9 +85,9 @@ public class RegCita_Consulta extends JDialog {
 	 * @param esAdmin 
 	 * @param esDoctor 
 	 */
-	public RegCita_Consulta(boolean esDoctor, boolean esAdmin, Consulta consulta) {
-		miConsulta = consulta;
-		if(miConsulta == null) {
+	public RegCita(boolean esDoctor, boolean esAdmin, Cita cita) {
+		miCita = cita;
+		if(miCita == null) {
 			setTitle("Agendar Cita");
 
 		}
@@ -305,8 +305,9 @@ public class RegCita_Consulta extends JDialog {
 			}
 		});
         btnRegistrar = new JButton("Registrar");
-        if(miConsulta != null) {
+        if(miCita != null) {
         	btnRegistrar.setText("Actualizar");
+        	
         	
         }
         btnRegistrar.addActionListener(new ActionListener() {
@@ -314,7 +315,7 @@ public class RegCita_Consulta extends JDialog {
         		if(!validateFields()) {
         			return;
         		}
-        		if(miConsulta== null) {
+        		if(miCita== null) {
         		     java.util.Date currentDate = new java.util.Date();
 
         		        java.util.Date birthDate = (java.util.Date) datePicker.getModel().getValue();
@@ -349,10 +350,9 @@ public class RegCita_Consulta extends JDialog {
             		Doctor doctor = selectedDoctor;
        
             		
-            		Cita cita = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
-            		Consulta miConsulta_2 = new Consulta(fechaCita, persona, doctor, " ", textCodigo.getText(), cita);
+            		Cita appointment = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
+            		Clinica.getInstance().insertarCita(appointment);
             		
-            		Clinica.getInstance().insertarConsulta(miConsulta_2);
             		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
                              JOptionPane.INFORMATION_MESSAGE);
         		}
@@ -372,23 +372,22 @@ public class RegCita_Consulta extends JDialog {
         		                    "Error de fecha", JOptionPane.ERROR_MESSAGE);
         		            return; 
         		        }
-        			miConsulta.setMiDoctor(selectedDoctor);
-        			miConsulta.setFecha((java.util.Date) datePickerCita.getModel().getValue());
-        			miConsulta.setObservaciones("");
-        			miConsulta.setCodigo(textCodigo.getText());
-        			miConsulta.getMiPersona().setCedula
+        			miCita.setMiDoctor(selectedDoctor);
+        			miCita.setFecha((java.util.Date) datePickerCita.getModel().getValue());
+        			miCita.setCodigo(textCodigo.getText());
+        			miCita.getMiPersona().setCedula
         			(textCedula.getText());
-        			miConsulta.getMiPersona().setDireccion
+        			miCita.getMiPersona().setDireccion
         			(textDir.getText());
-        			miConsulta.getMiPersona().setFchNacim((java.util.Date) datePicker.getModel().getValue());
-        			miConsulta.getMiPersona().setGenero(charGenero());
-        			miConsulta.getMiPersona().setNombre(textNombre.getText());
-        			miConsulta.getMiPersona().setTelefono(textTel.getText());
-        			Clinica.getInstance().modificarConsulta(miConsulta);
+        			miCita.getMiPersona().setFchNacim((java.util.Date) datePicker.getModel().getValue());
+        			miCita.getMiPersona().setGenero(charGenero());
+        			miCita.getMiPersona().setNombre(textNombre.getText());
+        			miCita.getMiPersona().setTelefono(textTel.getText());
+        			Clinica.getInstance().modificarCita(miCita);
         			JOptionPane.showMessageDialog(null, "Actualizacion exitosa", "Uptade",
                             JOptionPane.INFORMATION_MESSAGE);
         			dispose();
-        			ListarConsultas.loadConsultas();
+        			ListarCitas.loadCitas();
         			
         			
 					
@@ -556,23 +555,23 @@ public class RegCita_Consulta extends JDialog {
 		}
 	 
 	 private void loadConsultas() {
-		 if(miConsulta != null) {
-			 textCedula.setText(miConsulta.getMiPersona().getCedula());
-			 textCodigo.setText(miConsulta.getCodigo());
-			 textNombre.setText(miConsulta.getMiPersona().getNombre());
-			 textDir.setText(miConsulta.getMiPersona().getDireccion());
-			 textTel.setText(miConsulta.getMiPersona().getTelefono());
-	         textFechaConsulta.setText(new SimpleDateFormat("yyyy-MM-dd").format(miConsulta.getFecha())); 
+		 if(miCita != null) {
+			 textCedula.setText(miCita.getMiPersona().getCedula());
+			 textCodigo.setText(miCita.getCodigo());
+			 textNombre.setText(miCita.getMiPersona().getNombre());
+			 textDir.setText(miCita.getMiPersona().getDireccion());
+			 textTel.setText(miCita.getMiPersona().getTelefono());
+	         textFechaConsulta.setText(new SimpleDateFormat("yyyy-MM-dd").format(miCita.getFecha())); 
 	         
 	         UtilDateModel modelConsulta = (UtilDateModel) datePickerCita.getModel();
-	         modelConsulta.setValue(miConsulta.getFecha());
+	         modelConsulta.setValue(miCita.getFecha());
 	         datePickerCita.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd")
-	        		 .format(miConsulta.getFecha()));
+	        		 .format(miCita.getFecha()));
 	         
 	         UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
-             modelNacim.setValue(miConsulta.getMiPersona().getFchNacim());
+             modelNacim.setValue(miCita.getMiPersona().getFchNacim());
              datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").
-            		 format(miConsulta.getMiPersona().getFchNacim()));
+            		 format(miCita.getMiPersona().getFchNacim()));
              
              textCedula.setEditable(true);
              textCodigo.setEditable(true);
@@ -581,6 +580,13 @@ public class RegCita_Consulta extends JDialog {
              textTel.setEditable(true);
              datePicker.getJFormattedTextField().setVisible(true);
              datePicker.setVisible(true);
+             
+             if(miCita.getMiPersona().getGenero() == 'M') {
+            	 rdbHombre.doClick();
+             }
+             else {
+				rdbMujer.doClick();
+			}
 			 
 		 }
 		 else {

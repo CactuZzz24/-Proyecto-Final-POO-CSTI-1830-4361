@@ -37,6 +37,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import org.omg.CORBA.TRANSACTION_REQUIRED;
 
+import Logic.Cita;
 import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Enfermedad;
@@ -45,8 +46,9 @@ import Logic.Persona;
 import Logic.ResumenClinico;
 import Logic.Usuario;
 import Logic.Vacuna;
+import javax.swing.JCheckBox;
 
-public class EditarConsulta_Medico extends JDialog {
+public class RegConsulta extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textCodigo;
@@ -57,11 +59,14 @@ public class EditarConsulta_Medico extends JDialog {
 	private JButton btnCancelar;
 	private JButton btnAceptar;
 	private DefaultTableModel enfermedadesTableModel;
-	private Enfermedad selectedEnfermedad;
+	private Enfermedad selectedEnfermedad = null;
 	private Consulta miConsulta;
+	private Cita miCita;
 	private JDatePickerImpl datePicker;
 	private JList listSangre;
-	String[] tiposDeSangre = new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
+	private String[] tiposDeSangre = new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
+	private JCheckBox checkVigilancia;
+	
 
 
 	/**
@@ -71,9 +76,11 @@ public class EditarConsulta_Medico extends JDialog {
 
 	/**
 	 * Create the frame.
+	 * @param actualizando 
 	 */
-	public EditarConsulta_Medico(Consulta cons) {
+	public RegConsulta(Consulta cons, Cita cita, boolean actualizando) {
 		setTitle("Detalles de la Consulta");
+		miCita = cita;
 		miConsulta = cons;
 		setBounds(100, 100, 779, 576);
 		setLocationRelativeTo(null);		
@@ -209,54 +216,42 @@ public class EditarConsulta_Medico extends JDialog {
         scrollPane_1.setBounds(327, 54, 124, 42);
         panel_1.add(scrollPane_1);
         scrollPane_1.setViewportView(listSangre);
+        
+        checkVigilancia = new JCheckBox("Vigilancia");
+        checkVigilancia.setBounds(131, 148, 139, 29);
+        panel_1.add(checkVigilancia);
 
 		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miConsulta.setObservaciones(textObservaciones.getText());
-				miConsulta.setFecha((java.util.Date) datePicker.getModel().getValue());
-				Clinica.getInstance().modificarConsulta(miConsulta);
 				
-				Persona persona = miConsulta.getMiPersona();
-				if (persona instanceof Paciente) {
-				    Paciente paciente = (Paciente) persona;
-				    Clinica.getInstance().actualizaRegistroPaciente(paciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
-				    JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-				} else {
-				    Paciente pacienteExistente = Clinica.getInstance().buscarPacienteByCedula(persona.getCedula());
-				    if (pacienteExistente == null) {
-				        Paciente nuevoPaciente = new Paciente(persona.getCedula(), persona.getNombre(), 
-				            persona.getFchNacim(), persona.getTelefono(), persona.getDireccion(), 
-				            persona.getGenero(), new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
-				            new ArrayList<Consulta>(), listSangre.getSelectedValue().toString(), false);
+				Paciente paciente = new Paciente(miCita.getMiPersona().getCedula(), 
+						miCita.getMiPersona().getNombre(), miCita.getMiDoctor().getFchNacim(), miCita.getMiPersona().getTelefono(), 
+						miCita.getMiPersona().getDireccion(), miCita.getMiPersona().getGenero(), new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
+						new ArrayList<Consulta>(), listSangre.getSelectedValue().toString(), vigilancia());
+				
+				Clinica.getInstance().insertarPersona(paciente);
+				
+				Clinica.getInstance().actualizaRegistroPaciente(paciente, selectedEnfermedad, null, 
+						textObservaciones.getText(), miConsulta);
+				
+		        JOptionPane.showMessageDialog(null, "Registro de Paciente exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
 
-				        Clinica.getInstance().insertarPersona(nuevoPaciente);
-
-				        Clinica.getInstance().actualizaRegistroPaciente(nuevoPaciente, selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
-
-				        JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
-				        
-				        int option = JOptionPane.showConfirmDialog(null,
-				                "¿Quieres crear un usuario para el paciente?",
-				                "Confirmación", JOptionPane.OK_CANCEL_OPTION);
-				        if (option == JOptionPane.OK_OPTION) {
-				            Usuario aux = new Usuario(nuevoPaciente, nuevoPaciente.getNombre().toLowerCase(),
-				                    "password", true, false);
-				            Clinica.getInstance().agregarUsuario(aux);
-				            RegUsuario reg = new RegUsuario(true, false, Clinica.getInstance().buscarUsuarioByPersona(nuevoPaciente));
-				            reg.setModal(true);
-				            reg.setVisible(true);
-				        }
-				    } else {
-				        JOptionPane.showMessageDialog(null, "La persona asociada a la consulta ya existe como paciente.", "Error", JOptionPane.ERROR_MESSAGE);
-				    }
+		        int option = JOptionPane.showConfirmDialog(null, 
+		        		"¿Quieres crear un usuario para el Paciente?", "Registro", JOptionPane.OK_CANCEL_OPTION);
+		        if(option == JOptionPane.OK_OPTION) {
+		        	RegUsuarioParaPaciente reg = new RegUsuarioParaPaciente(paciente);
+		        	reg.setModal(true);
+		        	reg.setVisible(true);
+		        }
+		        else {
+					dispose();
 				}
 
-				        JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
-				                JOptionPane.INFORMATION_MESSAGE);
-				        dispose();
 				    }
+
+		
 			}
 	
 
@@ -334,4 +329,16 @@ public class EditarConsulta_Medico extends JDialog {
 
 	    return new JDatePickerImpl(datePanel, null);
 	}
+	private boolean vigilancia() {
+		
+		if (checkVigilancia.isSelected()) {
+			return true;
+			
+		}
+		else {
+		
+		return false;
+		}
+	}
+	
 }

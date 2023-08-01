@@ -181,6 +181,7 @@ public class PrincipalPaciente extends JFrame {
 	public void actualizarGraficas(Paciente paciente) {
 		loadVacunacion(paciente);
 		loadConsultasFuturo(paciente);
+		actualizarEnfermedadesPaciente(paciente);
 	}
 	
 	private void loadVacunacion(Paciente paciente) {

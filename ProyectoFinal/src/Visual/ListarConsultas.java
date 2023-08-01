@@ -97,18 +97,10 @@ public class ListarConsultas extends JDialog {
 				btnActualizar = new JButton("Actualizar");
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(esDoctor) {
-							EditarConsulta_Medico uptade = new EditarConsulta_Medico(selectedConsulta);
+							RegConsulta uptade = new RegConsulta(selectedConsulta, null, true);
 							uptade.setModal(true);
 							uptade.setVisible(true);
-						}
-						else {
 						
-						RegCita_Consulta regCita_Consulta = new RegCita_Consulta(false, false , selectedConsulta);
-						regCita_Consulta.setModal(true);
-						regCita_Consulta.setVisible(true);
-						}
-
 					}
 				});
 				btnActualizar.setEnabled(false);

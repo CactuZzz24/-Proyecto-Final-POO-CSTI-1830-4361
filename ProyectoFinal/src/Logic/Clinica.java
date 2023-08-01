@@ -14,6 +14,7 @@ public class Clinica implements Serializable {
 	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Persona> misPersonas;
 	private ArrayList<Usuario> misUsuarios;
+	private ArrayList<Cita> misCitas;
 	private static Clinica clinica;
 	private static int codConsulta = 0;
 	private static int codVacuna = 0;
@@ -27,6 +28,7 @@ public class Clinica implements Serializable {
 		this.misConsultas = new ArrayList<Consulta>();
 		this.misPersonas = new ArrayList<Persona>();
 		this.misUsuarios = new ArrayList<Usuario>();
+		this.misCitas = new ArrayList<Cita>();
 	}
 	
 	public static Clinica getInstance() {
@@ -75,6 +77,14 @@ public class Clinica implements Serializable {
 		this.misUsuarios = misUsuarios;
 	}
 	
+	public ArrayList<Cita> getMisCitas() {
+		return misCitas;
+	}
+
+	public void setMisCitas(ArrayList<Cita> misCitas) {
+		this.misCitas = misCitas;
+	}
+
 	public void insertarConsulta(Consulta consulta){
 		misConsultas.add(consulta);
 		
@@ -475,6 +485,51 @@ public class Clinica implements Serializable {
 				cont++;
 		}
 		return cont;
+	}
+
+	public void insertarCita(Cita appointment) {
+		misCitas.add(appointment);
+		
+		
+	}
+
+	public void modificarCita(Cita miCita) {
+		
+		int index = buscarIndexCitaByCode(miCita.getCodigo());
+		misCitas.set(index, miCita);
+		
+		
+	}
+
+	private int buscarIndexCitaByCode(String codigo) {
+		int aux = -1;
+		boolean encontrado = false;
+		int i = 0;
+		while (i < misCitas.size() && !encontrado) {
+			if (misCitas.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				encontrado = true;
+				aux = i;
+			}
+			i++;
+			
+		}
+		return aux;
+	}
+
+	public Cita buscarCitaByCode(String codigo) {
+		
+		for (Cita cita : misCitas) {
+			if(cita.getCodigo().equalsIgnoreCase(codigo)) {
+				return cita;
+			}
+			
+		}
+		return null;
+	}
+
+	public void eliminarCita(Cita selectedCita) {
+		misCitas.remove(selectedCita);
+		
 	}	
 }
 
