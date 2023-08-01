@@ -15,18 +15,13 @@ public class Clinica implements Serializable {
 	private ArrayList<Persona> misPersonas;
 	private ArrayList<Usuario> misUsuarios;
 	private ArrayList<Cita> misCitas;
-<<<<<<< HEAD
+
 	private static Clinica clinica = null;
 	public static int codCita = 0;
 	public static int codVacuna = 0;
 	public static int codEfermedad = 0;
 	
-=======
-	private static Clinica clinica;
-	private static int codConsulta = 0;
-	private static int codVacuna = 0;
-	private static int codEfermedad = 0;
->>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361
+	
 	private int contador = 0;
 	
 	
