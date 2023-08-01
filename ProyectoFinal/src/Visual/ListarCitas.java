@@ -58,6 +58,10 @@ public class ListarCitas extends JDialog {
 	 * @param medico 
 	 */
 	public ListarCitas(boolean esDoctor, Persona persona, Doctor doctor) {
+		
+		if (esDoctor) {
+			setTitle("Agendar Consulta");
+		}
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -113,11 +117,24 @@ public class ListarCitas extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnActualizar = new JButton("Actualizar");
+				if (esDoctor) {
+					btnActualizar.setText("Registrar");
+					
+				}
 				btnActualizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						if(!esDoctor) {
+							
+						
 						RegCita uptade = new RegCita(false, true, selectedCita);
 						uptade.setModal(true);
 						uptade.setVisible(true);
+						}
+						else {
+							RegConsulta reg = new RegConsulta(null, selectedCita, false);
+							reg.setModal(true);
+							reg.setVisible(true);
+						}
 						
 					}
 				});
@@ -282,23 +299,29 @@ public class ListarCitas extends JDialog {
 		        return;
 		    }
 
-		    citasFiltradas.clear(); // Limpiar la lista de citas filtradas
+		    citasFiltradas.clear(); 
 
 		    java.util.Date selectedDate = (java.util.Date) datePickerCita.getModel().getValue();
+		    if (selectedDate == null) {
+		        return;
+		    }
+
 		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		    String selectedFecha = dateFormat.format(selectedDate);
 
 		    for (Cita cita : Clinica.getInstance().getMisCitas()) {
 		        if (cita != null && cita.getMiPersona() != null && cita.getMiDoctor() != null) {
-		            String citaFecha = dateFormat.format(cita.getFecha());
-		            if (citaFecha.equals(selectedFecha) && cita.getMiDoctor().equals(doctor)) {
-		                citasFiltradas.add(cita); // Agregar la cita filtrada a la lista
+		            Doctor citaDoctor = cita.getMiDoctor();
+		            if (citaDoctor != null && citaDoctor.equals(doctor)) {
+		                    citasFiltradas.add(cita); 
+		                
 		            }
 		        }
 		    }
 
-		    loadCitasFiltradas(); // Cargar las citas filtradas en la tabla
+		    loadCitasFiltradas(); // Load the filtered citas into the table
 		}
+
 
 }
 

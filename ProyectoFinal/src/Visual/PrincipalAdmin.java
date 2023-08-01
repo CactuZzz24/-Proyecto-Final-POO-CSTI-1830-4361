@@ -93,9 +93,19 @@ public class PrincipalAdmin extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				
-				
-			Servidor.stopServer();
-			dispose();
+		
+			 try {
+			        if (sfd != null) {
+			            SalidaSocket.writeUTF("EXIT"); 
+			            SalidaSocket.flush();
+			            sfd.close();
+			        }
+			    } catch (IOException ioe) {
+			        System.out.println("Error al cerrar el socket del servidor: " + ioe);
+			    }
+
+			    Servidor.stopServer();
+			    dispose();
 				
 			}
 		});

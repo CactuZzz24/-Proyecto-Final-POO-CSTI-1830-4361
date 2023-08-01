@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.sound.sampled.Mixer;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -272,19 +273,19 @@ public class RegConsulta extends JDialog {
 	}
 
 	private void loadDatos() {
-		   textNombre.setText(miConsulta.getMiPersona().getNombre());
+		   textNombre.setText(miCita.getMiPersona().getNombre());
 		   UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
-           modelNacim.setValue(miConsulta.getFecha());
+           modelNacim.setValue(miCita.getFecha());
            datePicker.getJFormattedTextField().setText
-           (new SimpleDateFormat("yyyy-MM-dd").format(miConsulta.getFecha()));
+           (new SimpleDateFormat("yyyy-MM-dd").format(miCita.getFecha()));
            textEdad.setText(edad());
-           textCodigo.setText(miConsulta.getCodigo());
-           textGender.setText(String.valueOf(miConsulta.getMiPersona().getGenero()));
+           textCodigo.setText(miCita.getCodigo());
+           textGender.setText(String.valueOf(miCita.getMiPersona().getGenero()));
            
 	}
 
 	private String edad() {
-	    Date fechaNacimiento = miConsulta.getMiPersona().getFchNacim();
+	    Date fechaNacimiento = miCita.getMiPersona().getFchNacim();
 
 	    Calendar fechaActual = Calendar.getInstance();
 
