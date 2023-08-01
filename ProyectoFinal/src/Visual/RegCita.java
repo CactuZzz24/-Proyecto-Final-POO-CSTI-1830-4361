@@ -40,6 +40,7 @@ import Logic.Cita;
 import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Doctor;
+import Logic.Paciente;
 import Logic.Persona;
 
 
@@ -73,6 +74,7 @@ public class RegCita extends JDialog {
 	private JPanel segunda_pagina;
 	private Cita miCita = null;
 	private static Persona personaEncontrada = null;
+	private static Paciente paciente = null; 
 
 
 
@@ -87,8 +89,12 @@ public class RegCita extends JDialog {
 	 * @param esAdmin 
 	 * @param esDoctor 
 	 */
-	public RegCita(boolean esDoctor, boolean esAdmin, Cita cita) {
+	public RegCita(boolean esDoctor, boolean esAdmin, Cita cita, Paciente miPaciente) {
 		miCita = cita;
+		paciente = miPaciente;
+		
+	
+		
 		if(miCita == null) {
 			setTitle("Agendar Cita");
 
@@ -125,6 +131,7 @@ public class RegCita extends JDialog {
 		primera_pagina.add(lblNewLabel);
 		
 		textCodigo = new JTextField();
+		textCodigo.setEditable(false);
 		textCodigo.setBounds(15, 39, 146, 26);
 		primera_pagina.add(textCodigo);
 		textCodigo.setColumns(10);
@@ -493,7 +500,10 @@ public class RegCita extends JDialog {
         });
         btnBuscar.setBounds(73, 14, 88, 25);
         panel_1.add(btnBuscar);
-        loadConsultas();
+        loadCitas();
+    	if(!esAdmin && !esDoctor && paciente != null) {
+			loadPacienteMenu();
+		}
 
 
       
@@ -582,7 +592,7 @@ public class RegCita extends JDialog {
 		    }
 		}
 	 
-	 private void loadConsultas() {
+	 private void loadCitas() {
 		 if(miCita != null) {
 			 textCedula.setText(miCita.getMiPersona().getCedula());
 			 textCodigo.setText(miCita.getCodigo());
@@ -642,5 +652,50 @@ public class RegCita extends JDialog {
 
 		    return true;
 		}
+		 private void loadPacienteMenu() {
+		        if (paciente != null) {
+		            textCedula.setText(paciente.getCedula());
+		            textNombre.setText(paciente.getNombre());
+		            textDir.setText(paciente.getDireccion());
+		            textTel.setText(paciente.getTelefono());
 
+		            UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+		            modelNacim.setValue(paciente.getFchNacim());
+		            datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(paciente.getFchNacim()));
+
+		            if (paciente.getGenero() == 'M') {
+		                rdbHombre.setSelected(true);
+		            } else if (paciente.getGenero() == 'F') {
+		                rdbMujer.setSelected(true);
+		            }
+
+		            textCedula.setEditable(false);
+		            textNombre.setEditable(false);
+		            textDir.setEditable(false);
+		            textTel.setEditable(false);
+
+		            datePicker.getJFormattedTextField().setVisible(false); 
+		            datePicker.setVisible(false); 
+
+		        
+		            personaEncontrada = paciente;
+		        } else {
+		            textCedula.setText("");
+		            textNombre.setText("");
+		            textDir.setText("");
+		            textTel.setText("");
+
+		            datePicker.getJFormattedTextField().setVisible(true);
+		            datePicker.setVisible(true);
+
+		            rdbHombre.setSelected(false);
+		            rdbMujer.setSelected(false);
+
+		            btnRegistrar.setText("Registrar");
+		            btnNewButton.setVisible(true);
+		        }
+		    }
+
+		
 }
+

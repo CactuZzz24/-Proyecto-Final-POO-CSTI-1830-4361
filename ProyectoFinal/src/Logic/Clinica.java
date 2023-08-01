@@ -16,9 +16,10 @@ public class Clinica implements Serializable {
 	private ArrayList<Usuario> misUsuarios;
 	private ArrayList<Cita> misCitas;
 	private static Clinica clinica;
-	private static int codConsulta = 0;
+	private static int codCita = 0;
 	private static int codVacuna = 0;
 	private static int codEfermedad = 0;
+	
 	private int contador = 0;
 	
 	
@@ -92,6 +93,7 @@ public class Clinica implements Serializable {
 
 	public void agregarEnfermedad(Enfermedad enfermedad) {
 		misEnfermedades.add(enfermedad);
+		codEfermedad++;
 		
 	}
 
@@ -489,6 +491,7 @@ public class Clinica implements Serializable {
 
 	public void insertarCita(Cita appointment) {
 		misCitas.add(appointment);
+		codCita++;
 		
 		
 	}
