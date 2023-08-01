@@ -235,9 +235,8 @@ public class PrincipalPaciente extends JFrame {
 	}
 	
 	 private void actualizarEnfermedadesPaciente(Paciente paciente) {
-	 	if (paciente == null) {
+	 	if (paciente == null)
 	        return;
-	    }
 	 	
         dataset.clear();
         int cantidadLeves = 0;
@@ -303,7 +302,6 @@ public class PrincipalPaciente extends JFrame {
 		    plot.setRangeGridlinePaint(Color.white);
 
 		    org.jfree.chart.renderer.category.CategoryItemRenderer renderer = plot.getRendererForDataset(plot.getDataset(0));
-
 		    Color lightBlue = new Color(128, 200, 255);
 		    renderer.setSeriesPaint(0, color);
 
