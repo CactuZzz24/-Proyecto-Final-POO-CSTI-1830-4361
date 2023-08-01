@@ -35,11 +35,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+
+import Logic.Clinica;
+import Logic.Enfermedad;
+import Logic.UptadeGraficas;
 import Logic.Clinica;
 import Logic.Enfermedad;
 import Logic.UptadeGraficas;
 import server.Servidor;
-
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
@@ -618,10 +621,9 @@ public class PrincipalAdmin extends JFrame {
     }
     
     
+    // Detener el servidor antes de cerrar la aplicación
     public void dispose() {
-        // Stop the update thread when the application is closing
         updateThread.stopUpdating();
-        // Detener el servidor antes de cerrar la aplicación
         Servidor.stopServer();
         super.dispose();
     }
