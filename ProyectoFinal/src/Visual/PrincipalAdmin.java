@@ -416,7 +416,7 @@ public class PrincipalAdmin extends JFrame {
         chartPanelGeneroPacientes.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         chartPanelGeneroPacientes.setBounds(12, 321, 347, 265);
         contentPane.add(chartPanelGeneroPacientes);
-
+        
         grafGeneroPacientes = new JPanel();
         chartPanelGeneroPacientes.add(grafGeneroPacientes);
         grafGeneroPacientes.setLayout(null);
