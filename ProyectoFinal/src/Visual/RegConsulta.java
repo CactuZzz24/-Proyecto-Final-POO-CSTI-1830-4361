@@ -226,10 +226,45 @@ public class RegConsulta extends JDialog {
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(miCita.getMiPersona() instanceof Paciente) {
+					Consulta nuevaConsulta = new Consulta(miCita.getFecha(), miCita.getMiPersona(), miCita.getMiDoctor(), 
+							textObservaciones.getText(), miCita.getCodigo(), miCita);
+					
+					Clinica.getInstance().insertarConsulta(nuevaConsulta);
+					
+					Clinica.getInstance().actualizaRegistroPaciente((Paciente) miCita.getMiPersona(), selectedEnfermedad, null, 
+							textObservaciones.getText(), nuevaConsulta);
+					
+				    if(Clinica.getInstance().buscarUsuarioByPersona(miCita.getMiPersona()) == null) {
+			        	
+				        
+				        int option = JOptionPane.showConfirmDialog(null, 
+				        		"¿Quieres crear un usuario para el Paciente?", "Registro", JOptionPane.OK_CANCEL_OPTION);
+				        if(option == JOptionPane.OK_OPTION) {
+				        	RegUsuarioParaPaciente reg = new RegUsuarioParaPaciente((Paciente) miCita.getMiPersona());
+				        	reg.setModal(true);
+				        	reg.setVisible(true);
+				        }
+				        else {
+							dispose();
+						}
+
+						    }
+					
+					dispose();
+					
+					
+					
+					
+				}
+				else {
+					
+				
 				
 				Paciente paciente = new Paciente(miCita.getMiPersona().getCedula(), 
 						miCita.getMiPersona().getNombre(), miCita.getMiDoctor().getFchNacim(), miCita.getMiPersona().getTelefono(), 
-						miCita.getMiPersona().getDireccion(), miCita.getMiPersona().getGenero(), new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
+						miCita.getMiPersona().getDireccion(), miCita.getMiPersona().getGenero(), 
+						new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
 						new ArrayList<Consulta>(), listSangre.getSelectedValue().toString(), vigilancia());
 				
 				Clinica.getInstance().insertarPersona(paciente);
@@ -238,6 +273,10 @@ public class RegConsulta extends JDialog {
 						textObservaciones.getText(), miConsulta);
 				
 		        JOptionPane.showMessageDialog(null, "Registro de Paciente exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
+		        
+		        if(Clinica.getInstance().buscarUsuarioByPersona(paciente) == null) {
+		        	
+		        
 
 		        int option = JOptionPane.showConfirmDialog(null, 
 		        		"¿Quieres crear un usuario para el Paciente?", "Registro", JOptionPane.OK_CANCEL_OPTION);
@@ -251,6 +290,9 @@ public class RegConsulta extends JDialog {
 				}
 
 				    }
+				}
+		        dispose();
+			}
 
 		
 			}

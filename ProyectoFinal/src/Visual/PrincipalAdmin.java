@@ -103,7 +103,17 @@ public class PrincipalAdmin extends JFrame {
 			    } catch (IOException ioe) {
 			        System.out.println("Error al cerrar el socket del servidor: " + ioe);
 			    }
-
+			 FileOutputStream clinica_2;
+				ObjectOutputStream clinicaWrite;
+				try {
+					clinica_2 = new  FileOutputStream("clinica.dat");
+					clinicaWrite = new ObjectOutputStream(clinica_2);
+					clinicaWrite.writeObject(Clinica.getInstance());
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			    Servidor.stopServer();
 			    dispose();
 				
