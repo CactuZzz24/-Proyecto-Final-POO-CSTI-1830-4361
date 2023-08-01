@@ -16,10 +16,9 @@ public class Clinica implements Serializable {
 	private ArrayList<Usuario> misUsuarios;
 	private ArrayList<Cita> misCitas;
 	private static Clinica clinica;
-	private static int codCita = 0;
+	private static int codConsulta = 0;
 	private static int codVacuna = 0;
 	private static int codEfermedad = 0;
-	
 	private int contador = 0;
 	
 	
@@ -93,7 +92,6 @@ public class Clinica implements Serializable {
 
 	public void agregarEnfermedad(Enfermedad enfermedad) {
 		misEnfermedades.add(enfermedad);
-		codEfermedad++;
 		
 	}
 
@@ -491,7 +489,6 @@ public class Clinica implements Serializable {
 
 	public void insertarCita(Cita appointment) {
 		misCitas.add(appointment);
-		codCita++;
 		
 		
 	}
@@ -566,6 +563,14 @@ public class Clinica implements Serializable {
 				cont++;
 		}
 		return cont;
+	}
+
+	public String[] getArrayNombreEnfermedades() {
+		String[] enfermedades = new String[] {};
+		for(int i = 0; i < misEnfermedades.size(); i++) {
+			enfermedades[i] = misEnfermedades.get(i).getNombre();
+		}
+		return enfermedades;
 	}	
 }
 
