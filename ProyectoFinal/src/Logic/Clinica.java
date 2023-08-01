@@ -529,7 +529,23 @@ public class Clinica implements Serializable {
 
 	public void eliminarCita(Cita selectedCita) {
 		misCitas.remove(selectedCita);
+	}
 		
+	public int calcCantEnfermedad(Enfermedad enfermedad) {
+		int cont = 0;
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Paciente && personaTieneEnfermedad((Paciente)persona, enfermedad))
+				cont++;
+		}
+		return cont;
+	}
+
+	private boolean personaTieneEnfermedad(Paciente paciente, Enfermedad enfermedad) {
+		for(Enfermedad miEnfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
+			if(miEnfermedad.equals(enfermedad))
+				return true;
+		}
+		return false;
 	}	
 }
 

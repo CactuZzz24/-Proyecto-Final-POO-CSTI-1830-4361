@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Enfermedad;
 import Logic.Paciente;
+import Logic.ResumenClinico;
 import Logic.Vacuna;
 
 import javax.swing.JMenuBar;
@@ -62,18 +64,34 @@ public class PrincipalPaciente extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PrincipalPaciente frame = new PrincipalPaciente(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	    public static void main(String[] args) {
+	        // Initialize patient data
+	        Enfermedad enfermedad1 = new Enfermedad("123", "covid", "0", "Alta");
+	        Enfermedad enfermedad2 = new Enfermedad("321", "jordan", "0", "Moderada");
+	        Enfermedad enfermedad3 = new Enfermedad("673", "rakan", "0", "Alta");
+	        Enfermedad enfermedad4 = new Enfermedad("434", "fiebre", "0", "Baja");
+	        ArrayList<Enfermedad> misEnfermedades = new ArrayList<Enfermedad>();
+	        Paciente paciente = new Paciente(
+	            "123",
+	            "Juan",
+	            new Date(),
+	            "809193481",
+	            "callle 12",
+	            'M',
+	            new ResumenClinico(misEnfermedades, null, null),
+	            null,
+	            "A+",
+	            false
+	        );
+	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad1);
+	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad2);
+	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad3);
+	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad4);
+
+	        // Create and display the main application window
+	        PrincipalPaciente frame = new PrincipalPaciente(paciente);
+	        frame.setVisible(true);
+	    }
 
 	/**
 	 * Create the frame.
@@ -145,7 +163,7 @@ public class PrincipalPaciente extends JFrame {
 		JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		textPane.setEditable(false);
-		if(paciente!=null)
+		if(paciente!=null && paciente.getResumenClinico().getNotas()!=null)
 			textPane.setText("Resumen Clinico:\n" + Clinica.getInstance().generarResumenClinico(paciente));
 		
 		JScrollPane scrollPaneCitasProximas = new JScrollPane();
@@ -173,7 +191,9 @@ public class PrincipalPaciente extends JFrame {
 		tableVacunacion.setModel(modeloVacunacion);
 		scrollPaneVacunacion.setViewportView(tableVacunacion);
 		
-		loadVacunacion(paciente);
+		if(paciente != null && paciente.getResumenClinico().getHojaVacunacion() != null)
+			loadVacunacion(paciente);
+		
 		loadConsultasFuturo(paciente);
 		grafEnfermedadesPaciente(paciente);
 	}
@@ -214,82 +234,91 @@ public class PrincipalPaciente extends JFrame {
 	    }
 	}
 	
-	private void actualizarEnfermedadesPaciente(Paciente paciente) {
-		dataset.clear();
-		int cantidadLeves = 0;
-	    int cantidadModeradas = 0;
-	    int cantidadGraves = 0;
-
-	    for (Enfermedad enfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
-	        if (enfermedad.getGravedad().equalsIgnoreCase("Leve")) {
-	            cantidadLeves++;
-	        } else if (enfermedad.getGravedad().equalsIgnoreCase("Moderada")) {
-	            cantidadModeradas++;
-	        } else if (enfermedad.getGravedad().equalsIgnoreCase("Grave")) {
-	            cantidadGraves++;
-	        }
+	 private void actualizarEnfermedadesPaciente(Paciente paciente) {
+	 	if (paciente == null) {
+	        return;
 	    }
-	    chartPanel.repaint();
+	 	
+        dataset.clear();
+        int cantidadLeves = 0;
+        int cantidadModeradas = 0;
+        int cantidadGraves = 0;
+
+        for (Enfermedad enfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
+            if (enfermedad.getGravedad().equalsIgnoreCase("Leve")) {
+                cantidadLeves++;
+            } else if (enfermedad.getGravedad().equalsIgnoreCase("Moderada")) {
+                cantidadModeradas++;
+            } else if (enfermedad.getGravedad().equalsIgnoreCase("Grave")) {
+                cantidadGraves++;
+            }
+        }
+
+        dataset.addValue(cantidadLeves, "Cantidad", "Leve");
+        dataset.addValue(cantidadModeradas, "Cantidad", "Moderada");
+        dataset.addValue(cantidadGraves, "Cantidad", "Grave");
+
+        grafEnfermedadesPaciente(paciente);
 	}
 	
-	private void grafEnfermedadesPaciente(Paciente paciente) {
-		if (paciente == null || paciente.getResumenClinico() == null || paciente.getResumenClinico().getMisEnfermedades() == null) {
-			return;
-	    }
+	 private void grafEnfermedadesPaciente(Paciente paciente) {
+		    if (paciente == null) {
+		        return;
+		    }
 
-	    dataset = new DefaultCategoryDataset();
+		    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		    int cantidadLeves = 0;
+		    int cantidadModeradas = 0;
+		    int cantidadGraves = 0;
 
-	    int cantidadLeves = 0;
-	    int cantidadModeradas = 0;
-	    int cantidadGraves = 0;
+		    for (Enfermedad enfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
+		        if (enfermedad.getGravedad().equalsIgnoreCase("Leve")) {
+		            cantidadLeves++;
+		        } else if (enfermedad.getGravedad().equalsIgnoreCase("Moderada")) {
+		            cantidadModeradas++;
+		        } else if (enfermedad.getGravedad().equalsIgnoreCase("Grave")) {
+		            cantidadGraves++;
+		        }
+		    }
 
-	    for (Enfermedad enfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
-	        if (enfermedad.getGravedad().equalsIgnoreCase("Leve")) {
-	            cantidadLeves++;
-	        } else if (enfermedad.getGravedad().equalsIgnoreCase("Moderada")) {
-	            cantidadModeradas++;
-	        } else if (enfermedad.getGravedad().equalsIgnoreCase("Grave")) {
-	            cantidadGraves++;
-	        }
-	    }
+		    dataset.addValue(cantidadLeves, "Cantidad", "Leve");
+		    dataset.addValue(cantidadModeradas, "Cantidad", "Moderada");
+		    dataset.addValue(cantidadGraves, "Cantidad", "Grave");
 
-	    dataset.addValue(cantidadLeves, "Cantidad", "Leve");
-	    dataset.addValue(cantidadModeradas, "Cantidad", "Moderada");
-	    dataset.addValue(cantidadGraves, "Cantidad", "Grave");
+		    JFreeChart chart = ChartFactory.createBarChart(
+		        "Cantidad de Enfermedades por Gravedad",
+		        "Gravedad",
+		        "Cantidad",
+		        dataset,
+		        PlotOrientation.VERTICAL,
+		        true,
+		        true,
+		        false
+		    );
 
-	    JFreeChart chart = ChartFactory.createBarChart(
-	        "Cantidad de Enfermedades por Gravedad",
-	        "Gravedad",
-	        "Cantidad",
-	        dataset,
-	        PlotOrientation.VERTICAL,
-	        true,
-	        true,
-	        false
-	    );
+		    CategoryPlot plot = chart.getCategoryPlot();
+		    Color color = new Color(169, 25, 25);
+		    plot.setBackgroundPaint(Color.lightGray);
+		    plot.setDomainGridlinePaint(Color.white);
+		    plot.setRangeGridlinePaint(Color.white);
 
-	    CategoryPlot plot = chart.getCategoryPlot();
-	    plot.setBackgroundPaint(Color.lightGray);
-	    plot.setDomainGridlinePaint(Color.white);
-	    plot.setRangeGridlinePaint(Color.white);
-	    
-	    org.jfree.chart.renderer.category.CategoryItemRenderer renderer = plot.getRendererForDataset(plot.getDataset(0));
-	    
-	    Color lightBlue = new Color(128, 200, 255);
-	    renderer.setSeriesPaint(0, lightBlue);
+		    org.jfree.chart.renderer.category.CategoryItemRenderer renderer = plot.getRendererForDataset(plot.getDataset(0));
 
-		JPanel panelEnfermedades = new JPanel();
-        panelEnfermedades.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelEnfermedades.setBounds(33, 37, 439, 549);
-        contentPane.add(panelEnfermedades);
-	    panelEnfermedades.setLayout(new BorderLayout(0, 0));
-		
-	    chartPanel = new ChartPanel(chart);
-	    chartPanel.setPreferredSize(new Dimension(400, 400));
+		    Color lightBlue = new Color(128, 200, 255);
+		    renderer.setSeriesPaint(0, color);
 
-	    panelEnfermedades.removeAll();
-	    panelEnfermedades.add(chartPanel);
-	    panelEnfermedades.revalidate();
-	    panelEnfermedades.repaint();
-	 }
+		    JPanel panelEnfermedades = new JPanel();
+		    panelEnfermedades.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		    panelEnfermedades.setBounds(12, 13, 439, 470);
+		    contentPane.add(panelEnfermedades);
+		    panelEnfermedades.setLayout(new BorderLayout(0, 0));
+
+		    ChartPanel chartPanel = new ChartPanel(chart);
+		    chartPanel.setPreferredSize(new Dimension(400, 400));
+
+		    panelEnfermedades.removeAll();
+		    panelEnfermedades.add(chartPanel);
+		    panelEnfermedades.revalidate();
+		    panelEnfermedades.repaint();
+		}
 }
