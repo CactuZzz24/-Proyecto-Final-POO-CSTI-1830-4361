@@ -273,7 +273,6 @@ public class RegConsulta extends JDialog {
 						new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
 						new ArrayList<Consulta>(), listSangre.getSelectedValue().toString(), vigilancia());
 				
-				Clinica.getInstance().insertarPersona(paciente);
 				
 				Clinica.getInstance().actualizaRegistroPaciente(paciente, selectedEnfermedad, null, 
 						textObservaciones.getText(), miConsulta);

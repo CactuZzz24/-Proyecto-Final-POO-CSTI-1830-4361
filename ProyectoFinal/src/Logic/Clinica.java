@@ -532,21 +532,29 @@ public class Clinica implements Serializable {
 	}
 		
 	public int calcCantEnfermedad(Enfermedad enfermedad) {
-		int cont = 0;
-		for(Persona persona : misPersonas) {
-			if(persona instanceof Paciente && personaTieneEnfermedad((Paciente)persona, enfermedad))
-				cont++;
-		}
-		return cont;
+	    int cont = 0;
+	    for (Persona persona : misPersonas) {
+	        if (persona instanceof Paciente) {
+	            Paciente paciente = (Paciente) persona;
+	            if (paciente.getResumenClinico() != null && personaTieneEnfermedad(paciente, enfermedad)) {
+	                cont++;
+	            }
+	        }
+	    }
+	    return cont;
 	}
 
 	private boolean personaTieneEnfermedad(Paciente paciente, Enfermedad enfermedad) {
-		for(Enfermedad miEnfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
-			if(miEnfermedad.equals(enfermedad))
-				return true;
-		}
-		return false;
+	    if (paciente.getResumenClinico() != null) {
+	        for (Enfermedad miEnfermedad : paciente.getResumenClinico().getMisEnfermedades()) {
+	            if (miEnfermedad != null && miEnfermedad.equals(enfermedad)) {
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
 	}
+
 
 	public int calcCantVacuna(Vacuna miVacuna) {
 		int cont = 0;
