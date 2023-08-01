@@ -3,6 +3,8 @@ package Logic;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
 public class Cita implements Serializable{
 	private static final long serialVersionUID = -6563299755341571991L;
 	private String secretaria;
@@ -10,14 +12,16 @@ public class Cita implements Serializable{
 	private Date fecha;
 	private Persona miPersona;
 	private Doctor miDoctor;
+	private boolean status;
 	
-	public Cita(String secretaria, String codigo, Date fecha, Persona miPersona, Doctor miDoctor) {
+	public Cita(String secretaria, String codigo, Date fecha, Persona miPersona, Doctor miDoctor, Boolean status) {
 		super();
 		this.secretaria = secretaria;
 		this.codigo = codigo;
 		this.fecha = fecha;
 		this.miPersona = miPersona;
 		this.miDoctor = miDoctor;
+		this.status = status;
 	}
 	public String getSecretaria() {
 		return secretaria;
@@ -48,6 +52,12 @@ public class Cita implements Serializable{
 	}
 	public void setMiDoctor(Doctor miDoctor) {
 		this.miDoctor = miDoctor;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	
 	

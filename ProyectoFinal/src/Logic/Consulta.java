@@ -11,21 +11,24 @@ public class Consulta implements Serializable {
 	private Doctor miDoctor;
 	private String observaciones;
 	private Cita miCita;
+	private boolean status;
 	//double precio;
 	
-	public Cita getMiCita() {
-		return miCita;
-	}
-	public void setMiCita(Cita miCita) {
-		this.miCita = miCita;
-	}
-	public Consulta(Date fecha, Persona miPersona, Doctor miDoctor, String observaciones, String codigo, Cita miCita) {
+
+	public Consulta(Date fecha, Persona miPersona, Doctor miDoctor, String observaciones, String codigo, Cita miCita, Boolean status) {
 		super();
 		this.fecha = fecha;
 		this.miPersona = miPersona;
 		this.miDoctor = miDoctor;
 		this.observaciones = observaciones;
 		this.codigo = codigo;
+		this.miCita = miCita;
+		this.status = status;
+	}
+	public Cita getMiCita() {
+		return miCita;
+	}
+	public void setMiCita(Cita miCita) {
 		this.miCita = miCita;
 	}
 	public String getCodigo() {
@@ -64,6 +67,12 @@ public class Consulta implements Serializable {
 		
 	}
 	*/
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 	
 
 }

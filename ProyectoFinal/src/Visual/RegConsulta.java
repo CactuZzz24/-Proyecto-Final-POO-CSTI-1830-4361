@@ -228,12 +228,14 @@ public class RegConsulta extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if(miCita.getMiPersona() instanceof Paciente) {
 					Consulta nuevaConsulta = new Consulta(miCita.getFecha(), miCita.getMiPersona(), miCita.getMiDoctor(), 
-							textObservaciones.getText(), miCita.getCodigo(), miCita);
+							textObservaciones.getText(), miCita.getCodigo(), miCita, true);
 					
 					Clinica.getInstance().insertarConsulta(nuevaConsulta);
 					
 					Clinica.getInstance().actualizaRegistroPaciente((Paciente) miCita.getMiPersona(), selectedEnfermedad, null, 
 							textObservaciones.getText(), nuevaConsulta);
+					
+					
 					
 				    if(Clinica.getInstance().buscarUsuarioByPersona(miCita.getMiPersona()) == null) {
 			        	
@@ -246,10 +248,14 @@ public class RegConsulta extends JDialog {
 				        	reg.setVisible(true);
 				        }
 				        else {
+				        	miCita.setStatus(true);
+							Clinica.getInstance().modificarCita(miCita);
 							dispose();
 						}
 
 						    }
+				    miCita.setStatus(true);
+					Clinica.getInstance().modificarCita(miCita);
 					
 					dispose();
 					
@@ -286,11 +292,15 @@ public class RegConsulta extends JDialog {
 		        	reg.setVisible(true);
 		        }
 		        else {
+		        	miCita.setStatus(true);
+					Clinica.getInstance().modificarCita(miCita);
 					dispose();
 				}
 
 				    }
 				}
+				miCita.setStatus(true);
+				Clinica.getInstance().modificarCita(miCita);
 		        dispose();
 			}
 

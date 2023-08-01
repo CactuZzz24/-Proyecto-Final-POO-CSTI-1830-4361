@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import javax.print.event.PrintJobAttributeEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -71,6 +72,7 @@ public class RegCita extends JDialog {
 	private JPanel primera_pagina;
 	private JPanel segunda_pagina;
 	private Cita miCita = null;
+	private static Persona personaEncontrada = null;
 
 
 
@@ -316,6 +318,30 @@ public class RegCita extends JDialog {
         			return;
         		}
         		if(miCita== null) {
+       		     
+        			//TODO VOLVER ESO FUNCION
+        			
+
+        			if(personaEncontrada != null) {
+           		     java.util.Date currentDate = new java.util.Date();
+
+        			    java.util.Date selectedDate = (java.util.Date) datePickerCita.getModel().getValue();
+        		        if (selectedDate == null || selectedDate.before(currentDate)) {
+        		            JOptionPane.showMessageDialog(null, "Seleccione una fecha válida para la cita.",
+        		                    "Error de fecha", JOptionPane.ERROR_MESSAGE);
+        		            return; 
+        		        }
+        				Cita cita = new Cita(textSecretaria.getText(), textCodigo.getText(), 
+        						(java.util.Date) datePickerCita.getModel().getValue(), personaEncontrada, selectedDoctor, false);
+        				Clinica.getInstance().insertarCita(cita);
+        				dispose();
+        						
+        				
+        			}
+        			else {
+						
+					
+        			
         		     java.util.Date currentDate = new java.util.Date();
 
         		        java.util.Date birthDate = (java.util.Date) datePicker.getModel().getValue();
@@ -350,11 +376,12 @@ public class RegCita extends JDialog {
             		Doctor doctor = selectedDoctor;
        
             		
-            		Cita appointment = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor);
+            		Cita appointment = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor, false);
             		Clinica.getInstance().insertarCita(appointment);
             		
             		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
                              JOptionPane.INFORMATION_MESSAGE);
+        			}
         		}
         		else {
         		     java.util.Date currentDate = new java.util.Date();
@@ -395,7 +422,8 @@ public class RegCita extends JDialog {
         		
       
         		
-        		
+        		JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
+                        JOptionPane.INFORMATION_MESSAGE);
         		clear();
         		
         	}
@@ -432,7 +460,7 @@ public class RegCita extends JDialog {
         btnBuscar = new JButton("Buscar");
         btnBuscar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Persona personaEncontrada = Clinica.getInstance().buscarPersonaByCedula(textCedula.getText());
+        		personaEncontrada = Clinica.getInstance().buscarPersonaByCedula(textCedula.getText());
         		
         		if (personaEncontrada != null) {
                     textNombre.setText(personaEncontrada.getNombre());

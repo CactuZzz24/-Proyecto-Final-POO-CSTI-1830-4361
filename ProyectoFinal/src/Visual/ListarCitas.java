@@ -90,6 +90,10 @@ public class ListarCitas extends JDialog {
 								btnEliminar.setEnabled(true);
 								selectedCita = Clinica.getInstance().buscarCitaByCode(table.getValueAt(index, 0)
 										.toString());
+								if(selectedCita.isStatus() == true) {
+									btnActualizar.setEnabled(false);
+									
+								}
 							}
 							
 						}
@@ -183,8 +187,8 @@ public class ListarCitas extends JDialog {
 				 JButton btnMostrarTodas = new JButton("Mostrar Todas");
 			        btnMostrarTodas.addActionListener(new ActionListener() {
 			            public void actionPerformed(ActionEvent e) {
-			            	   citasFiltradas.clear(); // Limpiar la lista de citas filtradas
-			                   loadCitas(); // Cargar todas las citas sin filtrar en la tabla	
+			            	   citasFiltradas.clear(); 
+			                   loadCitas(); 
 			                   }
 			        });
 			        buttonPane.add(btnMostrarTodas);
