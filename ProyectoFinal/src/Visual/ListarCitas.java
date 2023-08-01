@@ -130,7 +130,7 @@ public class ListarCitas extends JDialog {
 						if(!esDoctor) {
 							
 						
-						RegCita uptade = new RegCita(false, true, selectedCita);
+						RegCita uptade = new RegCita(false, true, selectedCita, null);
 						uptade.setModal(true);
 						uptade.setVisible(true);
 						}

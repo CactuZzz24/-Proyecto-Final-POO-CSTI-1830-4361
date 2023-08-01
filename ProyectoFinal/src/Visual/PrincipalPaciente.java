@@ -148,6 +148,13 @@ public class PrincipalPaciente extends JFrame {
 		mnMiInformacion.add(mntmNewMenuItem_3);
 		
 		JButton btnNewButton = new JButton("Agendar Cita");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegCita reg = new RegCita(false, false, null, miPaciente);
+				reg.setModal(true);
+				reg.setVisible(true);
+			}
+		});
 		menuBar.add(btnNewButton);
 		
 		contentPane = new JPanel();

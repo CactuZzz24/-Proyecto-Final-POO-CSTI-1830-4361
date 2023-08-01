@@ -152,7 +152,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnRegistrarConsulta = new JMenuItem("Registrar");
 		btnRegistrarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegCita reg = new RegCita(false, true, null);
+				RegCita reg = new RegCita(false, true, null, null);
 				reg.setModal(true);
 				reg.setVisible(true);
 			
@@ -626,6 +626,7 @@ public class PrincipalAdmin extends JFrame {
     }
 
     private void createEnfermedades() {
+    	dataEnfermedades.clear();
         ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
         if (misEnfermedades != null) {
             for (Enfermedad enfermedad : misEnfermedades) {
