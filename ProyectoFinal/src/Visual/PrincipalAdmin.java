@@ -346,7 +346,6 @@ public class PrincipalAdmin extends JFrame {
 		createGraficaEdadPacientes();
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
-		createEnfermedades();
 		createVacunas();
 	}
 

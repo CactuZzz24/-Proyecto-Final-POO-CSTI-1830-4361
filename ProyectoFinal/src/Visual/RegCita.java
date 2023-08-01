@@ -132,6 +132,7 @@ public class RegCita extends JDialog {
 		
 		textCodigo = new JTextField();
 		textCodigo.setEditable(false);
+		textCodigo.setText("C-" + Clinica.codCita);
 		textCodigo.setBounds(15, 39, 146, 26);
 		primera_pagina.add(textCodigo);
 		textCodigo.setColumns(10);

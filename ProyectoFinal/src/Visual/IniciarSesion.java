@@ -63,6 +63,8 @@ public class IniciarSesion extends JFrame {
 					Clinica.setClinica(temp);
 					clinica.close();
 					clinicaRead.close();
+					Clinica.getInstance().UptadeCodigos();
+				
 				} catch (FileNotFoundException e) {
 					try {
 						clinica_2 = new FileOutputStream("clinica.dat");
