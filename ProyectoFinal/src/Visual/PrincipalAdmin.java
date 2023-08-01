@@ -1,6 +1,7 @@
 package Visual;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -31,11 +32,20 @@ import javax.swing.border.EmptyBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+<<<<<<< HEAD
 
+=======
+
+import Logic.Clinica;
+import Logic.Enfermedad;
+import Logic.UptadeGraficas;
+import Logic.Vacuna;
+>>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361
 import Logic.Clinica;
 import Logic.Enfermedad;
 import Logic.UptadeGraficas;
@@ -48,6 +58,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import java.awt.Font;
 
 public class PrincipalAdmin extends JFrame {
 	private static JPanel grafUsarios;
@@ -60,6 +71,7 @@ public class PrincipalAdmin extends JFrame {
 	private static DefaultCategoryDataset dataEdadDoctores;
 	private static DefaultCategoryDataset dataConsultas;
 	private static DefaultCategoryDataset dataEnfermedades;
+	private static DefaultCategoryDataset dataVacunas = new DefaultCategoryDataset();
 	private static JPanel contentPane;
 	
 	private Dimension dim;
@@ -132,9 +144,11 @@ public class PrincipalAdmin extends JFrame {
 		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(new Color(255, 255, 240));
 		setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("Citas");
+		mnNewMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem btnRegistrarConsulta = new JMenuItem("Registrar");
@@ -159,6 +173,7 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu.add(btnListarConsulta);
 		
 		JMenu mnNewMenu_6 = new JMenu("Consultas");
+		mnNewMenu_6.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_6);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Registrar");
@@ -168,6 +183,7 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_6.add(mntmNewMenuItem_4);
 		
 		JMenu mnNewMenu_1 = new JMenu("Medicos");
+		mnNewMenu_1.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem btnRegistrarMedico = new JMenuItem("Registrar");
@@ -191,6 +207,7 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_1.add(btnListarMedico);
 		
 		JMenu mnNewMenu_2 = new JMenu("Pacientes");
+		mnNewMenu_2.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_2);
 		
 		JMenuItem btnRegistrarPaciente = new JMenuItem("Registrar");
@@ -214,6 +231,7 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_2.add(btnListarPaciente);
 		
 		JMenu mnNewMenu_3 = new JMenu("Administrador");
+		mnNewMenu_3.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_3);
 		
 		JMenuItem btnRegistrarAdmin = new JMenuItem("Registrar");
@@ -268,6 +286,7 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_3.add(mntmNewMenuItem_2);
 		
 		JMenu mnNewMenu_4 = new JMenu("Vacunas");
+		mnNewMenu_4.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_4);
 		
 		JMenuItem btnRegVacuna = new JMenuItem("Registrar");
@@ -291,6 +310,7 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_4.add(btnListarVacuna);
 		
 		JMenu mnNewMenu_5 = new JMenu("Enfermedades");
+		mnNewMenu_5.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_5);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Registrar");
@@ -313,6 +333,7 @@ public class PrincipalAdmin extends JFrame {
 		});
 		mnNewMenu_5.add(mntmNewMenuItem_1);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(240, 248, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -327,6 +348,8 @@ public class PrincipalAdmin extends JFrame {
 		createGraficaEdadPacientes();
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
+		createEnfermedades();
+		createVacunas();
 	}
 
 	public static void actualizarGraficas() {
@@ -336,6 +359,8 @@ public class PrincipalAdmin extends JFrame {
         actualizarEdadPacientes();
         actualizarEdadDoctores();
         actualizarConsultas();
+        actualizarEnfermedades();
+        actualizarVacunas();
     }
 
     private static void actualizarGraficaUsarios() {
@@ -364,7 +389,7 @@ public class PrincipalAdmin extends JFrame {
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        chartPanel.setBounds(12, 13, 347, 265);
+        chartPanel.setBounds(12, 32, 347, 265);
         contentPane.add(chartPanel);
 
         grafUsarios = new JPanel();
@@ -396,7 +421,7 @@ public class PrincipalAdmin extends JFrame {
 
         ChartPanel chartPanelGeneroPacientes = new ChartPanel(chart);
         chartPanelGeneroPacientes.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        chartPanelGeneroPacientes.setBounds(12, 291, 347, 265);
+        chartPanelGeneroPacientes.setBounds(12, 321, 347, 265);
         contentPane.add(chartPanelGeneroPacientes);
 
         grafGeneroPacientes = new JPanel();
@@ -428,7 +453,7 @@ public class PrincipalAdmin extends JFrame {
 
         ChartPanel chartPanelGeneroPersonal = new ChartPanel(chart);
         chartPanelGeneroPersonal.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        chartPanelGeneroPersonal.setBounds(12, 572, 347, 265);
+        chartPanelGeneroPersonal.setBounds(12, 608, 347, 265);
         contentPane.add(chartPanelGeneroPersonal);
 
         grafGeneroPersonal = new JPanel();
@@ -477,7 +502,7 @@ public class PrincipalAdmin extends JFrame {
 
         JPanel panelTrafico = new JPanel();
         panelTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelTrafico.setBounds(371, 13, 732, 265);
+        panelTrafico.setBounds(371, 32, 732, 265);
         contentPane.add(panelTrafico);
         panelTrafico.setLayout(new BorderLayout(0, 0));
 
@@ -528,7 +553,7 @@ public class PrincipalAdmin extends JFrame {
 
         JPanel panelEdadDoctores = new JPanel();
         panelEdadDoctores.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelEdadDoctores.setBounds(371, 291, 732, 265);
+        panelEdadDoctores.setBounds(371, 321, 732, 265);
         contentPane.add(panelEdadDoctores);
         panelEdadDoctores.setLayout(new BorderLayout(0, 0));
 
@@ -579,7 +604,7 @@ public class PrincipalAdmin extends JFrame {
 
         JPanel panelConsultas = new JPanel();
         panelConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelConsultas.setBounds(371, 572, 732, 265);
+        panelConsultas.setBounds(371, 608, 732, 265);
         contentPane.add(panelConsultas);
         panelConsultas.setLayout(new BorderLayout(0, 0));
 
@@ -589,37 +614,89 @@ public class PrincipalAdmin extends JFrame {
         grafConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
     
-    private void actualizarEnfermedades() {
-    	
+    private static void actualizarEnfermedades() {
+        dataEnfermedades.clear();
+        for (Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
+            dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+        }
+        createEnfermedades();
     }
-    
-    private void createEnfermedades() {
-    	
-    	dataEnfermedades = new DefaultCategoryDataset();
-    	
-    	ArrayList<Integer> cantPorEnferemdad = new ArrayList<Integer>();
-    	
-    	for(Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
-    		dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
-    	}
-    	
-    	JFreeChart chart = ChartFactory.createBarChart(
-    	        "Cantidad de Enfermedades",
-    	        "Enfermedad",
-    	        "Cantidad",
-    	        dataEnfermedades,
-    	        PlotOrientation.VERTICAL,
-    	        true,
-    	        true,
-    	        false
-    	);
-    	
-    	JScrollPane panelEnfermedades = new JScrollPane();
+
+    private static void createEnfermedades() {
+        for (Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
+            dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+        }
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Enfermedades en la Clinica",
+                "Enfermedad",
+                "Cantidad",
+                dataEnfermedades,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        CategoryPlot plot = chart.getCategoryPlot();
+        Color color = new Color(169, 25, 25);
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+
+        JScrollPane panelEnfermedades = new JScrollPane();
         panelEnfermedades.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        panelEnfermedades.setBounds(1115, 13, 762, 490);
+        panelEnfermedades.setBounds(1130, 32, 732, 407);
         contentPane.add(panelEnfermedades);
-    }
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(400, 400));
+
+        panelEnfermedades.setViewportView(chartPanel);
+    }    
     
+    private static void actualizarVacunas() {
+        dataVacunas.clear();
+        for (Vacuna vacuna : Clinica.getInstance().getMisVacunas()) {
+            dataVacunas.addValue(Clinica.getInstance().calcCantVacuna(vacuna), "Cantidad", vacuna.getNombre());
+        }
+        createVacunas();
+    }
+
+    private static void createVacunas() {
+        dataVacunas.clear();
+
+        for (Vacuna vacuna : Clinica.getInstance().getMisVacunas()) {
+            dataVacunas.addValue(Clinica.getInstance().calcCantVacuna(vacuna), "Cantidad", vacuna.getNombre());
+        }
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Cantidad de Vacunas",
+                "Vacuna",
+                "Cantidad",
+                dataVacunas,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        CategoryPlot plot = chart.getCategoryPlot();
+        Color color = new Color(25, 169, 25); 
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+
+        JScrollPane panelVacunas = new JScrollPane();
+        panelVacunas.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        panelVacunas.setBounds(1130, 471, 732, 402);
+        contentPane.add(panelVacunas);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(400, 400));
+
+        panelVacunas.setViewportView(chartPanel);
+    }
     
     // Detener el servidor antes de cerrar la aplicación
     public void dispose() {

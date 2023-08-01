@@ -419,7 +419,7 @@ public class Clinica implements Serializable {
 	public String generarResumenClinico(Paciente paciente) {
 		StringBuilder resumenClinico = new StringBuilder();
 	    for (int i = 0; i < paciente.getResumenClinico().getNotas().size(); i++) {
-	        resumenClinico.append("Nota #" + String.valueOf(i) + "\n" + paciente.getResumenClinico().getNotas().get(i) + "\n\n");
+	        resumenClinico.append("Nota #" + String.valueOf(i+1) + "\n" + paciente.getResumenClinico().getNotas().get(i) + "\n\n");
 	    }
 	    return resumenClinico.toString();
 	}
@@ -546,6 +546,15 @@ public class Clinica implements Serializable {
 				return true;
 		}
 		return false;
+	}
+
+	public int calcCantVacuna(Vacuna miVacuna) {
+		int cont = 0;
+		for(Vacuna vacuna : misVacunas) {
+			if(vacuna.equals(miVacuna))
+				cont++;
+		}
+		return cont;
 	}	
 }
 
