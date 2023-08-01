@@ -205,17 +205,18 @@ public class PrincipalPaciente extends JFrame {
 	}
 	
 	private void loadVacunacion(Paciente paciente) {
-		if (Clinica.getInstance() == null || Clinica.getInstance().getMisVacunas() == null || paciente == null) {
+	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisVacunas() == null || paciente == null) {
 	        return; 
 	    }
-		modeloVacunacion.setRowCount(0);
+	    modeloVacunacion.setRowCount(0);
 	    rowVacunacion = new Object[tableVacunacion.getColumnCount()];
 	    for (Vacuna vacuna : paciente.getResumenClinico().getHojaVacunacion()) {
-            rowConsultasFuturas[0] = vacuna.getNombre();
-            rowConsultasFuturas[1] = vacuna.getCodigo();
-            modeloVacunacion.addRow(rowVacunacion);
+	        rowVacunacion[0] = vacuna.getNombre();
+	        rowVacunacion[1] = vacuna.getCodigo();
+	        modeloVacunacion.addRow(rowVacunacion);
 	    }	
 	}
+
 
 	public static void loadConsultasFuturo(Paciente paciente) {
 	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null || paciente == null) {

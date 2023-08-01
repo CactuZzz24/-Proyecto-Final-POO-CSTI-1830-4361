@@ -114,7 +114,7 @@ public class PrincipalMedico extends JFrame {
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listar");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarPaciente listar = new ListarPaciente(true, medico);
+				AplicarVacuna listar = new AplicarVacuna(medico);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}

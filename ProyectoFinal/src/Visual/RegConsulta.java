@@ -273,9 +273,14 @@ public class RegConsulta extends JDialog {
 						new ResumenClinico(new ArrayList<Enfermedad>(), new ArrayList<Vacuna>(), new ArrayList<String>()), 
 						new ArrayList<Consulta>(), listSangre.getSelectedValue().toString(), vigilancia());
 				
+				Consulta nuevaConsulta = new Consulta(miCita.getFecha(), paciente, miCita.getMiDoctor(), 
+						textObservaciones.getText(), miCita.getCodigo(), miCita, true);
+				
+				Clinica.getInstance().insertarConsulta(nuevaConsulta);
+				
 				
 				Clinica.getInstance().actualizaRegistroPaciente(paciente, selectedEnfermedad, null, 
-						textObservaciones.getText(), miConsulta);
+						textObservaciones.getText(), nuevaConsulta);
 				
 		        JOptionPane.showMessageDialog(null, "Registro de Paciente exitoso", "Registro", JOptionPane.INFORMATION_MESSAGE);
 		        
