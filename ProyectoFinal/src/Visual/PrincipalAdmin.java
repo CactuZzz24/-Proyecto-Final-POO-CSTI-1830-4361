@@ -32,6 +32,8 @@ import javax.swing.border.EmptyBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -346,7 +348,6 @@ public class PrincipalAdmin extends JFrame {
 		createGraficaEdadPacientes();
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
-		createEnfermedades();
 		createVacunas();
 	}
 
@@ -687,6 +688,8 @@ public class PrincipalAdmin extends JFrame {
                 true,
                 false
         );
+        NumberAxis yAxis = (NumberAxis)chart.getCategoryPlot().getRangeAxis();
+        yAxis.setTickUnit(new NumberTickUnit(1));
 
         CategoryPlot plot = chart.getCategoryPlot();
         Color color = new Color(25, 169, 25); 
