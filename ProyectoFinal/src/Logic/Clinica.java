@@ -566,11 +566,12 @@ public class Clinica implements Serializable {
 	}
 
 	public String[] getArrayNombreEnfermedades() {
-		String[] enfermedades = new String[] {};
-		for(int i = 0; i < misEnfermedades.size(); i++) {
-			enfermedades[i] = misEnfermedades.get(i).getNombre();
-		}
-		return enfermedades;
+		ArrayList<String> enfermedadesList = new ArrayList<>();
+	    for (int i = 0; i < misEnfermedades.size(); i++) {
+	        enfermedadesList.add(misEnfermedades.get(i).getNombre());
+	    }
+	    String[] enfermedades = enfermedadesList.toArray(new String[0]);
+	    return enfermedades;
 	}	
 }
 
