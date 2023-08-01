@@ -32,6 +32,8 @@ import javax.swing.border.EmptyBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -56,11 +58,16 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Font;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 public class PrincipalAdmin extends JFrame {
 	private static JPanel grafUsarios;
 	private static JPanel grafGeneroPacientes;
 	private static JPanel grafGeneroPersonal;
+	private static JPanel panelCantPacienteEnfermedad;
 	private static JScrollPane panelEnfermedades;
 	private static DefaultPieDataset data;
 	private static DefaultPieDataset dataGeneroPacientes;
@@ -71,6 +78,8 @@ public class PrincipalAdmin extends JFrame {
 	private static DefaultCategoryDataset dataEnfermedades;
 	private static DefaultCategoryDataset dataVacunas = new DefaultCategoryDataset();
 	private static JPanel contentPane;
+	private static JComboBox boxEnfermedades;
+	private static JLabel lblCantPacienEferme;
 	
 	private Dimension dim;
 
@@ -347,6 +356,7 @@ public class PrincipalAdmin extends JFrame {
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
 		createVacunas();
+		createEnfermedades();
 	}
 
 	public static void actualizarGraficas() {
@@ -612,53 +622,40 @@ public class PrincipalAdmin extends JFrame {
     }
     
     private static void actualizarEnfermedades() {
-        dataEnfermedades.clear();
-        ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
-        if (misEnfermedades != null) {
-            for (Enfermedad enfermedad : misEnfermedades) {
-                dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
-            }
-        } else {
-            System.err.println("La lista de enfermedades es null.");
-        }
-        panelEnfermedades.repaint();
+        boxEnfermedades.setModel(new DefaultComboBoxModel(Clinica.getInstance().getArrayNombreEnfermedades()));
+        lblCantPacienEferme = new JLabel(String.valueOf(Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()))));
+        panelCantPacienteEnfermedad.repaint();
     }
 
-    private void createEnfermedades() {
-    	dataEnfermedades.clear();
-        ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
-        if (misEnfermedades != null) {
-            for (Enfermedad enfermedad : misEnfermedades) {
-                dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
-            }
-        } else {
-            System.err.println("La lista de enfermedades es null.");
-        }
-
-        JFreeChart chart = ChartFactory.createBarChart(
-                "Enfermedades en la Clinica",
-                "Enfermedad",
-                "Cantidad",
-                dataEnfermedades,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false);
-
-        CategoryPlot plot = chart.getCategoryPlot();
-        Color color = new Color(169, 25, 25);
-        plot.setBackgroundPaint(Color.lightGray);
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setRangeGridlinePaint(Color.white);
-
-        panelEnfermedades = new JScrollPane();
-        panelEnfermedades.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        panelEnfermedades.setBounds(1130, 32, 732, 407);
-        contentPane.add(panelEnfermedades);
-
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(400, 400));
-        panelEnfermedades.setViewportView(chartPanel);
+    private void createEnfermedades() {    	
+    	panelCantPacienteEnfermedad = new JPanel();
+        panelCantPacienteEnfermedad.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        panelCantPacienteEnfermedad.setBounds(1115, 32, 307, 265);
+        contentPane.add(panelCantPacienteEnfermedad);
+        panelCantPacienteEnfermedad.setLayout(null);
+        
+        boxEnfermedades = new JComboBox();
+        boxEnfermedades.setModel(new DefaultComboBoxModel(Clinica.getInstance().getArrayNombreEnfermedades()));
+        boxEnfermedades.setSelectedIndex(0);
+        boxEnfermedades.setBounds(12, 38, 283, 22);
+        panelCantPacienteEnfermedad.add(boxEnfermedades);
+        
+        JLabel lblNewLabel = new JLabel("Cantidad de Pacientes con Efermedad");
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        lblNewLabel.setBounds(12, 13, 283, 16);
+        panelCantPacienteEnfermedad.add(lblNewLabel);
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_1.setBounds(12, 73, 283, 179);
+        panelCantPacienteEnfermedad.add(panel_1);
+        panel_1.setLayout(new BorderLayout(0, 0));
+        
+        lblCantPacienEferme = new JLabel(String.valueOf(Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()))));
+        panel_1.add(lblCantPacienEferme, BorderLayout.CENTER);
+        lblCantPacienEferme.setFont(new Font("Segoe UI", Font.PLAIN, 50));
+        lblCantPacienEferme.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     
@@ -687,6 +684,8 @@ public class PrincipalAdmin extends JFrame {
                 true,
                 false
         );
+        NumberAxis yAxis = (NumberAxis)chart.getCategoryPlot().getRangeAxis();
+        yAxis.setTickUnit(new NumberTickUnit(1));
 
         CategoryPlot plot = chart.getCategoryPlot();
         Color color = new Color(25, 169, 25); 

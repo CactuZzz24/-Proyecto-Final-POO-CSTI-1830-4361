@@ -15,11 +15,18 @@ public class Clinica implements Serializable {
 	private ArrayList<Persona> misPersonas;
 	private ArrayList<Usuario> misUsuarios;
 	private ArrayList<Cita> misCitas;
+<<<<<<< HEAD
 	private static Clinica clinica = null;
 	public static int codCita = 0;
 	public static int codVacuna = 0;
 	public static int codEfermedad = 0;
 	
+=======
+	private static Clinica clinica;
+	private static int codConsulta = 0;
+	private static int codVacuna = 0;
+	private static int codEfermedad = 0;
+>>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361
 	private int contador = 0;
 	
 	
@@ -93,7 +100,6 @@ public class Clinica implements Serializable {
 
 	public void agregarEnfermedad(Enfermedad enfermedad) {
 		misEnfermedades.add(enfermedad);
-		codEfermedad++;
 		
 	}
 
@@ -491,7 +497,6 @@ public class Clinica implements Serializable {
 
 	public void insertarCita(Cita appointment) {
 		misCitas.add(appointment);
-		codCita++;
 		
 		
 	}
@@ -566,6 +571,15 @@ public class Clinica implements Serializable {
 				cont++;
 		}
 		return cont;
+	}
+
+	public String[] getArrayNombreEnfermedades() {
+		ArrayList<String> enfermedadesList = new ArrayList<>();
+	    for (int i = 0; i < misEnfermedades.size(); i++) {
+	        enfermedadesList.add(misEnfermedades.get(i).getNombre());
+	    }
+	    String[] enfermedades = enfermedadesList.toArray(new String[0]);
+	    return enfermedades;
 	}	
 	
 	public void UptadeCodigos() {
