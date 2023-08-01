@@ -61,6 +61,7 @@ public class PrincipalAdmin extends JFrame {
 	private static JPanel grafUsarios;
 	private static JPanel grafGeneroPacientes;
 	private static JPanel grafGeneroPersonal;
+	private static JScrollPane panelEnfermedades;
 	private static DefaultPieDataset data;
 	private static DefaultPieDataset dataGeneroPacientes;
 	private static DefaultPieDataset dataGeneroPersonal;
@@ -345,6 +346,7 @@ public class PrincipalAdmin extends JFrame {
 		createGraficaEdadPacientes();
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
+		createEnfermedades();
 		createVacunas();
 	}
 
@@ -620,10 +622,10 @@ public class PrincipalAdmin extends JFrame {
         } else {
             System.err.println("La lista de enfermedades es null.");
         }
+        panelEnfermedades.repaint();
     }
 
-    private static void createEnfermedades() {
-        dataEnfermedades.clear();
+    private void createEnfermedades() {
         ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
         if (misEnfermedades != null) {
             for (Enfermedad enfermedad : misEnfermedades) {
@@ -649,14 +651,13 @@ public class PrincipalAdmin extends JFrame {
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
 
-        JScrollPane panelEnfermedades = new JScrollPane();
+        panelEnfermedades = new JScrollPane();
         panelEnfermedades.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         panelEnfermedades.setBounds(1130, 32, 732, 407);
         contentPane.add(panelEnfermedades);
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(400, 400));
-
         panelEnfermedades.setViewportView(chartPanel);
     }
 
@@ -703,7 +704,7 @@ public class PrincipalAdmin extends JFrame {
 
         panelVacunas.setViewportView(chartPanel);
     }
-    
+
     // Detener el servidor antes de cerrar la aplicación
     public void dispose() {
         updateThread.stopUpdating();
