@@ -6,9 +6,13 @@ import java.net.*;
 import Logic.Clinica;
 
 public class Servidor extends Thread {
+    private static boolean isRunning = true; 
+    private static ServerSocket sfd;
+
+
     
     public static void main(String args[]) {
-        ServerSocket sfd = null;
+         sfd = null;
         try {
             sfd = new ServerSocket(7000);
         } catch (IOException ioe) {
@@ -16,25 +20,28 @@ public class Servidor extends Thread {
             System.exit(1);
         }
 
-        while (true) {
+        while (isRunning) {
             try {
                 Socket nsfd = sfd.accept();
                 System.out.println("Conexion aceptada de: " + nsfd.getInetAddress());
 
-                ObjectInputStream ois = new ObjectInputStream(nsfd.getInputStream());
+                DataInputStream input = new DataInputStream(nsfd.getInputStream());
+                String message = input.readUTF(); 
+                if (message.equals("EXIT")) {
+                    isRunning = false;
+                    sfd.close();
+                } else {
+                  
+                }
 
-                Clinica clinica = (Clinica) ois.readObject();
-                ois.close();
+                input.close();
                 nsfd.close();
-
-                generarRespaldo(clinica);
-
-                System.out.println("Respaldo generado correctamente.");
-            } catch (IOException | ClassNotFoundException ex) {
+            } catch (IOException ex) {
                 System.out.println("Error: " + ex);
             }
         }
     }
+    
 
     private static void generarRespaldo(Clinica clinica) {
         try {
@@ -48,4 +55,16 @@ public class Servidor extends Thread {
             System.out.println("Error al generar el respaldo: " + ioe);
         }
     }
+    public static void stopServer() {
+        isRunning = false;
+        try {
+            if (sfd != null) {
+                sfd.close();
+            }
+        } catch (IOException ioe) {
+            System.out.println("Error al cerrar el socket del servidor: " + ioe);
+        }
+    }
 }
+
+

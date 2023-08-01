@@ -86,6 +86,16 @@ public class PrincipalMedico extends JFrame {
 				listarConsultas.setVisible(true);
 			}
 		});
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Registrar");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarCitas listar = new ListarCitas(true, null, medico);
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem_3);
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenu mnNewMenu_1 = new JMenu("Pacientes");

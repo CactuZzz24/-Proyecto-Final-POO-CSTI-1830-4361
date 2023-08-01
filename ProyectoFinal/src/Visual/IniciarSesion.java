@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.FileSystemNotFoundException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,8 +28,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import Logic.Clinica;
 import Logic.Doctor;
+import Logic.Enfermedad;
 import Logic.Paciente;
 import Logic.Usuario;
 
@@ -37,10 +41,15 @@ public class IniciarSesion extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField pswClave;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+
+
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				FileInputStream clinica;

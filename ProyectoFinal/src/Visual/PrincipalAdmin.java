@@ -35,9 +35,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+
 import Logic.Clinica;
 import Logic.Enfermedad;
 import Logic.UptadeGraficas;
+import Logic.Clinica;
+import Logic.Enfermedad;
+import Logic.UptadeGraficas;
+import server.Servidor;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
@@ -90,17 +95,20 @@ public class PrincipalAdmin extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				FileOutputStream clinica_2;
-				ObjectOutputStream clinicaWrite;
-				try {
-					clinica_2 = new  FileOutputStream("clinica.dat");
-					clinicaWrite = new ObjectOutputStream(clinica_2);
-					clinicaWrite.writeObject(Clinica.getInstance());
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				
+		
+			 try {
+			        if (sfd != null) {
+			            SalidaSocket.writeUTF("EXIT"); 
+			            SalidaSocket.flush();
+			            sfd.close();
+			        }
+			    } catch (IOException ioe) {
+			        System.out.println("Error al cerrar el socket del servidor: " + ioe);
+			    }
+
+			    Servidor.stopServer();
+			    dispose();
 				
 			}
 		});
@@ -116,13 +124,13 @@ public class PrincipalAdmin extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("Consultas");
+		JMenu mnNewMenu = new JMenu("Citas");
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem btnRegistrarConsulta = new JMenuItem("Registrar");
 		btnRegistrarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegCita_Consulta reg = new RegCita_Consulta(false, true, null);
+				RegCita reg = new RegCita(false, true, null);
 				reg.setModal(true);
 				reg.setVisible(true);
 			
@@ -133,12 +141,21 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem btnListarConsulta = new JMenuItem("Listar");
 		btnListarConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarConsultas listar = new ListarConsultas(false, null, null);
+				ListarCitas listar = new ListarCitas(false, null, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}
 		});
 		mnNewMenu.add(btnListarConsulta);
+		
+		JMenu mnNewMenu_6 = new JMenu("Consultas");
+		menuBar.add(mnNewMenu_6);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Registrar");
+		mnNewMenu_6.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Listar");
+		mnNewMenu_6.add(mntmNewMenuItem_4);
 		
 		JMenu mnNewMenu_1 = new JMenu("Medicos");
 		menuBar.add(mnNewMenu_1);
@@ -561,7 +578,6 @@ public class PrincipalAdmin extends JFrame {
         grafConsultas.setPreferredSize(new Dimension(450, 350));
         grafConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
     }
-
     
     private void actualizarEnfermedades() {
     	
@@ -595,11 +611,10 @@ public class PrincipalAdmin extends JFrame {
     }
     
     
-
-    @Override
+    // Detener el servidor antes de cerrar la aplicación
     public void dispose() {
-        // Stop the update thread when the application is closing
         updateThread.stopUpdating();
+        Servidor.stopServer();
         super.dispose();
     }
 }
