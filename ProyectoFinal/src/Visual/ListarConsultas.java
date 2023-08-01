@@ -33,6 +33,7 @@ public class ListarConsultas extends JDialog {
 	private static DefaultTableModel modelo;
 	private JButton btnEliminar;
 	private JButton btnActualizar;
+	private JPanel buttonPane;
 	/**
 	 * Launch the application.
 	 */
@@ -42,7 +43,7 @@ public class ListarConsultas extends JDialog {
 	 * Create the dialog.
 	 * @param medico 
 	 */
-	public ListarConsultas(boolean esDoctor, Paciente paciente, Doctor medico) {
+	public ListarConsultas(boolean tienePermisos, Paciente paciente, Doctor medico) {
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -79,18 +80,23 @@ public class ListarConsultas extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
-					   if (esDoctor && medico != null) {
+					   if (tienePermisos && medico != null) {
+				
+					        
 				            loadConsultasDoctor(medico);
-				        } else if (!esDoctor && paciente != null) {
+				        } else if (!tienePermisos && paciente != null) {
+				 		 
 				            loadConsultasPaciente(paciente);
-				        } else if (!esDoctor) {
+				        } else if (!tienePermisos) {
+				   
 				            loadConsultas();
+				   
 				        }
 				}
 			}
 		}
 		{
-			JPanel buttonPane = new JPanel();
+			buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{

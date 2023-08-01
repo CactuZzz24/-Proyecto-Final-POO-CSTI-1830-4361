@@ -38,10 +38,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 
+
 import Logic.Clinica;
 import Logic.Enfermedad;
 import Logic.UptadeGraficas;
 import Logic.Vacuna;
+import Logic.Clinica;
+import Logic.Enfermedad;
+import Logic.UptadeGraficas;
 import Logic.Clinica;
 import Logic.Enfermedad;
 import Logic.UptadeGraficas;
@@ -341,7 +345,6 @@ public class PrincipalAdmin extends JFrame {
 		createGraficaEdadPacientes();
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
-		createEnfermedades();
 		createVacunas();
 	}
 
@@ -609,15 +612,25 @@ public class PrincipalAdmin extends JFrame {
     
     private static void actualizarEnfermedades() {
         dataEnfermedades.clear();
-        for (Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
-            dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+        ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
+        if (misEnfermedades != null) {
+            for (Enfermedad enfermedad : misEnfermedades) {
+                dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+            }
+        } else {
+            System.err.println("La lista de enfermedades es null.");
         }
-        createEnfermedades();
     }
 
     private static void createEnfermedades() {
-        for (Enfermedad enfermedad : Clinica.getInstance().getMisEnfermedades()) {
-            dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+        dataEnfermedades.clear();
+        ArrayList<Enfermedad> misEnfermedades = Clinica.getInstance().getMisEnfermedades();
+        if (misEnfermedades != null) {
+            for (Enfermedad enfermedad : misEnfermedades) {
+                dataEnfermedades.addValue(Clinica.getInstance().calcCantEnfermedad(enfermedad), "Cantidad", enfermedad.getNombre());
+            }
+        } else {
+            System.err.println("La lista de enfermedades es null.");
         }
 
         JFreeChart chart = ChartFactory.createBarChart(
@@ -628,8 +641,7 @@ public class PrincipalAdmin extends JFrame {
                 PlotOrientation.VERTICAL,
                 true,
                 true,
-                false
-        );
+                false);
 
         CategoryPlot plot = chart.getCategoryPlot();
         Color color = new Color(169, 25, 25);
@@ -646,7 +658,8 @@ public class PrincipalAdmin extends JFrame {
         chartPanel.setPreferredSize(new Dimension(400, 400));
 
         panelEnfermedades.setViewportView(chartPanel);
-    }    
+    }
+
     
     private static void actualizarVacunas() {
         dataVacunas.clear();
