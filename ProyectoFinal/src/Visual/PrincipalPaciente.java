@@ -60,7 +60,7 @@ public class PrincipalPaciente extends JFrame {
 	private static JTable tableVacunacion;
 	private static Object[] rowVacunacion;
 	private static DefaultTableModel modeloVacunacion;
-	private static JLabel lblVigi;;
+	private static JLabel lblVigi;
 	
 	private Paciente miPaciente = null;
 
@@ -322,7 +322,7 @@ public class PrincipalPaciente extends JFrame {
 		        return;
 		    }
 
-		    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		    dataset = new DefaultCategoryDataset();
 		    int cantidadLeves = 0;
 		    int cantidadModeradas = 0;
 		    int cantidadGraves = 0;

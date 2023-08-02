@@ -724,6 +724,33 @@ public class Clinica implements Serializable {
 	    return fechasFormateadas;
 	}
 
+	public int calcCantEdadInRangePacientesAtendidosByDoc(Doctor doctor, int min, int max) {
+			int cont = 0;
+			int edad;
+			for(Persona persona : misPersonas) {
+				edad = calcEdad(persona);
+				if(persona instanceof Paciente && edad >= min && edad <= max && wasPersonaAtendidaByDoc((Paciente) persona, doctor))
+					cont++;
+			}
+			return cont;
+	}
+
+	private boolean wasPersonaAtendidaByDoc(Paciente paciente, Doctor doctor) {
+		for(Consulta consulta : paciente.getMisConsultas()) {
+			if(consulta.getMiDoctor().equals(doctor) && consulta.getFecha().before(new Date()))
+				return true;
+		}
+		return false;
+	}
+
+	public ArrayList<Vacuna> getVacunasPaciente(Paciente pacienteVacuna) {
+		ArrayList<Vacuna> vacunasPac = new ArrayList<Vacuna>();
+		for(Vacuna vacuna : misVacunas) {
+			if(pacienteVacuna.getResumenClinico().getHojaVacunacion().contains(vacuna))
+				vacunasPac.add(vacuna);
+		}
+		return vacunasPac;
+	}
 }
 
 

@@ -144,18 +144,12 @@ public class ListarVacuna extends JDialog {
 	public static void loadVacunas() {
 		modelo.setRowCount(0);
 		row = new Object[table.getColumnCount()];
-		
 		for (Vacuna vacuna : Clinica.getInstance().getMisVacunas()) {
-			
 				row[0] = vacuna.getCodigo();
 				row[1] = vacuna.getNombre();
 				row[2] = vacuna.getCantidadDisponible();
 				modelo.addRow(row);
-				
-			
 		}
-			
-		
 	}
 
 }
