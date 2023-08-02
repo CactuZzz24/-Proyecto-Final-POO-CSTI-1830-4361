@@ -751,6 +751,7 @@ public class Clinica implements Serializable {
 		}
 		return vacunasPac;
 	}
+	
 }
 
 
