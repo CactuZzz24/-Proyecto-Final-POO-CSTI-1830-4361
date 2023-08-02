@@ -645,6 +645,14 @@ public class Clinica implements Serializable {
 	    }
 	}
 
+	public boolean existenEfermedades() {
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Paciente && ((Paciente)persona).getResumenClinico().getMisEnfermedades()!=null)
+				return true;
+		}
+		return false;
+	}
+
 
 }
 

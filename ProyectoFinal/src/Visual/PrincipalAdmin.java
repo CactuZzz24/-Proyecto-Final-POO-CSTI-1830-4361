@@ -516,6 +516,9 @@ public class PrincipalAdmin extends JFrame {
     }
     
     private static void actualizarEnfermedades() {
+    	if(!Clinica.getInstance().existenEfermedades())
+    		return;
+    	
         boxEnfermedades.setModel(new DefaultComboBoxModel(Clinica.getInstance().getArrayNombreEnfermedades()));
         lblCantPacienEferme = new JLabel(String.valueOf(Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()))));
     	int cant = Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()));
@@ -529,6 +532,8 @@ public class PrincipalAdmin extends JFrame {
     }
 
     private void createEnfermedades() { 
+    	if(!Clinica.getInstance().existenEfermedades())
+    		return;
     	panelCantPacienteEnfermedad = new JPanel();
         panelCantPacienteEnfermedad.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         panelCantPacienteEnfermedad.setBounds(769, 13, 347, 265);
