@@ -62,11 +62,12 @@ public class PrincipalPaciente extends JFrame {
 	private static Object[] rowVacunacion;
 	private static DefaultTableModel modeloVacunacion;
 	private static JLabel lblVigi;
-	
+	private static JTextPane textPane;
 	private Paciente miPaciente = null;
     private UptadeGraficas updateThread;
 
 
+<<<<<<< HEAD
 	/**
 	 * Launch the application.
 	 */
@@ -75,6 +76,8 @@ public class PrincipalPaciente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+=======
+>>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361
 	public PrincipalPaciente(Paciente paciente) {	
 		miPaciente = paciente;
 		addWindowListener(new WindowAdapter() {
@@ -94,7 +97,6 @@ public class PrincipalPaciente extends JFrame {
 				
 			}
 		});
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		updateThread = new UptadeGraficas(null, paciente);
@@ -142,7 +144,7 @@ public class PrincipalPaciente extends JFrame {
 		scrollPane.setBounds(602, 461, 578, 427);
 		contentPane_1.add(scrollPane);
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		textPane.setEditable(false);
 		if(paciente!=null && paciente.getResumenClinico().getNotas()!=null)
@@ -229,6 +231,10 @@ public class PrincipalPaciente extends JFrame {
 		loadConsultasFuturo(paciente);
 		actualizarEnfermedadesPaciente(paciente);
 		actualizarEstado(paciente);
+		
+		if(paciente!=null && paciente.getResumenClinico().getNotas()!=null)
+			textPane.setText("Resumen Clinico:\n" + Clinica.getInstance().generarResumenClinico(paciente));
+		
 	}
 	
 	private static void actualizarEstado(Paciente paciente) {
