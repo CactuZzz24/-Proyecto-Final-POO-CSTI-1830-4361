@@ -67,6 +67,7 @@ public class RegConsulta extends JDialog {
 	private JList listSangre;
 	private String[] tiposDeSangre = new String[] {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
 	private JCheckBox checkVigilancia;
+	private JTextArea textObservaciones;
 	
 
 
@@ -114,7 +115,13 @@ public class RegConsulta extends JDialog {
 		
 		textCodigo = new JTextField();
 		textCodigo.setEditable(false);
+		if(miCita!= null) {
+			
 		textCodigo.setText(miCita.getCodigo());
+		}
+		if(miConsulta != null) {
+			textCodigo.setText(miConsulta.getCodigo());
+		}
 		textCodigo.setBounds(35, 52, 146, 26);
 		panel.add(textCodigo);
 		textCodigo.setColumns(10);
@@ -161,7 +168,7 @@ public class RegConsulta extends JDialog {
 		panel_1.add(textEdad);
 		textEdad.setColumns(10);
 		
-		JTextArea textObservaciones = new JTextArea();
+		textObservaciones = new JTextArea();
 		textObservaciones.setBounds(15, 188, 267, 119);
 		panel_1.add(textObservaciones);
 		
@@ -227,6 +234,22 @@ public class RegConsulta extends JDialog {
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			      if (miConsulta != null) {
+			            miConsulta.setFecha((Date) datePicker.getModel().getValue());
+			            miConsulta.setCodigo(textCodigo.getText());
+			            miConsulta.getMiPersona().setGenero(textGender.getText().charAt(0));
+			            miConsulta.setObservaciones(textObservaciones.getText());
+			            ((Paciente) miConsulta.getMiPersona()).setvigilancia(vigilancia());
+			            ((Paciente) miConsulta.getMiPersona()).setTipoSangre(listSangre.getSelectedValue().toString());
+
+
+			            miConsulta.setStatus(true);
+			            Clinica.getInstance().modificarConsulta(miConsulta);
+			            Clinica.getInstance().actualizaRegistroPaciente((Paciente) miConsulta.getMiPersona(), selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
+			            dispose();
+			            
+			            return;
+			        }
 				if(miCita.getMiPersona() instanceof Paciente) {
 					Consulta nuevaConsulta = new Consulta(miCita.getFecha(), miCita.getMiPersona(), miCita.getMiDoctor(), 
 							textObservaciones.getText(), miCita.getCodigo(), miCita, true);
@@ -330,19 +353,73 @@ public class RegConsulta extends JDialog {
 	}
 
 	private void loadDatos() {
-		   textNombre.setText(miCita.getMiPersona().getNombre());
-		   UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
-           modelNacim.setValue(miCita.getFecha());
-           datePicker.getJFormattedTextField().setText
-           (new SimpleDateFormat("yyyy-MM-dd").format(miCita.getFecha()));
-           textEdad.setText(edad());
-           textCodigo.setText(miCita.getCodigo());
-           textGender.setText(String.valueOf(miCita.getMiPersona().getGenero()));
-           
+	    if (miCita != null) {
+	        String nombre = miCita.getMiPersona().getNombre();
+	        Date fecha = miCita.getFecha();
+
+	        textNombre.setText(nombre);
+
+	        if (fecha != null) {
+	            UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+	            modelNacim.setValue(fecha);
+	            datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(fecha));
+	            textEdad.setText(edad());
+	        } else {
+	            UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+	            modelNacim.setValue(new Date()); 
+	            datePicker.getJFormattedTextField().setText("");
+	            textEdad.setText("");
+	        }
+
+	        textCodigo.setText(miCita.getCodigo());
+	        textGender.setText(String.valueOf(miCita.getMiPersona().getGenero()));
+	    } else if (miConsulta != null) {
+	        String nombre = miConsulta.getMiPersona().getNombre();
+	        Date fecha = miConsulta.getFecha();
+
+	        textNombre.setText(nombre);
+
+	        if (fecha != null) {
+	            UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+	            modelNacim.setValue(fecha);
+	            datePicker.getJFormattedTextField().setText(new SimpleDateFormat("yyyy-MM-dd").format(fecha));
+	            textEdad.setText(edad());
+	        } else {
+	            UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+	            modelNacim.setValue(new Date()); 
+	            datePicker.getJFormattedTextField().setText("");
+	            textEdad.setText("");
+	        }
+
+	        textCodigo.setText(miConsulta.getCodigo());
+	        textGender.setText(String.valueOf(miConsulta.getMiPersona().getGenero()));
+	        textObservaciones.setText(miConsulta.getObservaciones());
+	        
+	    } else {
+	        textNombre.setText("");
+	        UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
+	        modelNacim.setValue(new Date()); // Set a default date if necessary
+	        datePicker.getJFormattedTextField().setText("");
+	        textEdad.setText("");
+	        textCodigo.setText("");
+	        textGender.setText("");
+	    }
 	}
 
+
 	private String edad() {
-	    Date fechaNacimiento = miCita.getMiPersona().getFchNacim();
+		
+	    Date fechaNacimiento = null;
+	    
+		if(miCita != null) {
+			
+	     fechaNacimiento = miCita.getMiPersona().getFchNacim();
+		}
+		else if (miConsulta != null) {
+			
+		     fechaNacimiento = miConsulta.getMiPersona().getFchNacim();
+
+		}
 
 	    Calendar fechaActual = Calendar.getInstance();
 

@@ -58,6 +58,7 @@ public class ListarConsultas extends JDialog {
 	 * @param medico 
 	 */
 	public ListarConsultas(boolean tienePermisos, Paciente paciente, Doctor medico) {
+		setTitle("Lista de Consultas");
 		setResizable(false);
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
