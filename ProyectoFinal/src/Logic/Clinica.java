@@ -653,6 +653,5 @@ public class Clinica implements Serializable {
 		return false;
 	}
 
-
 }
 

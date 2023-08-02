@@ -45,19 +45,22 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class PrincipalPaciente extends JFrame {
 	ChartPanel chartPanel;
 	private static DefaultCategoryDataset dataset;
 	private JPanel contentPane = new JPanel();
+	private JPanel contentPane_1;
 	private Dimension dim;
 	private static JTable tableConsultasFuturas;
 	private static Object[] rowConsultasFuturas;
 	private static DefaultTableModel modeloConsultasFuturas;
-	
 	private static JTable tableVacunacion;
 	private static Object[] rowVacunacion;
 	private static DefaultTableModel modeloVacunacion;
+	private static JLabel lblVigi;;
 	
 	private Paciente miPaciente = null;
 
@@ -122,6 +125,7 @@ public class PrincipalPaciente extends JFrame {
 		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(new Color(255, 255, 240));
 		setJMenuBar(menuBar);
 		
 		JMenu mnMiInformacion = new JMenu("Mi Informacion");
@@ -147,25 +151,16 @@ public class PrincipalPaciente extends JFrame {
 		});
 		mnMiInformacion.add(mntmNewMenuItem_3);
 		
-		JButton btnNewButton = new JButton("Agendar Cita");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RegCita reg = new RegCita(false, false, null, miPaciente);
-				reg.setModal(true);
-				reg.setVisible(true);
-			}
-		});
-		menuBar.add(btnNewButton);
-		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane_1 = new JPanel();
+		contentPane_1.setBackground(new Color(240, 255, 240));
+		contentPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane_1);
+		contentPane_1.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(955, 13, 400, 374);
-		contentPane.add(scrollPane);
+		scrollPane.setBounds(602, 461, 578, 427);
+		contentPane_1.add(scrollPane);
 		
 		JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
@@ -175,8 +170,8 @@ public class PrincipalPaciente extends JFrame {
 		
 		JScrollPane scrollPaneCitasProximas = new JScrollPane();
 		scrollPaneCitasProximas.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPaneCitasProximas.setBounds(602, 13, 314, 374);
-		contentPane.add(scrollPaneCitasProximas);
+		scrollPaneCitasProximas.setBounds(12, 461, 578, 427);
+		contentPane_1.add(scrollPaneCitasProximas);
 		
 		tableConsultasFuturas  = new JTable();
 		modeloConsultasFuturas = new DefaultTableModel();
@@ -187,8 +182,8 @@ public class PrincipalPaciente extends JFrame {
 		scrollPaneCitasProximas.setViewportView(tableConsultasFuturas );
 		
 		JScrollPane scrollPaneVacunacion = new JScrollPane();
-		scrollPaneVacunacion.setBounds(602, 400, 314, 493);
-		contentPane.add(scrollPaneVacunacion);
+		scrollPaneVacunacion.setBounds(602, 17, 578, 427);
+		contentPane_1.add(scrollPaneVacunacion);
 		
 		tableVacunacion = new JTable();
 		modeloVacunacion = new DefaultTableModel();
@@ -197,6 +192,50 @@ public class PrincipalPaciente extends JFrame {
 		modeloVacunacion.setColumnIdentifiers(headersVacunacion);
 		tableVacunacion.setModel(modeloVacunacion);
 		scrollPaneVacunacion.setViewportView(tableVacunacion);
+
+	    JButton btnNewButton = new JButton("Agendar Cita");
+	    btnNewButton.setBackground(new Color(47, 79, 79));
+	    btnNewButton.setForeground(new Color(255, 255, 240));
+	    btnNewButton.setFont(new Font("Segoe UI Black", Font.PLAIN, 50));
+	    btnNewButton.setBounds(1192, 461, 698, 427);
+	    contentPane_1.add(btnNewButton);
+	    
+	    btnNewButton.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		RegCita reg = new RegCita(false, false, null, miPaciente);
+	    		reg.setModal(true);
+	    		reg.setVisible(true);
+	    	}
+	    });
+	    
+	    JPanel panel = new JPanel();
+	    panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+	    panel.setForeground(new Color(255, 255, 224));
+	    panel.setBackground(new Color(255, 255, 240));
+	    panel.setBounds(1192, 17, 698, 427);
+	    contentPane_1.add(panel);
+	    panel.setLayout(null);
+	    
+	    JLabel lblNewLabel = new JLabel("Su estado actual es:");
+	    lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+	    lblNewLabel.setBounds(12, 13, 301, 42);
+	    panel.add(lblNewLabel);
+	    
+	    if(paciente.isVigilancia()) {
+	    	lblVigi = new JLabel("Vigilancia");
+		    lblVigi.setForeground(new Color(165, 42, 42));
+	    }	
+	    else {
+	    	lblVigi = new JLabel("Alta");
+		    lblVigi.setForeground(new Color(47, 79, 79));
+	    }
+	    
+	    lblVigi.setForeground(new Color(47, 79, 79));
+	    lblVigi.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblVigi.setFont(new Font("Segoe UI Black", Font.BOLD | Font.ITALIC, 50));
+	    lblVigi.setBounds(109, 123, 479, 181);
+	    panel.add(lblVigi);
 		
 		if(paciente != null && paciente.getResumenClinico().getHojaVacunacion() != null)
 			loadVacunacion(paciente);
@@ -209,6 +248,18 @@ public class PrincipalPaciente extends JFrame {
 		loadVacunacion(paciente);
 		loadConsultasFuturo(paciente);
 		actualizarEnfermedadesPaciente(paciente);
+		actualizarEstado(paciente);
+	}
+	
+	private void actualizarEstado(Paciente paciente) {
+		if(paciente.isVigilancia()) {
+	    	lblVigi.setText("Vigilancia");
+		    lblVigi.setForeground(new Color(165, 42, 42));
+	    }	
+	    else {
+	    	lblVigi.setText("Alta");
+		    lblVigi.setForeground(new Color(47, 79, 79));
+	    }
 	}
 	
 	private void loadVacunacion(Paciente paciente) {
@@ -223,7 +274,6 @@ public class PrincipalPaciente extends JFrame {
 	        modeloVacunacion.addRow(rowVacunacion);
 	    }	
 	}
-
 
 	public static void loadConsultasFuturo(Paciente paciente) {
 	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null || paciente == null) {
@@ -304,19 +354,17 @@ public class PrincipalPaciente extends JFrame {
 		    );
 
 		    CategoryPlot plot = chart.getCategoryPlot();
-		    Color color = new Color(169, 25, 25);
+		    Color color = new Color(47, 79, 79);
 		    plot.setBackgroundPaint(Color.lightGray);
 		    plot.setDomainGridlinePaint(Color.white);
 		    plot.setRangeGridlinePaint(Color.white);
-
 		    org.jfree.chart.renderer.category.CategoryItemRenderer renderer = plot.getRendererForDataset(plot.getDataset(0));
-		    Color lightBlue = new Color(128, 200, 255);
 		    renderer.setSeriesPaint(0, color);
 
 		    JPanel panelEnfermedades = new JPanel();
 		    panelEnfermedades.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		    panelEnfermedades.setBounds(12, 13, 439, 470);
-		    contentPane.add(panelEnfermedades);
+		    panelEnfermedades.setBounds(12, 17, 578, 427);
+		    contentPane_1.add(panelEnfermedades);
 		    panelEnfermedades.setLayout(new BorderLayout(0, 0));
 
 		    ChartPanel chartPanel = new ChartPanel(chart);
@@ -327,4 +375,6 @@ public class PrincipalPaciente extends JFrame {
 		    panelEnfermedades.revalidate();
 		    panelEnfermedades.repaint();
 		}
+	 
+	 	
 }
