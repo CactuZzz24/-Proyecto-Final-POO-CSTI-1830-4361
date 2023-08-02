@@ -67,18 +67,7 @@ public class PrincipalPaciente extends JFrame {
     private UptadeGraficas updateThread;
 
 
-<<<<<<< HEAD
-	/**
-	 * Launch the application.
-	 */
-
-
-	/**
-	 * Create the frame.
-	 */
-=======
->>>>>>> branch 'main' of https://github.com/CactuZzz24/-Proyecto-Final-POO-CSTI-1830-4361
-	public PrincipalPaciente(Paciente paciente) {	
+    public PrincipalPaciente(Paciente paciente) {	
 		miPaciente = paciente;
 		addWindowListener(new WindowAdapter() {
 			@Override
