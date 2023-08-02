@@ -3,6 +3,8 @@ package Logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -659,5 +661,16 @@ public class Clinica implements Serializable {
 		return false;
 	}
 
+	public ArrayList<Consulta> getConsultasOrdenadasPorFecha() {
+        ArrayList<Consulta> consultasOrdenadas = new ArrayList<>(misConsultas);
+        Collections.sort(consultasOrdenadas, new Comparator<Consulta>() {
+            public int compare(Consulta c1, Consulta c2) {
+                Date fecha1 = c1.getFecha();
+                Date fecha2 = c2.getFecha();
+                return fecha1.compareTo(fecha2);
+            }
+        });
+        return consultasOrdenadas;
+    }
 }
 

@@ -277,14 +277,15 @@ public class PrincipalPaciente extends JFrame {
 	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null || paciente == null) {
 	        return; 
 	    }
+	    
 	    modeloConsultasFuturas.setRowCount(0);
 	    rowConsultasFuturas = new Object[tableConsultasFuturas.getColumnCount()];
-	    for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
+	    for (Consulta consulta : Clinica.getInstance().getConsultasOrdenadasPorFecha()) {
 	    	Date date = new Date();
 	        if (consulta.getMiPersona().equals(paciente) && consulta.getFecha().compareTo(date) > 0){
-	            rowConsultasFuturas[0] = consulta.getCodigo();
-	            rowConsultasFuturas[1] = consulta.getMiPersona().getNombre();
-	            rowConsultasFuturas[2] = consulta.getMiDoctor().getNombre();
+	            rowConsultasFuturas[2] = consulta.getCodigo();
+	            rowConsultasFuturas[1] = consulta.getMiDoctor().getNombre();
+	            rowConsultasFuturas[0] = consulta.getFecha();
 	            modeloConsultasFuturas.addRow(rowConsultasFuturas);
 	        }
 	    }
