@@ -1,6 +1,7 @@
 package Logic;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -655,16 +656,74 @@ public class Clinica implements Serializable {
 		return false;
 	}
 
-	public ArrayList<Consulta> getConsultasOrdenadasPorFecha() {
-        ArrayList<Consulta> consultasOrdenadas = new ArrayList<>(misConsultas);
+	public ArrayList<Consulta> getConsultasOrdenadasPorFecha(Paciente paciente) {
+        ArrayList<Consulta> consultasPaciente = paciente.getMisConsultas();
+        ArrayList<Consulta> consultasOrdenadas = new ArrayList<>(consultasPaciente);
         Collections.sort(consultasOrdenadas, new Comparator<Consulta>() {
             public int compare(Consulta c1, Consulta c2) {
-                Date fecha1 = c1.getFecha();
-                Date fecha2 = c2.getFecha();
-                return fecha1.compareTo(fecha2);
+                return c1.getFecha().compareTo(c2.getFecha());
+            }
+        });
+
+        return consultasOrdenadas;
+    }
+
+	public ArrayList<Consulta> getConsultasOrdenadasPorFechaDoc(Doctor doctor) {
+        ArrayList<Consulta> consultasDoctor = new ArrayList<>();
+        for (Consulta consulta : misConsultas) {
+            if (consulta.getMiDoctor().equals(doctor)) {
+                consultasDoctor.add(consulta);
+            }
+        }
+        ArrayList<Consulta> consultasOrdenadas = new ArrayList<>(consultasDoctor);
+        Collections.sort(consultasOrdenadas, new Comparator<Consulta>() {
+            public int compare(Consulta c1, Consulta c2) {
+                return c1.getFecha().compareTo(c2.getFecha());
             }
         });
         return consultasOrdenadas;
     }
+	
+	public ArrayList<Integer> getConsultasPorDiaDoctor(Doctor doctor) {
+	    ArrayList<Consulta> consultasOrdenadas = getConsultasOrdenadasPorFechaDoc(doctor);
+	    ArrayList<Integer> citasPorDia = new ArrayList<>();
+	    Date fechaAnterior = null;
+	    int contador = 0;
+
+	    for (Consulta consulta : consultasOrdenadas) {
+	        Date fechaActual = consulta.getFecha();
+	        if (fechaAnterior == null || !fechaActual.equals(fechaAnterior)) {
+	            if (fechaAnterior != null) 
+	                citasPorDia.add(contador);
+	            
+	            fechaAnterior = fechaActual;
+	            contador = 1;
+	        } else {
+	            contador++;
+	        }
+	    }
+	    
+	    if (contador > 0) 
+	        citasPorDia.add(contador);
+	    
+	    return citasPorDia;
+	}
+
+	public ArrayList<String> getFechasConsultasFormateadas(Doctor doctor) {
+	    ArrayList<Consulta> consultasOrdenadas = getConsultasOrdenadasPorFechaDoc(doctor);
+
+	    ArrayList<String> fechasFormateadas = new ArrayList<>();
+	    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+	    String fechaFormateada;
+	    
+	    for (Consulta consulta : consultasOrdenadas) {
+	        fechaFormateada = formatoFecha.format(consulta.getFecha());
+	        fechasFormateadas.add(fechaFormateada);
+	    }
+
+	    return fechasFormateadas;
+	}
+
 }
+
 

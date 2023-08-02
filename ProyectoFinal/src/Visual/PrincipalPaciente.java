@@ -280,7 +280,7 @@ public class PrincipalPaciente extends JFrame {
 	    
 	    modeloConsultasFuturas.setRowCount(0);
 	    rowConsultasFuturas = new Object[tableConsultasFuturas.getColumnCount()];
-	    for (Consulta consulta : Clinica.getInstance().getConsultasOrdenadasPorFecha()) {
+	    for (Consulta consulta : Clinica.getInstance().getConsultasOrdenadasPorFecha((Paciente)paciente)) {
 	    	Date date = new Date();
 	        if (consulta.getMiPersona().equals(paciente) && consulta.getFecha().compareTo(date) > 0){
 	            rowConsultasFuturas[2] = consulta.getCodigo();
