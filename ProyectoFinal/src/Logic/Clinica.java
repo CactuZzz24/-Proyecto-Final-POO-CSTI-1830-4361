@@ -424,18 +424,6 @@ public class Clinica implements Serializable {
 	    return resumenClinico.toString();
 	}
 	
-	public ArrayList<Integer> getEdadesPacientes(){
-		ArrayList<Integer> lista = new ArrayList<Integer>();
-		for(Persona persona : misPersonas) {
-			if(persona instanceof Paciente)
-				lista.add(calcEdad(persona));
-		}
-		if(lista.size()>0)
-			return lista;
-		else
-			return null;
-	}
-	
 	private int calcEdad(Persona persona) {
 	    Date fechaNacimiento = persona.getFchNacim();
 	    Calendar fechaActual = Calendar.getInstance();
@@ -450,18 +438,6 @@ public class Clinica implements Serializable {
 	    }
 
 	    return edad;
-	}
-
-	public ArrayList<Integer> getEdadDoctores() {
-		ArrayList<Integer> lista = new ArrayList<Integer>();
-		for(Persona persona : misPersonas) {
-			if(persona instanceof Doctor)
-				lista.add(calcEdad(persona));
-		}
-		if(lista.size()>0)
-			return lista;
-		else
-			return null;
 	}
 
 	public ArrayList<Date> getDiasConsultas() {
@@ -572,6 +548,80 @@ public class Clinica implements Serializable {
 	    }
 	    String[] enfermedades = enfermedadesList.toArray(new String[0]);
 	    return enfermedades;
+	}
+
+	public int calcCantPacientesEnVigilancia() {
+		int cont = 0;
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Paciente && ((Paciente) persona).isVigilancia())
+				cont++;
+		}
+		return cont;
+	}
+
+	public int calcCantPacientesDeAlta() {
+		int cont = 0;
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Paciente && !((Paciente) persona).isVigilancia())
+				cont++;
+		}
+		return cont;
+	}
+
+	public int calcCantEdadInRangePaciente(int min, int max) {
+		int cont = 0;
+		int edad;
+		for(Persona persona : misPersonas) {
+			edad = calcEdad(persona);
+			if(persona instanceof Paciente && edad >= min && edad <= max)
+				cont++;
+		}
+		return cont;
+	}
+
+	public int calcCantEdadInRangeDoctor(int min, int max) {
+		int cont = 0;
+		int edad;
+		for(Persona persona : misPersonas) {
+			edad = calcEdad(persona);
+			if(persona instanceof Doctor && edad >= min && edad <= max)
+				cont++;
+		}
+		return cont;
+	}
+
+	public ArrayList<String> getEspecialidades() {
+		ArrayList<String> especialidades = new ArrayList<String>();
+		String miEspecialidad;
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Doctor) {
+				miEspecialidad = ((Doctor)persona).getEspecialidad();
+				if(!seRepiteEspecialidad(miEspecialidad, (Doctor)persona))
+					especialidades.add(miEspecialidad);
+			}
+			
+		}
+		return especialidades;
+	}
+
+	private boolean seRepiteEspecialidad(String miEspecialidad, Doctor miPersona) {
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Doctor) {
+				miEspecialidad = ((Doctor)persona).getEspecialidad();
+				if(!persona.equals(miPersona) && ((Doctor) persona).getEspecialidad().equalsIgnoreCase(miPersona.getEspecialidad()))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public int calcCantEspecialidad(String especialidad) {
+		int cont = 0;
+		for(Persona persona : misPersonas) {
+			if(persona instanceof Doctor && ((Doctor) persona).getEspecialidad().equalsIgnoreCase(especialidad))
+				cont++;
+		}
+		return cont;
 	}	
 }
 

@@ -64,52 +64,37 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 public class PrincipalAdmin extends JFrame {
-	private static JPanel grafUsarios;
-	private static JPanel grafGeneroPacientes;
-	private static JPanel grafGeneroPersonal;
-	private static JPanel panelCantPacienteEnfermedad;
-	private static JScrollPane panelEnfermedades;
-	private static DefaultPieDataset data;
-	private static DefaultPieDataset dataGeneroPacientes;
-	private static DefaultPieDataset dataGeneroPersonal;
-	private static DefaultCategoryDataset dataEdadpacientes;
-	private static DefaultCategoryDataset dataEdadDoctores;
-	private static DefaultCategoryDataset dataConsultas;
-	private static DefaultCategoryDataset dataEnfermedades;
-	private static DefaultCategoryDataset dataVacunas = new DefaultCategoryDataset();
-	private static JPanel contentPane;
-	private static JComboBox boxEnfermedades;
-	private static JLabel lblCantPacienEferme;
-	
+
 	private Dimension dim;
+	
+	private static JPanel grafUsarios;
+	private static JPanel grafPacientesVigilancia;
+	private static JPanel grafEdadpacientes;
+	private static JPanel grafEdadDoctor;
+	private static JPanel panelCantPacienteEnfermedad;
+	private static JPanel contentPane;
+	private static JPanel panelCantPorEnfermedad;
+	private static JScrollPane panelVacunas;
+	private static JPanel panelEspecialidades;
+	
+	private static DefaultPieDataset data;
+	private static DefaultPieDataset dataPacientesVigilancia;
+	private static DefaultPieDataset dataEdadpacientes;
+	private static DefaultPieDataset dataEdadDoctor;
+	
+	private static DefaultCategoryDataset dataConsultas;
+	private static DefaultCategoryDataset dataVacunas = new DefaultCategoryDataset();
+	private static DefaultCategoryDataset dataEspecialidades = new DefaultCategoryDataset();
+	
+	private static JComboBox boxEnfermedades;
+	
+	private static JLabel lblCantPacienEferme;
 
 	static Socket sfd = null;
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
-	
     private UptadeGraficas updateThread;
-
-
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					PrincipalAdmin frame = new PrincipalAdmin();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the frame.
-	 */
+    
 	public PrincipalAdmin() {
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -350,35 +335,37 @@ public class PrincipalAdmin extends JFrame {
 	
 	private void crearGraficas() {
 		createGraficaUsarios();
-		createGraficaGeneroPacientes();
-		createGraficaGeneroPersonal() ;
 		createGraficaEdadPacientes();
 		createGraficaEdadDoctores();
 		createGraficaConsultas();
 		createVacunas();
 		createEnfermedades();
+		createPacientesVigilacia();
+		createEspecialidades();
 	}
 
+	
 	public static void actualizarGraficas() {
         actualizarGraficaUsarios();
-        actualizarGeneroPacientes();
-        actualizarGeneroPersonal();
         actualizarEdadPacientes();
         actualizarEdadDoctores();
         actualizarConsultas();
         actualizarEnfermedades();
         actualizarVacunas();
+		actualizarPacientesVigilancia();
+		actualizarEspecialidades();
     }
+	
 
     private static void actualizarGraficaUsarios() {
     	data.clear();
         data.setValue("Pacientes", Clinica.getInstance().calcCantPacientes());
         data.setValue("Doctores", Clinica.getInstance().calcCantDoctores());
         data.setValue("Administradores", Clinica.getInstance().calcCantAdmins());
-
         grafUsarios.repaint();
     }
 
+    
     private void createGraficaUsarios() {
         data = new DefaultPieDataset();
         data.setValue("Pacientes", Clinica.getInstance().calcCantPacientes());
@@ -396,178 +383,85 @@ public class PrincipalAdmin extends JFrame {
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        chartPanel.setBounds(12, 32, 347, 265);
+        chartPanel.setBounds(12, 13, 347, 265);
         contentPane.add(chartPanel);
 
         grafUsarios = new JPanel();
         chartPanel.add(grafUsarios);
         grafUsarios.setLayout(null);
     }
-
-    private static void actualizarGeneroPacientes() {
-        dataGeneroPacientes.clear();
-        dataGeneroPacientes.setValue("Hombres", Clinica.getInstance().calcCantGeneroByCond(true, false, true));
-        dataGeneroPacientes.setValue("Mujeres", Clinica.getInstance().calcCantGeneroByCond(true, false, false));
-
-        grafGeneroPacientes.repaint();
-    }
-
-    private void createGraficaGeneroPacientes() {
-        dataGeneroPacientes = new DefaultPieDataset();
-        dataGeneroPacientes.setValue("Hombres", Clinica.getInstance().calcCantGeneroByCond(true, false, true));
-        dataGeneroPacientes.setValue("Mujeres", Clinica.getInstance().calcCantGeneroByCond(true, false, false));
-
-        JFreeChart chart = ChartFactory.createPieChart(
-                "Genero de Pacientes",
-                dataGeneroPacientes,
-                true,
-                true,
-                false
-        );
-        contentPane.setLayout(null);
-
-        ChartPanel chartPanelGeneroPacientes = new ChartPanel(chart);
-        chartPanelGeneroPacientes.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        chartPanelGeneroPacientes.setBounds(12, 321, 347, 265);
-        contentPane.add(chartPanelGeneroPacientes);
-        
-        grafGeneroPacientes = new JPanel();
-        chartPanelGeneroPacientes.add(grafGeneroPacientes);
-        grafGeneroPacientes.setLayout(null);
-    }
-        
-    private static void actualizarGeneroPersonal() {
-        dataGeneroPersonal.clear();
-        dataGeneroPersonal.setValue("Hombres", Clinica.getInstance().calcCantGeneroByCond(false, false, true) + Clinica.getInstance().calcCantGeneroByCond(false, true, true));
-        dataGeneroPersonal.setValue("Mujeres", Clinica.getInstance().calcCantGeneroByCond(false, false, false) + Clinica.getInstance().calcCantGeneroByCond(false, true, false));
-
-        grafGeneroPacientes.repaint();
-    }
-
-    private void createGraficaGeneroPersonal() {
-        dataGeneroPersonal = new DefaultPieDataset();
-        dataGeneroPersonal.setValue("Hombres", Clinica.getInstance().calcCantGeneroByCond(false, false, true) + Clinica.getInstance().calcCantGeneroByCond(false, true, true));
-        dataGeneroPersonal.setValue("Mujeres", Clinica.getInstance().calcCantGeneroByCond(false, false, false) + Clinica.getInstance().calcCantGeneroByCond(false, true, true));
-
-        JFreeChart chart = ChartFactory.createPieChart(
-                "Genero de Personal",
-                dataGeneroPersonal,
-                true,
-                true,
-                false
-        );
-        contentPane.setLayout(null);
-
-        ChartPanel chartPanelGeneroPersonal = new ChartPanel(chart);
-        chartPanelGeneroPersonal.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        chartPanelGeneroPersonal.setBounds(12, 608, 347, 265);
-        contentPane.add(chartPanelGeneroPersonal);
-
-        grafGeneroPersonal = new JPanel();
-        chartPanelGeneroPersonal.add(grafGeneroPersonal);
-        grafGeneroPersonal.setLayout(null);
-    }
     
     private static void actualizarEdadPacientes() {
-        dataEdadpacientes.clear();
-        ArrayList<Integer> edades = Clinica.getInstance().getEdadesPacientes();
-        if (edades == null)
-            return;
-
-        ArrayList<Integer> uniqueEdades = new ArrayList<>();
-        ArrayList<Integer> countEdades = new ArrayList<>();
-
-        for (Integer edad : edades) {
-            if (!uniqueEdades.contains(edad)) {
-                uniqueEdades.add(edad);
-                countEdades.add(1);
-            } else {
-                int index = uniqueEdades.indexOf(edad);
-                int count = countEdades.get(index);
-                countEdades.set(index, count + 1);
-            }
-        }
-
-        for (int i = 0; i < uniqueEdades.size(); i++) {
-            int edad = uniqueEdades.get(i);
-            int cantidad = countEdades.get(i);
-            dataEdadpacientes.addValue(cantidad, "Pacientes", String.valueOf(edad));
-        }
+    	dataEdadpacientes.clear();
+    	dataEdadpacientes.setValue("-18", Clinica.getInstance().calcCantEdadInRangePaciente(0, 17));
+    	dataEdadpacientes.setValue("18-21", Clinica.getInstance().calcCantEdadInRangePaciente(18, 21));
+    	dataEdadpacientes.setValue("21-30", Clinica.getInstance().calcCantEdadInRangePaciente(22, 30));
+    	dataEdadpacientes.setValue("30-50", Clinica.getInstance().calcCantEdadInRangePaciente(31, 50));
+    	dataEdadpacientes.setValue("+50", Clinica.getInstance().calcCantEdadInRangePaciente(51, 3000));
+    	grafEdadpacientes.repaint();
     }
 
     private void createGraficaEdadPacientes() {
-        dataEdadpacientes = new DefaultCategoryDataset();
+    	dataEdadpacientes = new DefaultPieDataset();
+    	dataEdadpacientes.setValue("-18", Clinica.getInstance().calcCantEdadInRangePaciente(0, 17));
+    	dataEdadpacientes.setValue("18-21", Clinica.getInstance().calcCantEdadInRangePaciente(18, 21));
+    	dataEdadpacientes.setValue("21-30", Clinica.getInstance().calcCantEdadInRangePaciente(22, 30));
+    	dataEdadpacientes.setValue("30-50", Clinica.getInstance().calcCantEdadInRangePaciente(31, 50));
+    	dataEdadpacientes.setValue("+50", Clinica.getInstance().calcCantEdadInRangePaciente(51, 3000));
 
-        actualizarEdadPacientes();
-
-        JFreeChart chart = ChartFactory.createLineChart(
-                "Pacientes por Edades",
-                "Edad", "Cantidad",
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Edad Pacientes",
                 dataEdadpacientes,
-                PlotOrientation.VERTICAL,
-                true, true, false);
+                true,
+                true,
+                false
+        );
+        contentPane.setLayout(null);
 
-        JPanel panelTrafico = new JPanel();
-        panelTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelTrafico.setBounds(371, 32, 732, 265);
-        contentPane.add(panelTrafico);
-        panelTrafico.setLayout(new BorderLayout(0, 0));
+        ChartPanel chartPanelEdadpacientes = new ChartPanel(chart);
+        chartPanelEdadpacientes.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        chartPanelEdadpacientes.setBounds(12, 629, 347, 265);
+        contentPane.add(chartPanelEdadpacientes);
 
-        ChartPanel grafTrafico = new ChartPanel(chart);
-        panelTrafico.add(grafTrafico, BorderLayout.CENTER);
-        grafTrafico.setPreferredSize(new Dimension(450, 350));
-        grafTrafico.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        grafEdadpacientes = new JPanel();
+        chartPanelEdadpacientes.add(grafEdadpacientes);
+        grafEdadpacientes.setLayout(null);
     }
     
     private static void actualizarEdadDoctores() {
-        dataEdadDoctores.clear();
-        ArrayList<Integer> edades = Clinica.getInstance().getEdadDoctores();
-        if (edades == null)
-            return;
-
-        ArrayList<Integer> uniqueEdades = new ArrayList<>();
-        ArrayList<Integer> countEdades = new ArrayList<>();
-
-        for (Integer edad : edades) {
-            if (!uniqueEdades.contains(edad)) {
-                uniqueEdades.add(edad);
-                countEdades.add(1);
-            } else {
-                int index = uniqueEdades.indexOf(edad);
-                int count = countEdades.get(index);
-                countEdades.set(index, count + 1);
-            }
-        }
-
-        for (int i = 0; i < uniqueEdades.size(); i++) {
-            int edad = uniqueEdades.get(i);
-            int cantidad = countEdades.get(i);
-            dataEdadDoctores.addValue(cantidad, "Doctores", String.valueOf(edad));
-        }
+    	dataEdadpacientes.clear();
+    	dataEdadpacientes.setValue("18-21", Clinica.getInstance().calcCantEdadInRangeDoctor(18, 21));
+    	dataEdadpacientes.setValue("21-30", Clinica.getInstance().calcCantEdadInRangeDoctor(22, 30));
+    	dataEdadpacientes.setValue("30-50", Clinica.getInstance().calcCantEdadInRangeDoctor(31, 50));
+    	dataEdadpacientes.setValue("+50", Clinica.getInstance().calcCantEdadInRangeDoctor(51, 3000));
+    	grafEdadpacientes.repaint();
     }
 
     private void createGraficaEdadDoctores() {
-        dataEdadDoctores = new DefaultCategoryDataset();
+    	dataEdadDoctor = new DefaultPieDataset();
+    	dataEdadDoctor.setValue("-18", Clinica.getInstance().calcCantEdadInRangeDoctor(0, 17));
+    	dataEdadDoctor.setValue("18-21", Clinica.getInstance().calcCantEdadInRangeDoctor(18, 21));
+    	dataEdadDoctor.setValue("21-30", Clinica.getInstance().calcCantEdadInRangeDoctor(22, 30));
+    	dataEdadDoctor.setValue("30-50", Clinica.getInstance().calcCantEdadInRangeDoctor(31, 50));
+    	dataEdadDoctor.setValue("+50", Clinica.getInstance().calcCantEdadInRangeDoctor(51, 3000));
 
-        actualizarEdadDoctores();
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Edad Doctores",
+                dataEdadDoctor,
+                true,
+                true,
+                false
+        );
+        contentPane.setLayout(null);
 
-        JFreeChart chart = ChartFactory.createLineChart(
-                "Doctores por Edades",
-                "Edad", "Cantidad",
-                dataEdadDoctores,
-                PlotOrientation.VERTICAL,
-                true, true, false);
+        ChartPanel chartPanelEdadDoctor = new ChartPanel(chart);
+        chartPanelEdadDoctor.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        chartPanelEdadDoctor.setBounds(12, 321, 347, 265);
+        contentPane.add(chartPanelEdadDoctor);
 
-        JPanel panelEdadDoctores = new JPanel();
-        panelEdadDoctores.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelEdadDoctores.setBounds(371, 321, 732, 265);
-        contentPane.add(panelEdadDoctores);
-        panelEdadDoctores.setLayout(new BorderLayout(0, 0));
-
-        ChartPanel grafEdadDoctores = new ChartPanel(chart);
-        panelEdadDoctores.add(grafEdadDoctores, BorderLayout.CENTER);
-        grafEdadDoctores.setPreferredSize(new Dimension(450, 350));
-        grafEdadDoctores.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        grafEdadDoctor = new JPanel();
+        chartPanelEdadDoctor.add(grafEdadDoctor);
+        grafEdadDoctor.setLayout(null);
     }
     
     private static void actualizarConsultas() {
@@ -611,7 +505,7 @@ public class PrincipalAdmin extends JFrame {
 
         JPanel panelConsultas = new JPanel();
         panelConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelConsultas.setBounds(371, 608, 732, 265);
+        panelConsultas.setBounds(397, 321, 719, 573);
         contentPane.add(panelConsultas);
         panelConsultas.setLayout(new BorderLayout(0, 0));
 
@@ -624,52 +518,66 @@ public class PrincipalAdmin extends JFrame {
     private static void actualizarEnfermedades() {
         boxEnfermedades.setModel(new DefaultComboBoxModel(Clinica.getInstance().getArrayNombreEnfermedades()));
         lblCantPacienEferme = new JLabel(String.valueOf(Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()))));
+    	int cant = Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()));
+        if(cant < 10)
+        	panelCantPorEnfermedad.setBackground(new Color(152, 251, 152));
+        else if(cant < 25)
+        	panelCantPorEnfermedad.setBackground(new Color(240, 230, 140));
+        else
+        	panelCantPorEnfermedad.setBackground(new Color(205, 92, 92));
         panelCantPacienteEnfermedad.repaint();
     }
 
-    private void createEnfermedades() {    	
+    private void createEnfermedades() { 
     	panelCantPacienteEnfermedad = new JPanel();
         panelCantPacienteEnfermedad.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelCantPacienteEnfermedad.setBounds(1115, 32, 307, 265);
+        panelCantPacienteEnfermedad.setBounds(769, 13, 347, 265);
         contentPane.add(panelCantPacienteEnfermedad);
         panelCantPacienteEnfermedad.setLayout(null);
         
         boxEnfermedades = new JComboBox();
         boxEnfermedades.setModel(new DefaultComboBoxModel(Clinica.getInstance().getArrayNombreEnfermedades()));
         boxEnfermedades.setSelectedIndex(0);
-        boxEnfermedades.setBounds(12, 38, 283, 22);
+        boxEnfermedades.setBounds(12, 38, 323, 22);
         panelCantPacienteEnfermedad.add(boxEnfermedades);
+
+    	int cant = Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()));
         
         JLabel lblNewLabel = new JLabel("Cantidad de Pacientes con Efermedad");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        lblNewLabel.setBounds(12, 13, 283, 16);
+        lblNewLabel.setBounds(12, 13, 323, 16);
         panelCantPacienteEnfermedad.add(lblNewLabel);
         
-        JPanel panel_1 = new JPanel();
-        panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panel_1.setBounds(12, 73, 283, 179);
-        panelCantPacienteEnfermedad.add(panel_1);
-        panel_1.setLayout(new BorderLayout(0, 0));
+        panelCantPorEnfermedad = new JPanel();
+        panelCantPorEnfermedad.setForeground(new Color(0, 0, 0));
+        if(cant < 10)
+        	panelCantPorEnfermedad.setBackground(new Color(152, 251, 152));
+        else if(cant < 25)
+            panelCantPorEnfermedad.setBackground(new Color(240, 230, 140));
+        else
+            panelCantPorEnfermedad.setBackground(new Color(205, 92, 92));
         
-        lblCantPacienEferme = new JLabel(String.valueOf(Clinica.getInstance().calcCantEnfermedad(Clinica.getInstance().getMisEnfermedades().get(boxEnfermedades.getSelectedIndex()))));
-        panel_1.add(lblCantPacienEferme, BorderLayout.CENTER);
-        lblCantPacienEferme.setFont(new Font("Segoe UI", Font.PLAIN, 50));
+        panelCantPorEnfermedad.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panelCantPorEnfermedad.setBounds(12, 73, 323, 179);
+        panelCantPacienteEnfermedad.add(panelCantPorEnfermedad);
+        panelCantPorEnfermedad.setLayout(new BorderLayout(0, 0));
+        
+        lblCantPacienEferme = new JLabel(String.valueOf(cant));
+        panelCantPorEnfermedad.add(lblCantPacienEferme, BorderLayout.CENTER);
+        lblCantPacienEferme.setFont(new Font("Segoe UI", Font.PLAIN, 55));
         lblCantPacienEferme.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
-    
     private static void actualizarVacunas() {
         dataVacunas.clear();
         for (Vacuna vacuna : Clinica.getInstance().getMisVacunas()) {
             dataVacunas.addValue(Clinica.getInstance().calcCantVacuna(vacuna), "Cantidad", vacuna.getNombre());
         }
-        createVacunas();
+        panelVacunas.repaint();
     }
 
     private static void createVacunas() {
-        dataVacunas.clear();
-
         for (Vacuna vacuna : Clinica.getInstance().getMisVacunas()) {
             dataVacunas.addValue(Clinica.getInstance().calcCantVacuna(vacuna), "Cantidad", vacuna.getNombre());
         }
@@ -693,17 +601,96 @@ public class PrincipalAdmin extends JFrame {
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
 
-        JScrollPane panelVacunas = new JScrollPane();
+        panelVacunas = new JScrollPane();
         panelVacunas.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        panelVacunas.setBounds(1130, 471, 732, 402);
+        panelVacunas.setBounds(1158, 478, 732, 416);
         contentPane.add(panelVacunas);
 
         ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setSize(730, 416);
         chartPanel.setPreferredSize(new Dimension(400, 400));
 
         panelVacunas.setViewportView(chartPanel);
     }
+    
 
+    private static void actualizarPacientesVigilancia() {
+    	dataPacientesVigilancia.clear();
+    	dataPacientesVigilancia.setValue("En Vigilancia", Clinica.getInstance().calcCantPacientesEnVigilancia());
+    	dataPacientesVigilancia.setValue("De alta", Clinica.getInstance().calcCantPacientesDeAlta());
+    	grafPacientesVigilancia.repaint();
+    }
+    
+    private void createPacientesVigilacia() {
+    	dataPacientesVigilancia = new DefaultPieDataset();
+    	dataPacientesVigilancia.setValue("En Vigilancia", Clinica.getInstance().calcCantPacientesEnVigilancia());
+    	dataPacientesVigilancia.setValue("De alta", Clinica.getInstance().calcCantPacientesDeAlta());
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Pacientes en Vigilancia",
+                dataPacientesVigilancia,
+                true,
+                true,
+                false
+        );
+        contentPane.setLayout(null);
+
+        ChartPanel chartPanelPacientesVigilancia = new ChartPanel(chart);
+        chartPanelPacientesVigilancia.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        chartPanelPacientesVigilancia.setBounds(397, 13, 347, 265);
+        contentPane.add(chartPanelPacientesVigilancia);
+        
+        grafPacientesVigilancia = new JPanel();
+        chartPanelPacientesVigilancia.add(grafPacientesVigilancia);
+        grafPacientesVigilancia.setLayout(null);
+    }
+    
+    private static void actualizarEspecialidades() {
+    	dataEspecialidades.clear();
+    	ArrayList<String> especialidades = Clinica.getClinica().getEspecialidades();
+    	for (String especialidad : especialidades) {
+    		dataEspecialidades.addValue(Clinica.getInstance().calcCantEspecialidad(especialidad), "Cantidad", especialidad);
+        }
+    	panelEspecialidades.repaint();
+    }
+    
+    private void createEspecialidades() {
+    	ArrayList<String> especialidades = Clinica.getClinica().getEspecialidades();
+    	
+    	for (String especialidad : especialidades) {
+    		dataEspecialidades.addValue(Clinica.getInstance().calcCantEspecialidad(especialidad), "Cantidad", especialidad);
+        }
+    	
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Cantidad de Medicos por Especializacion",
+                "Especialidad",
+                "Cantidad",
+                dataEspecialidades,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+        NumberAxis yAxis = (NumberAxis)chart.getCategoryPlot().getRangeAxis();
+        yAxis.setTickUnit(new NumberTickUnit(1));
+
+        CategoryPlot plot = chart.getCategoryPlot();
+        Color color = new Color(25, 169, 25); 
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+
+        panelEspecialidades = new JPanel();
+        panelEspecialidades.setBounds(1158, 21, 732, 428);
+        contentPane.add(panelEspecialidades);
+        panelEspecialidades.setLayout(new BorderLayout(0, 0));
+
+        ChartPanel chartPanelEspecialidades = new ChartPanel(chart);
+        chartPanelEspecialidades.setPreferredSize(new Dimension(400, 400));
+        panelEspecialidades.add(chartPanelEspecialidades);
+    }
+    
+    
     // Detener el servidor antes de cerrar la aplicación
     public void dispose() {
         updateThread.stopUpdating();
