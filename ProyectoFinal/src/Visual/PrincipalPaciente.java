@@ -61,42 +61,9 @@ public class PrincipalPaciente extends JFrame {
 	private static Object[] rowVacunacion;
 	private static DefaultTableModel modeloVacunacion;
 	private static JLabel lblVigi;
-	
+	private static JTextPane textPane;
 	private Paciente miPaciente = null;
 
-	/**
-	 * Launch the application.
-	 */
-	    public static void main(String[] args) {
-	        Enfermedad enfermedad1 = new Enfermedad("123", "covid", "0", "Alta");
-	        Enfermedad enfermedad2 = new Enfermedad("321", "jordan", "0", "Moderada");
-	        Enfermedad enfermedad3 = new Enfermedad("673", "rakan", "0", "Alta");
-	        Enfermedad enfermedad4 = new Enfermedad("434", "fiebre", "0", "Baja");
-	        ArrayList<Enfermedad> misEnfermedades = new ArrayList<Enfermedad>();
-	        Paciente paciente = new Paciente(
-	            "123",
-	            "Juan",
-	            new Date(),
-	            "809193481",
-	            "callle 12",
-	            'M',
-	            new ResumenClinico(misEnfermedades, null, null),
-	            null,
-	            "A+",
-	            false
-	        );
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad1);
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad2);
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad3);
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad4);
-
-	        PrincipalPaciente frame = new PrincipalPaciente(paciente);
-	        frame.setVisible(true);
-	    }
-
-	/**
-	 * Create the frame.
-	 */
 	public PrincipalPaciente(Paciente paciente) {	
 		miPaciente = paciente;
 		addWindowListener(new WindowAdapter() {
@@ -116,7 +83,6 @@ public class PrincipalPaciente extends JFrame {
 				
 			}
 		});
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		dim = super.getToolkit().getScreenSize();
@@ -161,7 +127,7 @@ public class PrincipalPaciente extends JFrame {
 		scrollPane.setBounds(602, 461, 578, 427);
 		contentPane_1.add(scrollPane);
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		textPane.setEditable(false);
 		if(paciente!=null && paciente.getResumenClinico().getNotas()!=null)
@@ -248,6 +214,10 @@ public class PrincipalPaciente extends JFrame {
 		loadConsultasFuturo(paciente);
 		actualizarEnfermedadesPaciente(paciente);
 		actualizarEstado(paciente);
+		
+		if(paciente!=null && paciente.getResumenClinico().getNotas()!=null)
+			textPane.setText("Resumen Clinico:\n" + Clinica.getInstance().generarResumenClinico(paciente));
+		
 	}
 	
 	private void actualizarEstado(Paciente paciente) {
