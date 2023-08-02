@@ -114,6 +114,7 @@ public class RegConsulta extends JDialog {
 		
 		textCodigo = new JTextField();
 		textCodigo.setEditable(false);
+		textCodigo.setText(miCita.getCodigo());
 		textCodigo.setBounds(35, 52, 146, 26);
 		panel.add(textCodigo);
 		textCodigo.setColumns(10);

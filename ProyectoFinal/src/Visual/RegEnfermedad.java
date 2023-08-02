@@ -65,6 +65,8 @@ public class RegEnfermedad extends JDialog {
 		panel.add(lblNewLabel);
 		
 		textCodigo = new JTextField();
+		textCodigo.setEditable(false);
+		textCodigo.setText("E-" + Clinica.codEfermedad);
 		textCodigo.setBounds(15, 37, 146, 26);
 		panel.add(textCodigo);
 		textCodigo.setColumns(10);
@@ -152,8 +154,7 @@ public class RegEnfermedad extends JDialog {
 	        String gravedad = miEnfermedad.getGravedad();
 	        comboGravedad.setSelectedItem(gravedad);
 	    } else {
-	        textCodigo.setText("No hay datos");
-	        clear();
+
 	    }
 	}
 

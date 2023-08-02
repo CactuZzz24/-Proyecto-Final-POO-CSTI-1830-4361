@@ -68,6 +68,8 @@ public class RegVacuna extends JDialog {
 		panel.add(lblNewLabel);
 		
 		txtCodigo = new JTextField();
+		txtCodigo.setEditable(false);
+		txtCodigo.setText("V-" + Clinica.codVacuna);
 		txtCodigo.setBounds(60, 15, 116, 22);
 		panel.add(txtCodigo);
 		txtCodigo.setColumns(10);
