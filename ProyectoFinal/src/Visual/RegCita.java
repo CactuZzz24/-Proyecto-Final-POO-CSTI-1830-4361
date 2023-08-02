@@ -95,20 +95,20 @@ public class RegCita extends JDialog {
 		}
 		
 		setResizable(false);
-		setBounds(100, 100, 677, 503);
+		setBounds(100, 100, 620, 482);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setBackground(new Color(95, 158, 160));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(45, 28, 588, 391);
+		layeredPane.setBounds(12, 13, 588, 391);
 		contentPane.add(layeredPane);
 		
 		primera_pagina = new JPanel();
-		primera_pagina.setBounds(374, 425, 588, 391);
+		primera_pagina.setBounds(0, 0, 616, 409);
 		primera_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		layeredPane.add(primera_pagina);
 		primera_pagina.setLayout(null);
@@ -150,21 +150,21 @@ public class RegCita extends JDialog {
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_3 = new JLabel("Cedula");
-		lblNewLabel_3.setBounds(15, 16, 69, 20);
+		lblNewLabel_3.setBounds(30, 12, 69, 20);
 		panel_1.add(lblNewLabel_3);
 		
 		textCedula = new JTextField();
-		textCedula.setBounds(15, 52, 146, 26);
+		textCedula.setBounds(30, 48, 146, 26);
 		panel_1.add(textCedula);
 		textCedula.setColumns(10);
 		
 		JLabel lblNewLabel_4 = new JLabel("Nombre");
-		lblNewLabel_4.setBounds(15, 94, 69, 20);
+		lblNewLabel_4.setBounds(383, 16, 69, 20);
 		panel_1.add(lblNewLabel_4);
 		
 		textNombre = new JTextField();
+		textNombre.setBounds(382, 48, 146, 26);
 		textNombre.setEditable(false);
-		textNombre.setBounds(15, 130, 146, 26);
 		panel_1.add(textNombre);
 		textNombre.setColumns(10);
 		
@@ -173,17 +173,17 @@ public class RegCita extends JDialog {
 		panel_1.add(lblNewLabel_5);
 		
 		textDir = new JTextArea();
-		textDir.setEditable(false);
 		textDir.setBounds(15, 208, 528, 70);
+		textDir.setEditable(false);
 		panel_1.add(textDir);
 		
 		JLabel lblNewLabel_6 = new JLabel("Telefono");
-		lblNewLabel_6.setBounds(481, 16, 62, 20);
+		lblNewLabel_6.setBounds(206, 16, 62, 20);
 		panel_1.add(lblNewLabel_6);
 		
 		  textTel = new JFormattedTextField(createPhoneFormatter());
+		  textTel.setBounds(206, 48, 146, 26);
 		  textTel.setEditable(false);
-	        textTel.setBounds(397, 52, 146, 26);
 	        panel_1.add(textTel);
 	        textTel.setColumns(10);
 		
@@ -192,7 +192,7 @@ public class RegCita extends JDialog {
 			panel_1.add(lblNewLabel_7);
 		
 		 	datePicker = createDatePicker();
-		    datePicker.setBounds(397, 130, 146, 26);
+		 	datePicker.setBounds(397, 130, 146, 26);
 		    panel_1.add(datePicker);
 		    
 		    txtFechaNacim = new JTextField();
@@ -203,16 +203,8 @@ public class RegCita extends JDialog {
 		    txtFechaNacim.setColumns(10);
 		    
 		    JLabel lblNewLabel_11 = new JLabel("G\u00E9nero");
-		    lblNewLabel_11.setBounds(252, 16, 69, 20);
+		    lblNewLabel_11.setBounds(30, 94, 69, 20);
 		    panel_1.add(lblNewLabel_11);
-		    
-		    rdbHombre = new JRadioButton("Hombre");
-		    rdbHombre.setBounds(212, 51, 155, 29);
-		    panel_1.add(rdbHombre);
-		    
-		    rdbMujer = new JRadioButton("Mujer");
-		    rdbMujer.setBounds(212, 129, 155, 29);
-		    panel_1.add(rdbMujer);
 		    
 		    segunda_pagina = new JPanel();
 		    segunda_pagina.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -281,6 +273,7 @@ public class RegCita extends JDialog {
 		    textFechaConsulta.setVisible(false);
 		
 		btnNewButton = new JButton("Siguiente");
+		btnNewButton.setBounds(493, 413, 107, 21);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                 primera_pagina.setVisible(false);
@@ -294,17 +287,17 @@ public class RegCita extends JDialog {
 
 			}
 		});
-		btnNewButton.setBounds(526, 426, 107, 21);
 		contentPane.add(btnNewButton);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(404, 426, 105, 21);
+		btnCancelar.setBounds(371, 413, 107, 21);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
         btnRegistrar = new JButton("Registrar");
+        btnRegistrar.setBounds(493, 413, 107, 21);
         if(miCita != null) {
         	btnRegistrar.setText("Actualizar");
         	
@@ -426,12 +419,11 @@ public class RegCita extends JDialog {
 
 
         });
-        btnRegistrar.setBounds(526, 426, 107, 21);
         contentPane.add(btnRegistrar);
-        btnRegistrar.setVisible(false); 
-		btnCancelar.setBounds(404, 426, 107, 21);
+        btnRegistrar.setVisible(false);
 		contentPane.add(btnCancelar);
         btnAtras = new JButton("Atras");
+        btnAtras.setBounds(386, 413, 107, 21);
         btnAtras.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 primera_pagina.setVisible(true);
@@ -446,14 +438,12 @@ public class RegCita extends JDialog {
 
             }
         });
-        btnAtras.setBounds(419, 426, 107, 21);
         contentPane.add(btnAtras);
         btnAtras.setVisible(false); 
         ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(rdbHombre);
-        buttonGroup.add(rdbMujer);
         
         btnBuscar = new JButton("Buscar");
+        btnBuscar.setBounds(88, 10, 88, 25);
         btnBuscar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		personaEncontrada = Clinica.getInstance().buscarPersonaByCedula(textCedula.getText());
@@ -487,8 +477,26 @@ public class RegCita extends JDialog {
                 }
         	}
         });
-        btnBuscar.setBounds(73, 14, 88, 25);
         panel_1.add(btnBuscar);
+        
+        JPanel panel_3 = new JPanel();
+        panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        panel_3.setBackground(new Color(255, 255, 255));
+        panel_3.setBounds(30, 113, 220, 46);
+        panel_1.add(panel_3);
+        panel_3.setLayout(null);
+        
+        rdbMujer = new JRadioButton("Mujer");
+        rdbMujer.setBackground(new Color(255, 255, 255));
+        rdbMujer.setBounds(112, 9, 100, 29);
+        panel_3.add(rdbMujer);
+        buttonGroup.add(rdbMujer);
+        
+        rdbHombre = new JRadioButton("Hombre");
+        rdbHombre.setBackground(new Color(255, 255, 255));
+        rdbHombre.setBounds(8, 9, 93, 29);
+        panel_3.add(rdbHombre);
+        buttonGroup.add(rdbHombre);
         loadCitas();
     	if(!esAdmin && !esDoctor && paciente != null) {
 			loadPacienteMenu();
@@ -684,7 +692,5 @@ public class RegCita extends JDialog {
 		            btnNewButton.setVisible(true);
 		        }
 		    }
-
-		
 }
 

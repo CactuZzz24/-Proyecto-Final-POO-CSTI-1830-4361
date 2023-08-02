@@ -75,7 +75,8 @@ public class PrincipalPaciente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PrincipalPaciente(Paciente paciente) {	
+
+    public PrincipalPaciente(Paciente paciente) {	
 		miPaciente = paciente;
 		addWindowListener(new WindowAdapter() {
 			@Override
