@@ -187,6 +187,13 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_6.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Listar");
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListarConsultas listar = new ListarConsultas(true, null, null);
+				listar.setModal(true);
+				listar.setVisible(true);
+			}
+		});
 		mnNewMenu_6.add(mntmNewMenuItem_4);
 		
 		JMenu mnNewMenu_1 = new JMenu("Medicos");
@@ -333,7 +340,7 @@ public class PrincipalAdmin extends JFrame {
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listar");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarEnfermedad listar = new ListarEnfermedad(false, null);
+				ListarEnfermedad listar = new ListarEnfermedad(true, null);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}

@@ -47,6 +47,7 @@ public class ListarPaciente extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListarPaciente(boolean Doc, Doctor doctor) {
+		setResizable(false);
 		esDoctor = Doc;
 		 doc = doctor;
 		setBounds(100, 100, 679, 469);

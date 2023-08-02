@@ -79,16 +79,6 @@ public class RegCita extends JDialog {
 
 
 
-	
-
-
-
-	/**
-	 * Create the frame.
-	 * @param miConsulta 
-	 * @param esAdmin 
-	 * @param esDoctor 
-	 */
 	public RegCita(boolean esDoctor, boolean esAdmin, Cita cita, Paciente miPaciente) {
 		miCita = cita;
 		paciente = miPaciente;
