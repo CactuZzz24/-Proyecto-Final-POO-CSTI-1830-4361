@@ -234,6 +234,22 @@ public class RegConsulta extends JDialog {
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			      if (miConsulta != null) {
+			            miConsulta.setFecha((Date) datePicker.getModel().getValue());
+			            miConsulta.setCodigo(textCodigo.getText());
+			            miConsulta.getMiPersona().setGenero(textGender.getText().charAt(0));
+			            miConsulta.setObservaciones(textObservaciones.getText());
+			            ((Paciente) miConsulta.getMiPersona()).setvigilancia(vigilancia());
+			            ((Paciente) miConsulta.getMiPersona()).setTipoSangre(listSangre.getSelectedValue().toString());
+
+
+			            miConsulta.setStatus(true);
+			            Clinica.getInstance().modificarConsulta(miConsulta);
+			            Clinica.getInstance().actualizaRegistroPaciente((Paciente) miConsulta.getMiPersona(), selectedEnfermedad, null, textObservaciones.getText(), miConsulta);
+			            dispose();
+			            
+			            return;
+			        }
 				if(miCita.getMiPersona() instanceof Paciente) {
 					Consulta nuevaConsulta = new Consulta(miCita.getFecha(), miCita.getMiPersona(), miCita.getMiDoctor(), 
 							textObservaciones.getText(), miCita.getCodigo(), miCita, true);
