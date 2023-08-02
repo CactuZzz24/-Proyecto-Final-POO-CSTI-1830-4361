@@ -253,7 +253,6 @@ public class PrincipalMedico extends JFrame {
         grafConsultas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 	}
 	
-
 	private static void actualizarEdadPaciente(Doctor doctor) {
 		if (doctor == null)
 			return;
