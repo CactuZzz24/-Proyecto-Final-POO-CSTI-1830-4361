@@ -435,7 +435,6 @@ public class RegUsuario extends JDialog {
 						}else {
 							JOptionPane.showMessageDialog(null, "No se han llenado todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
 						}
-						// PrincipalAdmin.actualizarGraficas();
 				}
 					
 				private void actualizarPersona(){
@@ -464,9 +463,15 @@ public class RegUsuario extends JDialog {
 					if(!pswClave.getText().equals(pswConfirmar.getText())){
 						JOptionPane.showMessageDialog(null, "Las claves NO coinciden", "Error", JOptionPane.INFORMATION_MESSAGE);
 						return false;
+					}else if(pswClave.getText().length() < 8) {
+						JOptionPane.showMessageDialog(null, "La clave debe contener al menos 8 caracteres", "Error", JOptionPane.INFORMATION_MESSAGE);
+						return false;
+					}else if(!((java.util.Date) datePicker.getModel().getValue()).before(new Date())) {
+						JOptionPane.showMessageDialog(null, "Ingrese una fecha de nacimiento valida", "Error", JOptionPane.INFORMATION_MESSAGE);
+						return false;
 					}else if(!txtNombreUsuario.getText().equals("") && !txtCedula.equals("") && !txtNombre.equals("") && 
 								!pswClave.getText().equals("") && !pswConfirmar.getText().equals("") && !txtDireccion.equals("") 
-								&& (btnMasculino.isSelected() || btnFemenino.isSelected())) {
+								&& (btnMasculino.isSelected() || btnFemenino.isSelected()) ) {
 						return true;
 					}
 					return false;

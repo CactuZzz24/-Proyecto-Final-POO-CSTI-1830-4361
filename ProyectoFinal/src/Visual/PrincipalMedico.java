@@ -201,6 +201,8 @@ public class PrincipalMedico extends JFrame {
 	public static void actualizar(Doctor doctor) {
 		loadConsultasFuturas(doctor);
 		actualizarEdadPaciente(doctor);
+		actualizarResumenPaciente();
+		loadVacunaPaciente();
 	}
 	
 	public static void loadConsultasFuturas(Doctor doctor) {
