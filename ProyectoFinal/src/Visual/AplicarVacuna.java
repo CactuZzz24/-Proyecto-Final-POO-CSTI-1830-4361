@@ -54,9 +54,12 @@ public class AplicarVacuna extends JDialog {
 	 * Create the dialog.
 	 */
 	public AplicarVacuna(Doctor doc) {
+		setTitle("Asignar Vacuna");
+		setResizable(false);
 
 		miDoctor = doc;
 		setBounds(100, 100, 672, 435);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -64,7 +67,7 @@ public class AplicarVacuna extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBounds(0, 0, 311, 340);
+		panel.setBounds(0, 0, 326, 340);
 		contentPanel.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
@@ -88,7 +91,7 @@ public class AplicarVacuna extends JDialog {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(312, 0, 338, 340);
+		panel_1.setBounds(327, 0, 338, 340);
 		contentPanel.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 

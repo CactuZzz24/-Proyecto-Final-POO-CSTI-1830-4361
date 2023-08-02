@@ -13,6 +13,7 @@ public class UptadeGraficas extends Thread {
             try {
                 Thread.sleep(updateInterval);
                 PrincipalAdmin.actualizarGraficas();
+                
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

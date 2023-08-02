@@ -174,12 +174,27 @@ public class IniciarSesion extends JFrame {
 		
 		JButton btnNewButton = new JButton("Registrar");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RegUsuario reg = new RegUsuario(false, true, null);
-				reg.setModal(true);
-				reg.setVisible(true);
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        JPasswordField passwordField = new JPasswordField();
+		        int option = JOptionPane.showConfirmDialog(null, passwordField, "Contraseña Maestra", JOptionPane.OK_CANCEL_OPTION);
+
+		        if (option == JOptionPane.OK_OPTION) {
+		            char[] input = passwordField.getPassword();
+		            String inputString = new String(input);
+
+		            if (inputString.equals(Clinica.getInstance().getPswDefault())) {
+		                RegUsuario reg = new RegUsuario(false, true, null);
+		                reg.setModal(true);
+		                reg.setVisible(true);
+		            } else {
+		            	 JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. Por favor intentelo de nuevo",
+     		                    "Contraseña", JOptionPane.ERROR_MESSAGE);
+		            }
+
+		        }
+		    }
 		});
+
 		btnNewButton.setBounds(171, 13, 99, 25);
 		panel_1.add(btnNewButton);
 		btnNewButton.setBackground(SystemColor.activeCaption);

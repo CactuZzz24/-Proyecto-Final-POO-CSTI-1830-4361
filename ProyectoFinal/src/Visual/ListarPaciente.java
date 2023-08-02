@@ -8,22 +8,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.bind.ParseConversionEvent;
 
 import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Doctor;
 import Logic.Paciente;
 import Logic.Persona;
-import Logic.Vacuna;
 
 public class ListarPaciente extends JDialog {
 
@@ -36,6 +37,7 @@ public class ListarPaciente extends JDialog {
 	private JButton btnActualizar;
 	private static Doctor doc = null;
 	private static boolean esDoctor = false;
+	private static JCheckBox chckbxNewCheckBox;
 	 
 
 	/**
@@ -86,6 +88,21 @@ public class ListarPaciente extends JDialog {
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
+					{
+						JPanel panel_2 = new JPanel();
+						panel_2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+						contentPanel.add(panel_2, BorderLayout.NORTH);
+						{
+							chckbxNewCheckBox = new JCheckBox("Vigilancia");
+							chckbxNewCheckBox.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									loadPacientes();
+								}
+							});
+							chckbxNewCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
+							panel_2.add(chckbxNewCheckBox);
+						}
+					}
 					loadPacientes();			}
 			}
 		}
@@ -146,6 +163,7 @@ public class ListarPaciente extends JDialog {
 	public static void loadPacientes() {
 	    modelo.setRowCount(0);
 	    row = new Object[table.getColumnCount()];
+	    boolean showVigilanciaOnly = chckbxNewCheckBox.isSelected(); 
 
 	    if (esDoctor && doc != null) {
 	        for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
@@ -153,6 +171,20 @@ public class ListarPaciente extends JDialog {
 	            if (attendingDoctor != null && attendingDoctor.equals(doc)) {
 	                Persona persona = consulta.getMiPersona();
 	                if (persona != null && persona instanceof Paciente) {
+	                    if (!showVigilanciaOnly || ((Paciente) persona).isVigilancia()) {
+	                        row[0] = persona.getCedula();
+	                        row[1] = persona.getNombre();
+	                        row[2] = persona.getTelefono();
+	                        row[3] = ((Paciente) persona).isVigilancia();
+	                        modelo.addRow(row);
+	                    }
+	                }
+	            }
+	        }
+	    } else {
+	        for (Persona persona : Clinica.getInstance().getMisPersonas()) {
+	            if (persona instanceof Paciente) {
+	                if (!showVigilanciaOnly || ((Paciente) persona).isVigilancia()) {
 	                    row[0] = persona.getCedula();
 	                    row[1] = persona.getNombre();
 	                    row[2] = persona.getTelefono();
@@ -161,18 +193,9 @@ public class ListarPaciente extends JDialog {
 	                }
 	            }
 	        }
-	    } else {
-	        for (Persona persona : Clinica.getInstance().getMisPersonas()) {
-	            if (persona instanceof Paciente) {
-	                row[0] = persona.getCedula();
-	                row[1] = persona.getNombre();
-	                row[2] = persona.getTelefono();
-	                row[3] = ((Paciente) persona).isVigilancia();
-	                modelo.addRow(row);
-	            }
-	        }
 	    }
 	}
+
 
 
 }

@@ -20,6 +20,7 @@ public class Clinica implements Serializable {
 	public static int codCita = 0;
 	public static int codVacuna = 0;
 	public static int codEfermedad = 0;
+	public static String pswDefault = "Chapuceria1@";
 	
 	
 	private int contador = 0;
@@ -80,6 +81,10 @@ public class Clinica implements Serializable {
 		this.misUsuarios = misUsuarios;
 	}
 	
+	public String getPswDefault() {
+		return pswDefault;
+	}
+
 	public ArrayList<Cita> getMisCitas() {
 		return misCitas;
 	}
@@ -95,6 +100,7 @@ public class Clinica implements Serializable {
 
 	public void agregarEnfermedad(Enfermedad enfermedad) {
 		misEnfermedades.add(enfermedad);
+		codEfermedad++;
 		
 	}
 
