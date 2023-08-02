@@ -68,7 +68,6 @@ public class PrincipalPaciente extends JFrame {
 	 * Launch the application.
 	 */
 	    public static void main(String[] args) {
-	        // Initialize patient data
 	        Enfermedad enfermedad1 = new Enfermedad("123", "covid", "0", "Alta");
 	        Enfermedad enfermedad2 = new Enfermedad("321", "jordan", "0", "Moderada");
 	        Enfermedad enfermedad3 = new Enfermedad("673", "rakan", "0", "Alta");
@@ -91,7 +90,6 @@ public class PrincipalPaciente extends JFrame {
 	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad3);
 	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad4);
 
-	        // Create and display the main application window
 	        PrincipalPaciente frame = new PrincipalPaciente(paciente);
 	        frame.setVisible(true);
 	    }
@@ -134,7 +132,7 @@ public class PrincipalPaciente extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Mis Enfermedades");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarEnfermedad listar = new ListarEnfermedad(true, miPaciente);
+				ListarEnfermedad listar = new ListarEnfermedad(false, miPaciente);
 				listar.setModal(true);
 				listar.setVisible(true);
 			}

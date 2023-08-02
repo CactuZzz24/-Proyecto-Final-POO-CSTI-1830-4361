@@ -10,6 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
+import Logic.Cita;
 import Logic.Clinica;
 import Logic.Consulta;
 import Logic.Doctor;
@@ -21,8 +26,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Properties;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.EtchedBorder;
 
 public class ListarConsultas extends JDialog {
 
@@ -34,6 +43,11 @@ public class ListarConsultas extends JDialog {
 	private JButton btnEliminar;
 	private JButton btnActualizar;
 	private JPanel buttonPane;
+	private JPanel panel_1;
+	private JDatePickerImpl datePickerCita;
+	private static ArrayList<Consulta> consultasFiltradas = new ArrayList<>();
+
+
 	/**
 	 * Launch the application.
 	 */
@@ -44,27 +58,30 @@ public class ListarConsultas extends JDialog {
 	 * @param medico 
 	 */
 	public ListarConsultas(boolean tienePermisos, Paciente paciente, Doctor medico) {
+		setResizable(false);
 		setBounds(100, 100, 679, 469);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setBorder(null);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
 			JPanel panel = new JPanel();
+			panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			contentPanel.add(panel, BorderLayout.CENTER);
-			panel.setLayout(new BorderLayout(0, 0));
+			panel.setLayout(null);
 			{
 				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(0, 47, 673, 343);
 				scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-				panel.add(scrollPane, BorderLayout.CENTER);
+				panel.add(scrollPane);
 				{
 					table = new JTable();
 					table.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
 							int index = table.getSelectedRow();
-							if(index >= 0) {
+							if(index >= 0 && tienePermisos) {
 								btnActualizar.setEnabled(true);
 								btnEliminar.setEnabled(true);
 								selectedConsulta = Clinica.getInstance().buscarConsultaByCode(table.getValueAt(index, 0)
@@ -75,19 +92,29 @@ public class ListarConsultas extends JDialog {
 					});
 					
 					modelo = new DefaultTableModel();
-					String[] headers = {"Código", "Persona", "Doctor"};
+					String[] headers = {"Código", "Persona", "Doctor", "Fecha"};
 					scrollPane.setViewportView(table);
 					modelo.setColumnIdentifiers(headers);
 					table.setModel(modelo);
 					scrollPane.setViewportView(table);
+					{
+						panel_1 = new JPanel();
+						panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+						panel_1.setBounds(0, 0, 673, 51);
+						panel.add(panel_1);
+						panel_1.setLayout(null);
+					}
 					   if (tienePermisos && medico != null) {
 				
 					        
 				            loadConsultasDoctor(medico);
 				        } else if (!tienePermisos && paciente != null) {
+				        	
 				 		 
 				            loadConsultasPaciente(paciente);
-				        } else if (!tienePermisos) {
+				            
+				            
+				        } else if (tienePermisos) {
 				   
 				            loadConsultas();
 				   
@@ -97,6 +124,7 @@ public class ListarConsultas extends JDialog {
 		}
 		{
 			buttonPane = new JPanel();
+			buttonPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
@@ -113,6 +141,22 @@ public class ListarConsultas extends JDialog {
 				btnActualizar.setActionCommand("OK");
 				buttonPane.add(btnActualizar);
 				getRootPane().setDefaultButton(btnActualizar);
+				datePickerCita = createDatePickerCita();
+				datePickerCita.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						filterConsultasByDate();
+
+					}
+				});
+				datePickerCita.getJFormattedTextField().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						filterConsultasByDate();
+					}
+
+					
+				});
+				datePickerCita.setBounds(506, 16, 126, 27);
+				panel_1.add(datePickerCita);
 			}
 			{
 				btnEliminar = new JButton("Eliminar");
@@ -150,15 +194,14 @@ public class ListarConsultas extends JDialog {
 	public static void loadConsultasPaciente(Paciente paciente) {
         modelo.setRowCount(0);
         row = new Object[table.getColumnCount()];
+        consultasFiltradas.clear();
 
         for (Consulta consulta : paciente.getMisConsultas()) {
             if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
-                row[0] = consulta.getCodigo();
-                row[1] = consulta.getMiPersona().getNombre();
-                row[2] = consulta.getMiDoctor().getNombre();
-                modelo.addRow(row);
+               consultasFiltradas.add(consulta);
             }
         }
+        loadConsultasFiltradas();
     }
 
 
@@ -179,26 +222,83 @@ public class ListarConsultas extends JDialog {
 	        }
 	    }
 	}
+	private static void loadConsultasFiltradas() {
+		modelo.setRowCount(0);
+
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	    for (Consulta consulta : consultasFiltradas) {
+	        if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
+	            Object[] row = {
+	                consulta.getCodigo(),
+	                consulta.getMiPersona().getNombre(),
+	                consulta.getMiDoctor().getNombre(),
+	                dateFormat.format(consulta.getFecha())
+	            };
+	            modelo.addRow(row);
+	        }
+	    }			
+	}
+	
 	public static void loadConsultasDoctor(Doctor medico) {
 	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisConsultas() == null) {
 	        return; 
 	    }
-
+	    consultasFiltradas.clear();
 	    modelo.setRowCount(0);
 	    row = new Object[table.getColumnCount()];
 
 	    for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
 	        if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
 	            if (consulta.getMiDoctor().equals(medico)) {
-	                row[0] = consulta.getCodigo();
-	                row[1] = consulta.getMiPersona().getNombre();
-	                row[2] = consulta.getMiDoctor().getNombre();
-	                modelo.addRow(row);
-	            }
+	               consultasFiltradas.add(consulta);
+	               }
 	        }
 	    }
+	    loadConsultasFiltradas(); 
+
+	    
+	    
 	}
+	 private JDatePickerImpl createDatePickerCita() {
+		    UtilDateModel model = new UtilDateModel();
+		    Properties properties = new Properties();
+		    properties.put("text.today", "Today");
+		    properties.put("text.month", "Month");
+		    properties.put("text.year", "Year");
+		    JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
 
+		    datePanel.addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            java.util.Date selectedDate = (java.util.Date) model.getValue();
 
+		        }
+		    });
+
+		    return new JDatePickerImpl(datePanel, null);
+		}
+		private void filterConsultasByDate() {
+		    if (Clinica.getInstance() == null || Clinica.getInstance().getMisCitas() == null) {
+		        return; 
+		    }
+
+		    consultasFiltradas.clear(); 
+
+		    java.util.Date selectedDate = (java.util.Date) datePickerCita.getModel().getValue();
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		    String selectedFecha = dateFormat.format(selectedDate);
+
+		    for (Consulta consulta : Clinica.getInstance().getMisConsultas()) {
+		        if (consulta != null && consulta.getMiPersona() != null && consulta.getMiDoctor() != null) {
+		            String citaFecha = dateFormat.format(consulta.getFecha());
+		            if (citaFecha.equals(selectedFecha)) {
+		                consultasFiltradas.add(consulta); 
+		            }
+		        }
+		    }
+
+		    loadConsultasFiltradas(); 
+		}
 
 }
