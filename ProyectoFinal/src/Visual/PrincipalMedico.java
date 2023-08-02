@@ -13,6 +13,7 @@ import Logic.Consulta;
 import Logic.Doctor;
 import Logic.Enfermedad;
 import Logic.Paciente;
+import Logic.UptadeGraficas;
 import Logic.Vacuna;
 
 import javax.swing.JMenuBar;
@@ -72,6 +73,8 @@ public class PrincipalMedico extends JFrame {
 	private static JTable table;
 	private static Object[] row;
 	private static DefaultTableModel modelo;
+    private UptadeGraficas updateThread;
+
 	
 
 
@@ -116,6 +119,8 @@ public class PrincipalMedico extends JFrame {
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		updateThread = new UptadeGraficas(doctor, null);
+        updateThread.start();
 		dim = super.getToolkit().getScreenSize();
 		super.setSize(dim.width, dim.height-100);
 		setLocationRelativeTo(null);

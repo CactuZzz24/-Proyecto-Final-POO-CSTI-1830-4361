@@ -22,6 +22,7 @@ import Logic.Consulta;
 import Logic.Enfermedad;
 import Logic.Paciente;
 import Logic.ResumenClinico;
+import Logic.UptadeGraficas;
 import Logic.Vacuna;
 
 import javax.swing.JMenuBar;
@@ -52,7 +53,7 @@ public class PrincipalPaciente extends JFrame {
 	ChartPanel chartPanel;
 	private static DefaultCategoryDataset dataset;
 	private JPanel contentPane = new JPanel();
-	private JPanel contentPane_1;
+	private static JPanel contentPane_1;
 	private Dimension dim;
 	private static JTable tableConsultasFuturas;
 	private static Object[] rowConsultasFuturas;
@@ -63,36 +64,13 @@ public class PrincipalPaciente extends JFrame {
 	private static JLabel lblVigi;
 	
 	private Paciente miPaciente = null;
+    private UptadeGraficas updateThread;
+
 
 	/**
 	 * Launch the application.
 	 */
-	    public static void main(String[] args) {
-	        Enfermedad enfermedad1 = new Enfermedad("123", "covid", "0", "Alta");
-	        Enfermedad enfermedad2 = new Enfermedad("321", "jordan", "0", "Moderada");
-	        Enfermedad enfermedad3 = new Enfermedad("673", "rakan", "0", "Alta");
-	        Enfermedad enfermedad4 = new Enfermedad("434", "fiebre", "0", "Baja");
-	        ArrayList<Enfermedad> misEnfermedades = new ArrayList<Enfermedad>();
-	        Paciente paciente = new Paciente(
-	            "123",
-	            "Juan",
-	            new Date(),
-	            "809193481",
-	            "callle 12",
-	            'M',
-	            new ResumenClinico(misEnfermedades, null, null),
-	            null,
-	            "A+",
-	            false
-	        );
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad1);
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad2);
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad3);
-	        paciente.getResumenClinico().getMisEnfermedades().add(enfermedad4);
 
-	        PrincipalPaciente frame = new PrincipalPaciente(paciente);
-	        frame.setVisible(true);
-	    }
 
 	/**
 	 * Create the frame.
@@ -119,6 +97,9 @@ public class PrincipalPaciente extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		updateThread = new UptadeGraficas(null, paciente);
+        updateThread.start();
+
 		dim = super.getToolkit().getScreenSize();
 		super.setSize(dim.width, dim.height-100);
 		setLocationRelativeTo(null);
@@ -243,14 +224,14 @@ public class PrincipalPaciente extends JFrame {
 		grafEnfermedadesPaciente(paciente);
 	}
 	
-	public void actualizarGraficas(Paciente paciente) {
+	public static void actualizarGraficas(Paciente paciente) {
 		loadVacunacion(paciente);
 		loadConsultasFuturo(paciente);
 		actualizarEnfermedadesPaciente(paciente);
 		actualizarEstado(paciente);
 	}
 	
-	private void actualizarEstado(Paciente paciente) {
+	private static void actualizarEstado(Paciente paciente) {
 		if(paciente.isVigilancia()) {
 	    	lblVigi.setText("Vigilancia");
 		    lblVigi.setForeground(new Color(165, 42, 42));
@@ -261,7 +242,7 @@ public class PrincipalPaciente extends JFrame {
 	    }
 	}
 	
-	private void loadVacunacion(Paciente paciente) {
+	private static void loadVacunacion(Paciente paciente) {
 	    if (Clinica.getInstance() == null || Clinica.getInstance().getMisVacunas() == null || paciente == null) {
 	        return; 
 	    }
@@ -292,7 +273,7 @@ public class PrincipalPaciente extends JFrame {
 	    }
 	}
 	
-	 private void actualizarEnfermedadesPaciente(Paciente paciente) {
+	 private static void actualizarEnfermedadesPaciente(Paciente paciente) {
 	 	if (paciente == null)
 	        return;
 	 	
@@ -318,7 +299,7 @@ public class PrincipalPaciente extends JFrame {
         grafEnfermedadesPaciente(paciente);
 	}
 	
-	 private void grafEnfermedadesPaciente(Paciente paciente) {
+	 private static void grafEnfermedadesPaciente(Paciente paciente) {
 		    if (paciente == null) {
 		        return;
 		    }

@@ -127,7 +127,7 @@ public class PrincipalAdmin extends JFrame {
 			}
 		});
 		
-		updateThread = new UptadeGraficas();
+		updateThread = new UptadeGraficas(null, null);
         updateThread.start();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
