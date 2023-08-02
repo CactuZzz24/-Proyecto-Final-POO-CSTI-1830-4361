@@ -398,7 +398,7 @@ public class RegConsulta extends JDialog {
 	    } else {
 	        textNombre.setText("");
 	        UtilDateModel modelNacim = (UtilDateModel) datePicker.getModel();
-	        modelNacim.setValue(new Date()); // Set a default date if necessary
+	        modelNacim.setValue(new Date()); 
 	        datePicker.getJFormattedTextField().setText("");
 	        textEdad.setText("");
 	        textCodigo.setText("");

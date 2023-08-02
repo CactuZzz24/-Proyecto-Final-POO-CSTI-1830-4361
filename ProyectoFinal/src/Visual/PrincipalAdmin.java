@@ -168,9 +168,6 @@ public class PrincipalAdmin extends JFrame {
 		mnNewMenu_6.setFont(new Font("Segoe UI Variable", Font.PLAIN, 15));
 		menuBar.add(mnNewMenu_6);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Registrar");
-		mnNewMenu_6.add(mntmNewMenuItem_3);
-		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Listar");
 		mntmNewMenuItem_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

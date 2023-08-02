@@ -45,6 +45,7 @@ public class RegUsuarioParaPaciente extends JDialog {
 		setResizable(false);
 		selectedPaciente = miPaciente;
 		setBounds(100, 100, 254, 384);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -100,36 +101,30 @@ public class RegUsuarioParaPaciente extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Registrar");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						JButton okButton = new JButton("Registrar");
-					    okButton.addActionListener(new ActionListener() {
-					        public void actionPerformed(ActionEvent e) {
-					            String username = txtUsuario.getText();
-					            String password = new String(passwordField.getPassword());
-					            String confirmPassword = new String(passwordField_1.getPassword());
+				{
+				    JButton okButton = new JButton("Registrar");
+				    okButton.addActionListener(new ActionListener() {
+				        public void actionPerformed(ActionEvent e) {
+				            String username = txtUsuario.getText();
+				            String password = new String(passwordField.getPassword());
+				            String confirmPassword = new String(passwordField_1.getPassword());
 
-					            if (password.length() < 8) {
-					                JOptionPane.showMessageDialog(contentPanel, "La contraseña debe tener al menos 8 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
-					            } else if (!password.equals(confirmPassword)) {
-					                JOptionPane.showMessageDialog(contentPanel, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
-					            } else {
-					                Usuario aux = new Usuario(selectedPaciente, username, password, true, false);
-					                Clinica.getInstance().agregarUsuario(aux);
-					                dispose();
-					            }
-					        }
-					    });
-					    okButton.setActionCommand("OK");
-					    buttonPane.add(okButton);
-					    getRootPane().setDefaultButton(okButton);
-					}	
-					}
-				);
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				            if (password.length() < 8) {
+				                JOptionPane.showMessageDialog(contentPanel, "La contraseña debe tener al menos 8 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+				            } else if (!password.equals(confirmPassword)) {
+				                JOptionPane.showMessageDialog(contentPanel, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+				            } else {
+				                Usuario aux = new Usuario(selectedPaciente, username, password, true, false);
+				                Clinica.getInstance().agregarUsuario(aux);
+				                dispose();
+				            }
+				        }
+				    });
+				    okButton.setActionCommand("OK");
+				    buttonPane.add(okButton);
+				    getRootPane().setDefaultButton(okButton);
+				}
+
 			}
 			{
 				JButton cancelButton = new JButton("Cancelar");

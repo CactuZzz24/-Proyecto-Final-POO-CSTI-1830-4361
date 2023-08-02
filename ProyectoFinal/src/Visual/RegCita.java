@@ -324,7 +324,6 @@ public class RegCita extends JDialog {
         				Cita cita = new Cita(textSecretaria.getText(), textCodigo.getText(), 
         						(java.util.Date) datePickerCita.getModel().getValue(), personaEncontrada, selectedDoctor, false);
         				Clinica.getInstance().insertarCita(cita);
-        				dispose();
         						
         				
         			}
@@ -414,6 +413,7 @@ public class RegCita extends JDialog {
         		JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
                         JOptionPane.INFORMATION_MESSAGE);
         		clear();
+        		dispose();
         		
         	}
 

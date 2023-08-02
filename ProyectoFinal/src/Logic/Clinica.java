@@ -99,6 +99,7 @@ public class Clinica implements Serializable {
 	public void insertarConsulta(Consulta consulta){
 		misConsultas.add(consulta);
 		
+		
 	}
 
 	public void agregarEnfermedad(Enfermedad enfermedad) {
@@ -477,6 +478,7 @@ public class Clinica implements Serializable {
 
 	public void insertarCita(Cita appointment) {
 		misCitas.add(appointment);
+		codCita++;
 		
 		
 	}
