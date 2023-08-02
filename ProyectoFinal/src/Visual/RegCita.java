@@ -317,7 +317,6 @@ public class RegCita extends JDialog {
         		}
         		if(miCita== null) {
        		     
-        			//TODO VOLVER ESO FUNCION
         			
 
         			if(personaEncontrada != null) {
@@ -377,8 +376,7 @@ public class RegCita extends JDialog {
             		Cita appointment = new Cita(secretaria, codigoCitaString, fechaCita, persona, doctor, false);
             		Clinica.getInstance().insertarCita(appointment);
             		
-            		 JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro",
-                             JOptionPane.INFORMATION_MESSAGE);
+            	
         			}
         		}
         		else {

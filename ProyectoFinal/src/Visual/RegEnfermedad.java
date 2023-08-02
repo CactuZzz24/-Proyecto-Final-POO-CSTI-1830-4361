@@ -22,6 +22,7 @@ import Logic.Enfermedad;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.SwingConstants;
 
 public class RegEnfermedad extends JDialog {
 
@@ -35,6 +36,8 @@ public class RegEnfermedad extends JDialog {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JPanel panel_3;
+	private JPanel panel_5;
+	private JPanel panel_4;
 
 
 	/**
@@ -52,7 +55,7 @@ public class RegEnfermedad extends JDialog {
 			setTitle("Editar Enfermedad");
 
 		}
-		setBounds(100, 100, 457, 472);
+		setBounds(100, 100, 568, 516);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
@@ -61,72 +64,48 @@ public class RegEnfermedad extends JDialog {
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 451, 432);
+		panel.setBounds(0, 0, 562, 505);
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Codigo");
-		lblNewLabel.setBounds(15, 16, 69, 20);
-		panel.add(lblNewLabel);
-		
-		textCodigo = new JTextField();
-		textCodigo.setBounds(15, 37, 146, 26);
-		textCodigo.setEditable(false);
-		textCodigo.setText("E-" + Clinica.codEfermedad);
-		panel.add(textCodigo);
-		textCodigo.setColumns(10);
-		
-		JLabel lblNewLabel_1 = new JLabel("Nombre");
-		lblNewLabel_1.setBounds(15, 79, 69, 20);
-		panel.add(lblNewLabel_1);
-		
-		textNombre = new JTextField();
-		textNombre.setBounds(15, 100, 146, 26);
-		panel.add(textNombre);
-		textNombre.setColumns(10);
-		
-		JLabel lblNewLabel_2 = new JLabel("Detalles de la enfermedad");
-		lblNewLabel_2.setBounds(128, 163, 212, 26);
-		panel.add(lblNewLabel_2);
-		
-		textAreaDetalles = new JTextArea();
-		textAreaDetalles.setBounds(112, 199, 245, 159);
-		panel.add(textAreaDetalles);
-		
-		btnRegistrar = new JButton("Registrar");
-		btnRegistrar.setBounds(242, 387, 115, 29);
-		panel.add(btnRegistrar);
-		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(112, 387, 115, 29);
-		panel.add(btnCancelar);
-		
 		panel_1 = new JPanel();
-		panel_1.setBounds(0, 151, 443, 220);
+		panel_1.setBackground(new Color(95, 158, 160));
+		panel_1.setBounds(0, 134, 562, 292);
 		panel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		textAreaDetalles = new JTextArea();
+		textAreaDetalles.setBounds(159, 70, 245, 159);
+		panel_1.add(textAreaDetalles);
+		
+		JLabel lblNewLabel_2 = new JLabel("Detalles de la enfermedad");
+		lblNewLabel_2.setBounds(176, 36, 212, 26);
+		panel_1.add(lblNewLabel_2);
+		
+		panel_5 = new JPanel();
+		panel_5.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_5.setBounds(43, 16, 479, 243);
+		panel_1.add(panel_5);
 		
 		panel_2 = new JPanel();
-		panel_2.setBounds(0, 369, 451, 63);
+		panel_2.setBounds(0, 428, 562, 50);
 		panel_2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.add(panel_2);
 		
-		panel_3 = new JPanel();
-		panel_3.setBounds(0, 0, 443, 147);
-		panel_3.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel.add(panel_3);
-		panel_3.setLayout(null);
-		
-		comboGravedad = new JComboBox();
-		comboGravedad.setBounds(189, 37, 239, 26);
-		panel_3.add(comboGravedad);
-		comboGravedad.setModel(new DefaultComboBoxModel(new String[] {"<Gravedad de la Enfermedad>", "Leve", "Moderada", "Alta"}));
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel_2.add(btnCancelar);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
+		
+		btnRegistrar = new JButton("Registrar");
+		btnRegistrar.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel_2.add(btnRegistrar);
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!validateFields()) {
@@ -163,6 +142,44 @@ public class RegEnfermedad extends JDialog {
 		
 			
 		});
+		
+		panel_3 = new JPanel();
+		panel_3.setBackground(new Color(95, 158, 160));
+		panel_3.setBounds(0, 0, 562, 147);
+		panel_3.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel.add(panel_3);
+		panel_3.setLayout(null);
+		
+		panel_4 = new JPanel();
+		panel_4.setBorder(null);
+		panel_4.setBounds(0, 0, 562, 131);
+		panel_3.add(panel_4);
+		panel_4.setLayout(null);
+		
+		comboGravedad = new JComboBox();
+		comboGravedad.setBounds(145, 71, 239, 26);
+		panel_4.add(comboGravedad);
+		comboGravedad.setModel(new DefaultComboBoxModel(new String[] {"<Gravedad de la Enfermedad>", "Leve", "Moderada", "Alta"}));
+		
+		JLabel lblNewLabel_1 = new JLabel("Nombre");
+		lblNewLabel_1.setBounds(407, 8, 69, 20);
+		panel_4.add(lblNewLabel_1);
+		
+		textNombre = new JTextField();
+		textNombre.setBounds(330, 29, 146, 26);
+		panel_4.add(textNombre);
+		textNombre.setColumns(10);
+		
+		textCodigo = new JTextField();
+		textCodigo.setBounds(45, 29, 146, 26);
+		panel_4.add(textCodigo);
+		textCodigo.setEditable(false);
+		textCodigo.setText("E-" + Clinica.codEfermedad);
+		textCodigo.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Codigo");
+		lblNewLabel.setBounds(45, 8, 69, 20);
+		panel_4.add(lblNewLabel);
 		loadEnf();
 
 	}
